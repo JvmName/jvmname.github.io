@@ -1,0 +1,4 @@
+baseURL = "https://jvmname.dev"
+languageCode = "en-us"
+title = "Parth Padgaonkar"
+theme = "base16"
