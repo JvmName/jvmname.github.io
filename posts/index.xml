@@ -1,0 +1,153 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on @JvmName(&#34;Parth&#34;)</title>
+        <link>https://jvmname.dev/posts/</link>
+        <description>Recent content in Posts on @JvmName(&#34;Parth&#34;)</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+        <lastBuildDate>Mon, 23 Mar 2020 23:14:00 -0700</lastBuildDate>
+        <atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Tracking Performance in Kotlin Suspending Functions</title>
+            <link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
+            <pubDate>Mon, 23 Mar 2020 23:14:00 -0700</pubDate>
+            
+            <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
+            <description>Suspended CupsChris Scott
+  Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }
+Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
+But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.
+Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
+            <content type="html"><![CDATA[<figure>
+    <img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"/> <figcaption>
+            <h4>Suspended Cups</h4><p><a href="https://unsplash.com/photos/NEc3YEN1FFw">Chris Scott</a></p>
+        </figcaption>
+</figure>
+
+<p>Using <a href="https://firebase.google.com/docs/perf-mon/get-started-android">Firebase Performance Monitoring</a> to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the <a href="https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation">@AddTrace annotation</a>:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@AddTrace(<span style="color:#e6db74">&#34;some-trace-name&#34;</span>)
+<span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myBoringFunction</span>() {
+    println(<span style="color:#e6db74">&#34;nothing to see here!&#34;</span>)
+}</code></pre></div></p>
+<p>Wait a few moments, and you’ll see <code>some-trace-name</code> in the Firebase Console!</p>
+<p>But what if you want to track the performance of a <code>suspend</code> function? Unfortunately, this is not as straightforward.</p>
+<h2 id="attempt-1-suspending-disbelief">Attempt #1: Suspending Disbelief</h2>
+<p>Let’s say you have some uncomplicated suspending function, like so:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
+    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
+    delay(<span style="color:#ae81ff">100L</span>)   
+    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    <span style="color:#66d9ef">return</span> result
+}
+</code></pre></div><p>A naive attempt to track this function’s performance would, as you might expect, to use <code>@AddTrace</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@AddTrace(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
+<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int { ... }
+</code></pre></div><p>Just eyeballing it, it should work, right? Even if you compile, the <code>firebase-perf</code> Gradle plugin won’t complain, and the Firebase Performance Monitoring library won’t crash your app. So maybe everything will Just Work? 🤞🏽</p>
+<p><strong>Plot Twist: it won’t work.</strong></p>
+<p>To understand <em>why</em> it doesn’t work, you’ll need to understand two things:</p>
+<ol>
+<li>how the Kotlin compiler produces a suspending state machine</li>
+<li>how the <code>firebase-perf</code> Gradle plugin instruments the <code>@AddTrace</code> annotation into an actual Trace invocation</li>
+</ol>
+<p>For #1, <a href="https://medium.com/androiddevelopers/the-suspend-modifier-under-the-hood-b7ce46af624f">Manuel Vivo has a great article</a> going into the nuts and bolts of what the suspend keyword actually <em>means</em>, and if you’re not familiar with the process, I recommend checking it out.
+For our purposes, we’ll simplify, and say that the Kotlin compiler will rewrite your <code>suspend</code> method signature, appending a <code>Continuation&lt;T&gt;</code> parameter, which allows it to build the state machine.</p>
+<p>For #2, I don’t work at Google, so I’m not entirely sure how the <code>@AddTrace</code> instrumentation works under the hood. But I’ve got some guesses!</p>
+<p>Let’s take our previous example and “compile” it. We’ll make 3 changes:</p>
+<ol>
+<li>simplify the “guts” of the coroutine state machine</li>
+<li>add some “fake” Perf traces</li>
+<li>“decompile” everything into Kotlin source code, because nobody wants to read Kotlin JVM bytecode!</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFun</span>(cont : Continuation){
+    <span style="color:#66d9ef">val</span> perf = FirebasePerformance.getInstance()
+    <span style="color:#66d9ef">val</span> trace = perf.newTrace(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
+    trace.start()
+
+    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
+    
+    <span style="color:#75715e">//begin: coroutine state machine
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">when</span>(cont.label){
+        <span style="color:#ae81ff">0</span> -&gt; {
+            <span style="color:#75715e">//will call myAsyncFun with cont.label=1
+</span><span style="color:#75715e"></span>            DelayKt.delay(<span style="color:#ae81ff">100</span>, cont) 
+        }
+        <span style="color:#ae81ff">1</span> -&gt; {
+            println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+            <span style="color:#75715e">//hands control+result back to caller
+</span><span style="color:#75715e"></span>            cont.resume(result, ...) 
+        }
+    }
+    <span style="color:#75715e">//end: coroutine state machine
+</span><span style="color:#75715e"></span>    
+    trace.end()
+}
+</code></pre></div><p>The coroutine’s state machine is muddying the waters — it’s no wonder Firebase’s automated instrumentation can’t figure out where to put the <code>trace.end()</code>! What’s a performance-minded developer to do?</p>
+<h2 id="attempt-2-if-you-try-finally-youll-succeed">Attempt #2: If you Try, Finally you’ll succeed</h2>
+<p>The heart of the issue is that the Firebase performance instrumentation can’t query suspending Kotlin bytecode for the method entry and exit.
+But, as developers, <em>we</em> know when a suspending function will enter and exit; in fact, there’s even a Java/Kotlin paradigm to codifies this: <code>try/finally</code></p>
+<p><code>try/finally</code> is exactly what we need: no matter what happens inside a method body, finally will always be executed last (or, finally!) — this is a guarantee from the JVM, and you can see this reflected in any compiled Java/Kotlin bytecode. <a href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally">Read more here</a></p>
+<p>Armed with this knowledge, and a little bit of Kotlin magic✨, we can write a little wrapper that can be used anywhere:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;E&gt; <span style="color:#a6e22e">trace</span>(name : String, block: (Trace) -&gt; E): E {
+    <span style="color:#66d9ef">val</span> trace = startTrace(name) <span style="color:#75715e">//creates &amp; starts a new Trace
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">try</span> {
+        block(trace)
+    } <span style="color:#66d9ef">finally</span> {
+        trace.stop()
+    }
+}
+</code></pre></div><p>Breaking it down:</p>
+<ul>
+<li>the <code>inline</code> keyword means we won’t interfere with any coroutine state machine; the entire suspending invocation will occur in the <code>try {}</code> block</li>
+<li><code>startTrace</code> just invokes FirebasePerformance, names the trace, and starts it.</li>
+<li>we accept a <code>block: (Trace) -&gt; E</code>, so that the instrumented code can append information to the Trace, if needed</li>
+<li>in the <code>finally</code> block, we stop the trace, and return value produced by block</li>
+<li>any exceptions are propagated to the calling code, since there’s no <code>catch</code> defined</li>
+</ul>
+<p>Sweet; simple; and, most importantly, it works!</p>
+<p>Let’s rewrite our first suspending function using our new toy:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
+    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
+    delay(<span style="color:#ae81ff">100L</span>)   
+    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    <span style="color:#66d9ef">return</span> result
+}
+</code></pre></div><p>becomes:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
+    <span style="color:#66d9ef">return</span> trace(<span style="color:#e6db74">&#34;some-other-trace&#34;</span>) {
+        <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
+        delay(<span style="color:#ae81ff">100L</span>)   
+        println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+        <span style="color:#66d9ef">return</span>@trace result
+    }
+}
+</code></pre></div><p>This is our solution! If you want to achieve this same result without nesting your method into a lambda, you can push it into a private function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() {
+    <span style="color:#66d9ef">return</span> trace(<span style="color:#e6db74">&#34;some-other-trace&#34;</span>) { _myAsyncFunction() }
+}
+
+<span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">_myAsyncFunction</span>() : Int {
+    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
+    delay(<span style="color:#ae81ff">100L</span>)   
+    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    <span style="color:#66d9ef">return</span> result
+}
+</code></pre></div><p>The Firebase Performance Monitoring Console will now show the total time <code>myAsyncFunction</code> runs, including the time that any actual suspension takes 🎉</p>
+<p>Happy coding!</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>I’ve filed a feature request with Firebase to augment <code>@AddTrace</code> to support suspending functions. Let’s see what happens, maybe this blog post will be obsolete in 6 months 👀</p>
+<p><em>Thanks to <a href="https://twitter.com/Akshay_Chordiya">Akshay Chordiya</a> and <a href="https://twitter.com/CodingDoug">Doug Stevenson</a> for reviewing the early drafts!</em> 🙏🏾</p>
+<h2 id="sources--extra-reading">Sources | Extra Reading</h2>
+<ol>
+<li>
+<p>The suspend modifier - Under the hood: <a href="https://medium.com/androiddevelopers/the-suspend-modifier-under-the-hood-b7ce46af624f">https://medium.com/androiddevelopers/the-suspend-modifier-under-the-hood-b7ce46af624f</a></p>
+</li>
+<li>
+<p>Java Code to Byte Code - Part 2: <a href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally">https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally</a></p>
+</li>
+</ol>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

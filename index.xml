@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>@JvmName(&#34;Parth&#34;)</title>
+    <link>https://jvmname.dev/</link>
+    <description>Recent content on @JvmName(&#34;Parth&#34;)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 17 May 2020 17:57:32 -0700</lastBuildDate>
+    
+	<atom:link href="https://jvmname.dev/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Speaking @ Conferences</title>
+      <link>https://jvmname.dev/speaking/</link>
+      <pubDate>Sun, 17 May 2020 17:57:32 -0700</pubDate>
+      
+      <guid>https://jvmname.dev/speaking/</guid>
+      <description>2020 None&amp;hellip;yet!   2019   Your Strengths Include: Work/Life Balance - Droidcon San Francisco - Nov. 2019 (early version given at Droidcon Berlin &amp;lsquo;19 )
+  Fantastic Async and Where to Find Them
+ Velos Tech Talk Series (no video) - Jan. 2019 DevFest St. Louis - Feb. 2019  2018    Guest on All About Android video podcast - Oct. 2019
+   RxJava Extended: Writing Your First Custom Operator - Droidcon Berlin - July 2018</description>
+    </item>
+    
+    <item>
+      <title>@JvmName(&#34;Parth&#34;)</title>
+      <link>https://jvmname.dev/about/</link>
+      <pubDate>Sun, 17 May 2020 17:12:57 -0700</pubDate>
+      
+      <guid>https://jvmname.dev/about/</guid>
+      <description>  Hi! I&amp;rsquo;m Parth, an Android developer living in San Francisco (but soon to be Washington, D.C.!)
+I&amp;rsquo;ve been doing Android since 2013; in my free time, I enjoy: Brazilian Jiu-Jitsu, travel, eating+cooking a concerning amount of food, and other things too!
+I studied Linguistics &amp;amp; Cognitive Science at Claremont McKenna College, and I continue to be an insufferable language(s) nerd.
+Places I&amp;rsquo;ve worked:
+ Hatch Front August Home Originate  </description>
+    </item>
+    
+    <item>
+      <title>Tracking Performance in Kotlin Suspending Functions</title>
+      <link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
+      <pubDate>Mon, 23 Mar 2020 23:14:00 -0700</pubDate>
+      
+      <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
+      <description>Suspended CupsChris Scott
+  Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }
+Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
+But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.
+Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
+    </item>
+    
+  </channel>
+</rss>
