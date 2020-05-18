@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>firebase on @JvmName(&#34;Parth&#34;)</title>
-    <link>jvmname.dev/categories/firebase/</link>
+    <link>https://jvmname.dev/categories/firebase/</link>
     <description>Recent content in firebase on @JvmName(&#34;Parth&#34;)</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Mon, 23 Mar 2020 23:14:00 -0700</lastBuildDate>
     
-	<atom:link href="jvmname.dev/categories/firebase/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jvmname.dev/categories/firebase/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tracking Performance in Kotlin Suspending Functions</title>
-      <link>jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
+      <link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
       <pubDate>Mon, 23 Mar 2020 23:14:00 -0700</pubDate>
       
-      <guid>jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
+      <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
       <description>Suspended CupsChris Scott
   Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }
 Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
