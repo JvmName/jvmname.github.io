@@ -30,7 +30,7 @@
       
       <guid>https://jvmname.dev/about/</guid>
       <description>  Hi! I&amp;rsquo;m Parth, an Android developer living in San Francisco (but soon to be Washington, D.C.!)
-I&amp;rsquo;ve been doing Android since 2013; in my free time, I enjoy: Brazilian Jiu-Jitsu, travel, eating+cooking a concerning amount of food, and other things too!
+I&amp;rsquo;ve been doing Android since 2013; in my free time, I enjoy: Brazilian Jiu-Jitsu, travel, eating+cooking a concerning amount of food, scuba diving, and other things too!
 I studied Linguistics &amp;amp; Cognitive Science at Claremont McKenna College, and I continue to be an insufferable language(s) nerd.
 Places I&amp;rsquo;ve worked:
  Hatch Front August Home Originate  </description>
@@ -39,7 +39,7 @@ Places I&amp;rsquo;ve worked:
     <item>
       <title>Tracking Performance in Kotlin Suspending Functions</title>
       <link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
-      <pubDate>Mon, 23 Mar 2020 23:14:00 -0700</pubDate>
+      <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
       
       <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
       <description>Suspended CupsChris Scott
