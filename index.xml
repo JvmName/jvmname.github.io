@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>I Go, Hugo, They Go</title>
+      <link>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</link>
+      <pubDate>Mon, 18 May 2020 08:39:55 -0700</pubDate>
+      
+      <guid>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</guid>
+      <description>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.
+ Ed. note: I have no idea how Hugo is intended to be pronounced; it could be oo-go (á la Hugo Chavez), or hyoo-go, as the name is pronounced in American English. For the punning purposes of the title, I&amp;rsquo;m assuming it&amp;rsquo;s the latter pronunciation.
+ This shouldn&amp;rsquo;t be so complicated.</description>
+    </item>
+    
+    <item>
       <title>Speaking @ Conferences</title>
       <link>https://jvmname.dev/speaking/</link>
       <pubDate>Sun, 17 May 2020 17:57:32 -0700</pubDate>
