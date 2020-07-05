@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Logging in Kotlin</title>
-      <link>https://jvmname.dev/posts/2020/06/logging-in-kotlin/</link>
+      <title>Static in Kotlin</title>
+      <link>https://jvmname.dev/posts/2020/06/static-in-kotlin/</link>
       <pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate>
       
-      <guid>https://jvmname.dev/posts/2020/06/logging-in-kotlin/</guid>
-      <description>Photo by Oliver Paaske on Unsplash
+      <guid>https://jvmname.dev/posts/2020/06/static-in-kotlin/</guid>
+      <description>Photo by Nikolay Vasiliev on Unsplash
  ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!
  My current company uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: SLF4J + Logback.
 From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</description>

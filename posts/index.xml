@@ -9,18 +9,18 @@
         <atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
-            <title>Logging in Kotlin</title>
-            <link>https://jvmname.dev/posts/2020/06/logging-in-kotlin/</link>
+            <title>Static in Kotlin</title>
+            <link>https://jvmname.dev/posts/2020/06/static-in-kotlin/</link>
             <pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate>
             
-            <guid>https://jvmname.dev/posts/2020/06/logging-in-kotlin/</guid>
-            <description>Photo by Oliver Paaske on Unsplash
+            <guid>https://jvmname.dev/posts/2020/06/static-in-kotlin/</guid>
+            <description>Photo by Nikolay Vasiliev on Unsplash
  ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!
  My current company uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: SLF4J + Logback.
 From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</description>
-            <content type="html"><![CDATA[<p><em>Photo by Oliver Paaske on <a href="https://unsplash.com/photos/UpiojWtxJwM">Unsplash</a></em></p>
+            <content type="html"><![CDATA[<p><em>Photo by Nikolay Vasiliev on <a href="https://unsplash.com/photos/-ethSl6UP_4">Unsplash</a></em></p>
 <hr>
-<p><em>ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</em></p>
+<p><em>ed. note:</em> This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</p>
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
 <p>From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</p>
@@ -31,7 +31,7 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
         logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(...)</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>But it&rsquo;s 2020, and we write Kotlin now! A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
+</code></pre></div><p>But it&rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
     <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     
@@ -48,25 +48,26 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>Yikes! Each new instance of <code>Direction</code> will spin up a new <code>LOG</code> as well, which can get expensive, if we&rsquo;re not careful.</p>
+<p>This generalizes to a whole bunch of situations where we&rsquo;d prefer to have one instance of something available to a class. In Java, we&rsquo;d use <code>static</code> to solve this problem.</p>
 <h2 id="automatic-static">Automatic Static</h2>
-<p>Naturally, Kotlin doesn&rsquo;t have any <code>static</code> keywords. Nevertheless, from our encyclopedic knowledge of Kotlin reserved keywords, we know about <code>const</code>. Could we combine that with the lovely <code>companion object</code>?</p>
+<p>Naturally, Kotlin doesn&rsquo;t have any <code>static</code> keywords. Nevertheless, from our encyclopedic knowledge of Kotlin reserved keywords, we know about <code>const</code>. If we combine that with a <code>companion object</code>, can we get what we want?</p>
 <p>Actually, that doesn&rsquo;t help us with logging! According to <a href="https://kotlinlang.org/docs/reference/properties.html#compile-time-constants">the docs</a> (and the compiler!), there are two reasons this won&rsquo;t work:</p>
 <ol>
-<li><code>const</code> can only be used with values known at compile-time. (Alas, poor <code>Logger</code>, we didn&rsquo;t know you early enough 😿)</li>
+<li><code>const</code> can only be used with values known at compile-time. (Alas, poor <code>Logger</code>, we can&rsquo;t know you early enough 😿)</li>
 <li><code>Logger</code> isn&rsquo;t a primitive/String, and <code>const</code> only works with primitives</li>
 </ol>
-<p>That&rsquo;s fine, what if we remove the <code>const</code>, isn&rsquo;t a companion object basically like a Java <code>static final</code>?</p>
+<p>That&rsquo;s fine, what if we remove the <code>const</code> - isn&rsquo;t a companion object basically like a Java <code>static final</code>?</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
     <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
         <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
     }
     
     <span style="color:#66d9ef">public</span> void navigate() { 
-        println(TAG)
+        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
     }
 }
 
-</code></pre></div><p>The java we generate is roughly:</p>
+</code></pre></div><p>The Java we generate is roughly:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span> Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span><span style="color:#f92672">();</span>
@@ -80,7 +81,7 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 
-</code></pre></div><p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t bother me much: for Android, R8 will yank that right out; on other systems (e.g. backend), I expect an extra class or two to be lost in the shuffle.</p>
+</code></pre></div><p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t really concern me much. On Android, R8 happily inline that (assuming you&rsquo;ve enabled the <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#allowaccessmodification"><code>-accessmodification</code> flag</a>), and on other systems (e.g. backend), the JVM should inline that as well.</p>
 <p>But I don&rsquo;t get paid to write pretty generated Java code, I get paid to write Kotlin. It&rsquo;s not a lot to type, but <code>companion object</code> with all those newlines can wear on you!</p>
 <p>Well, what about a top-level declaration? Putting our <code>Logger</code> setup there will definitely make it <code>static</code>. Let&rsquo;s check it out!</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
@@ -105,29 +106,31 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
       MyClassKt<span style="color:#f92672">.</span><span style="color:#a6e22e">access$getLOG$p</span><span style="color:#f92672">().</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
    <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
-</code></pre></div><p>The synthetic accessor is a bummer, but I expect JVM HotSpot (or any AOT system) will inline that.</p>
-<p>But is this really the end of the road? Can Kotlin really only be half as space-efficient as Java?</p>
+</code></pre></div><p>That synthetic accessor makes sense, since you&rsquo;re essentially calling another class&rsquo;s private field.</p>
+<p>For folks who got into Kotlin but never wrote much Java, this generated code might be a bit surprising. But don&rsquo;t worry &ndash; the perf impact there is negligible; once again, R8 or JVM HotSpot will realistically inline that for you.</p>
+<p>But is this really the end of the road? Can Kotlin really only be half as &ldquo;space-efficient&rdquo; as Java?</p>
 <h2 id="whats-in-a-name">What&rsquo;s in a name?</h2>
-<p>The problem here is that Kotlin always generates another <code>DirectionKt</code> class to warehouse the static elements - akin to a companion object. What if there was a way to direct Kotlin to &ldquo;merge&rdquo; the <code>*Kt</code> class with the &ldquo;real&rdquo; class?</p>
-<p>Perhaps <code>@JvmName</code> save us from multiple classes?
-More specifically, prepending <code>@file:JvmName(&quot;Direction&quot;)</code> to our previous Kotlin snippet gives us:</p>
-<p>&hellip;a compile error ❌</p>
-<pre><code>e: /Users/parth/.../Direction.kt: (1, 1): Duplicate JVM class name 'Direction' generated from: 
+<p>The problem here is that Kotlin seems to generate another <code>DirectionKt</code> class to warehouse the static elements - akin to a companion object. But what if there was a way to direct Kotlin to &ldquo;merge&rdquo; the <code>*Kt</code> class with the &ldquo;real&rdquo; class?</p>
+<p>Perhaps <code>@JvmName</code> could save us from multiple classes? More specifically, prepending <code>@file:JvmName(&quot;Direction&quot;)</code> to our previous Kotlin snippet gives us:</p>
+<p>&hellip; a compile error 💀</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">e: /Users/parth/.../Direction.kt: <span style="color:#f92672">(</span>1, 1<span style="color:#f92672">)</span>: Duplicate JVM class name <span style="color:#e6db74">&#39;Direction&#39;</span> generated from: 
 package-fragment, Direction
-</code></pre><p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
-<p>Darn. I guess top-level declarations are as good as we can get.</p>
+</code></pre></div><p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
+<p>Darn.</p>
 <hr>
-<h2 id="conclusions">Conclusions</h2>
+<h2 id="conclusions---how-to-be-static">Conclusions - how to be static</h2>
 <p>But which is better? <code>companion</code> or top-level declaration?</p>
-<p>From a perf/size perspective, you get <em>basically</em> the same bytecode generated for you, so they&rsquo;re the same.</p>
-<p><del>Bikeshedding-ly</del> Personally, I prefer the top-level declaration. It&rsquo;s out-of-the-way, it&rsquo;s less to read, and least importantly, almost 20 fewer characters to type!</p>
-<p>There is one &ldquo;gotcha&rdquo; with a top-level declaration: You must mark the top-level <code>val</code> as <code>private</code>, or you could get into weird situations where another class accidentally uses your <code>Logger</code> instance.
+<p>From a perf/size perspective, you get the same bytecode generated for you, so they&rsquo;re the same.</p>
+<p><del>Bikesheddingly</del> <strong>Personally, I prefer the top-level declaration.</strong> It&rsquo;s out-of-the-way, it&rsquo;s less to read, and least importantly, almost 20 fewer characters to type!</p>
+<p>⚠️ There is one &ldquo;gotcha&rdquo; with a top-level declaration: You <em>must</em> mark the top-level <code>val</code> as <code>private</code>, or you could get into wacky situations where another class accidentally uses another class&rsquo;s <code>Logger</code> instance.
 Have fun tracking down that logging bug! 🙀🐛</p>
 <p>That being said, if you&rsquo;ve already got a <code>companion</code> for something, there&rsquo;s literally no reason you shouldn&rsquo;t put your <code>LOG</code> setup in there as well!</p>
 <p>&hellip;Except for testability, but that&rsquo;s a blog post for another day.</p>
-<p>Happy logging! 🌲</p>
+<p>Happy logging 🌲 (or whatever else you put in static members)!</p>
 <hr>
 <h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<p>Many thanks to <a href="https://www.zacsweers.dev">Zac Sweers</a> for telling me &ldquo;you need to revise this&rdquo;, and <a href="https://publicobject.com/">Jesse Wilson</a> for pointing out that non-private top-level declarations can cause problems.</p>
+<p>Also:</p>
 <ul>
 <li>Egor Andreevich - <a href="https://blog.egorand.me/where-do-i-put-my-constants-in-kotlin/">https://blog.egorand.me/where-do-i-put-my-constants-in-kotlin/</a></li>
 <li>Christophe Beyls - <a href="https://medium.com/@BladeCoder/exploring-kotlins-hidden-costs-part-1-fbb9935d9b62">https://medium.com/@BladeCoder/exploring-kotlins-hidden-costs-part-1-fbb9935d9b62</a></li>
