@@ -4,16 +4,31 @@
   
   <url>
     <loc>https://jvmname.dev/</loc>
-    <lastmod>2020-05-18T08:39:55-07:00</lastmod>
+    <lastmod>2020-06-23T16:42:26-07:00</lastmod>
   </url>
   
   <url>
-    <loc>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</loc>
-    <lastmod>2020-05-18T08:39:55-07:00</lastmod>
+    <loc>https://jvmname.dev/tags/kotlin/</loc>
+    <lastmod>2020-06-23T16:42:26-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jvmname.dev/posts/2020/06/logging-in-kotlin/</loc>
+    <lastmod>2020-06-23T16:42:26-07:00</lastmod>
   </url>
   
   <url>
     <loc>https://jvmname.dev/posts/</loc>
+    <lastmod>2020-06-23T16:42:26-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jvmname.dev/tags/</loc>
+    <lastmod>2020-06-23T16:42:26-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</loc>
     <lastmod>2020-05-18T08:39:55-07:00</lastmod>
   </url>
   
@@ -49,10 +64,6 @@
   
   <url>
     <loc>https://jvmname.dev/series/</loc>
-  </url>
-  
-  <url>
-    <loc>https://jvmname.dev/tags/</loc>
   </url>
   
 </urlset>
