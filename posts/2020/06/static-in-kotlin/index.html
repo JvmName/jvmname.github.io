@@ -5,10 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="">
-<meta name="description" content="Photo by Nikolay Vasiliev on Unsplash
- ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!
- My current company uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: SLF4J &#43; Logback.
-From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:" />
+<meta name="description" content="What&#39;s a companion object between friends?" />
 <meta name="keywords" content="kotlin, android, kotlin" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -23,12 +20,12 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 
 
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
     type="text/css">
 
 
 
-<link rel="stylesheet" href="https://jvmname.dev/main.dede02da9537a98158079c023e83573e18127834838ef08172acce888341a797.css">
+<link rel="stylesheet" href="https://jvmname.dev/main.7d7f4bca900f23c51ae65500185594ff08b755308a6b218995056dae2dc8ef54.css">
 
 
 
@@ -48,17 +45,19 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 <meta itemprop="description" content="What&#39;s a companion object between friends?">
 <meta itemprop="datePublished" content="2020-06-23T16:42:26-07:00" />
 <meta itemprop="dateModified" content="2020-06-23T16:42:26-07:00" />
-<meta itemprop="wordCount" content="952">
+<meta itemprop="wordCount" content="946">
 <meta itemprop="image" content="https://jvmname.dev/img/carabiner.webp">
 
 
 
 <meta itemprop="keywords" content="kotlin," />
+
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://jvmname.dev/img/carabiner.webp"/>
 
 <meta name="twitter:title" content="Static in Kotlin"/>
 <meta name="twitter:description" content="What&#39;s a companion object between friends?"/>
+
 
 
 
@@ -75,7 +74,7 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 
 
 
-    <meta property="article:published_time" content="2020-06-23 16:42:26 -0700 MST" />
+    <meta property="article:published_time" content="2020-06-23 16:42:26 -0700 -0700" />
 
 
 
@@ -87,7 +86,10 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 
     </head>
 
-    <body class="dark-theme">
+    
+        <body class="dark-theme">
+    
+    
         <div class="container">
             <header class="header">
     <span class="header__inner">
@@ -134,28 +136,41 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 
             <div class="content">
                 
-    <main class="post">
+  <main class="post">
 
-        <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>5 minutes
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        5 minutes
 
-            
+        
+      </p>
+    </div>
 
-            </p>
-        </div>
+    <article>
+      <h1 class="post-title">
+        <a href="https://jvmname.dev/posts/2020/06/static-in-kotlin/">Static in Kotlin</a>
+      </h1>
 
-        <article>
-            <h1 class="post-title">
-                <a href="https://jvmname.dev/posts/2020/06/static-in-kotlin/">Static in Kotlin</a>
-            </h1>
+      
+        <div class="post-excerpt">What&#39;s a companion object between friends?</div>
+      
 
-            
-                <img src="https://jvmname.dev/img/carabiner.webp" class="post-cover" />
-            
+      
+        <figure class="post-cover">
+          <img src="https://jvmname.dev/img/carabiner.webp" alt="Static in Kotlin" />
+          
+          
+            <figcaption class="center">Photo by Nikolay Vasiliev on <a href="https://unsplash.com/photos/-ethSl6UP_4">Unsplash</a></figcaption>
+          
+        </figure>
+      
 
-            <div class="post-content">
-                <p><em>Photo by Nikolay Vasiliev on <a href="https://unsplash.com/photos/-ethSl6UP_4">Unsplash</a></em></p>
-<hr>
+      <div class="post-content">
+        <hr>
 <p><em>ed. note:</em> This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</p>
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
@@ -277,43 +292,76 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 </li>
 </ul>
 
-            </div>
-        </article>
+      </div>
+    </article>
 
-        <hr />
+    <hr />
 
-        <div class="post-info">
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://jvmname.dev/tags/kotlin">kotlin</a></span>
-                </p>
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>952 Words</p>
+        <span class="tag"><a href="https://jvmname.dev/tags/kotlin/">kotlin</a></span>
+        
+    </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-06-23 16:42 -0700</p>
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        946 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2020-06-23 19:42 -0400
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
         </div>
 
-        
-            <div class="pagination">
-                <div class="pagination__title">
-                    <span class="pagination__title-h"></span>
-                    <hr />
-                </div>
+        <div class="pagination__buttons">
+          
 
-                <div class="pagination__buttons">
-                    
+          
+            <span class="button next">
+              <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">
+                <span class="button__text">I Go, Hugo, They Go</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
 
-                    
-                        <span class="button next">
-                            <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">
-                                <span class="button__text">I Go, Hugo, They Go</span>
-                                <span class="button__icon">→</span>
-                            </a>
-                        </span>
-                    
-                </div>
-            </div>
-        
-    </main>
+
+    
+
+  </main>
 
             </div>
 
@@ -321,17 +369,16 @@ Have fun tracking down that logging bug! 🙀🐛</p>
                 <footer class="footer">
     <div class="footer__inner">
         <div class="footer__content">
-            <span>&copy; 2020</span>
+            <span>&copy; 2021</span>
             
-            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span><span><a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
         <div class="footer__content">
             <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
             <span>Made with &#10084; by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
-        </div>
+          </div>
     </div>
 </footer>
 
@@ -343,7 +390,7 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 
 
 
-<script type="text/javascript" src="https://jvmname.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+<script type="text/javascript" src="https://jvmname.dev/bundle.min.b862c998bf2fadf805956282c6e4d3904497bd283eeb6eaf2cd524fe3847346b91be58bb05a267af4953264f0c30eb0f8c85795994df29208421b80c0870671c.js" integrity="sha512-uGLJmL8vrfgFlWKCxuTTkESXvSg&#43;626vLNUk/jhHNGuRvli7BaJnr0lTJk8MMOsPjIV5WZTfKSCEIbgMCHBnHA=="></script>
 
 
 

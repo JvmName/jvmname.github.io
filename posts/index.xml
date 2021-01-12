@@ -14,12 +14,10 @@
             <pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate>
             
             <guid>https://jvmname.dev/posts/2020/06/static-in-kotlin/</guid>
-            <description>Photo by Nikolay Vasiliev on Unsplash
- ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!
+            <description>ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!
  My current company uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: SLF4J + Logback.
 From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</description>
-            <content type="html"><![CDATA[<p><em>Photo by Nikolay Vasiliev on <a href="https://unsplash.com/photos/-ethSl6UP_4">Unsplash</a></em></p>
-<hr>
+            <content type="html"><![CDATA[<hr>
 <p><em>ed. note:</em> This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</p>
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
@@ -234,7 +232,7 @@ attr=&quot;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&quot; &gt;}}
     <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
     <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;Posts&#34;</span>
     <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;posts/&#34;</span>
-</code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>'s menu settings (as of 05/2020):</p>
+</code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">menu</span>]
  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
     <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
@@ -312,7 +310,7 @@ git push origin master <span style="color:#75715e"># Push source and build repos
 <ol>
 <li>
 <p>create a <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>CNAME</code> entry</a> to alias <code>www.example.dev</code> &ndash;&gt; <code>&lt;ghuser&gt;.github.io</code></p>
-<p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users&rsquo; browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p>
+<p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users' browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p>
 </li>
 <li>
 <p>create an <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>A/ANAME</code> record</a> to alias <code>example.dev</code> &ndash;&gt; <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub Pages CDN</a> (~equivalent to <code>&lt;ghuser&gt;.github.io</code>).</p>
@@ -403,7 +401,7 @@ Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspend
 </figure>
 
 <p>Using <a href="https://firebase.google.com/docs/perf-mon/get-started-android">Firebase Performance Monitoring</a> to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the <a href="https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation">@AddTrace annotation</a>:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@AddTrace(<span style="color:#e6db74">&#34;some-trace-name&#34;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@AddTrace</span>(<span style="color:#e6db74">&#34;some-trace-name&#34;</span>)
 <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myBoringFunction</span>() {
     println(<span style="color:#e6db74">&#34;nothing to see here!&#34;</span>)
 }</code></pre></div></p>
@@ -414,12 +412,12 @@ Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspend
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
     <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
     delay(<span style="color:#ae81ff">100L</span>)   
-    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
     <span style="color:#66d9ef">return</span> result
 }
 </code></pre></div><p>A naive attempt to track this function’s performance would, as you might expect, to use <code>@AddTrace</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">@AddTrace(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
-<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int { ... }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#a6e22e">@AddTrace</span>(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
+<span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int { <span style="color:#f92672">..</span>. }
 </code></pre></div><p>Just eyeballing it, it should work, right? Even if you compile, the <code>firebase-perf</code> Gradle plugin won’t complain, and the Firebase Performance Monitoring library won’t crash your app. So maybe everything will Just Work? 🤞🏽</p>
 <p><strong>Plot Twist: it won’t work.</strong></p>
 <p>To understand <em>why</em> it doesn’t work, you’ll need to understand two things:</p>
@@ -445,14 +443,14 @@ For our purposes, we’ll simplify, and say that the Kotlin compiler will rewrit
     
     <span style="color:#75715e">//begin: coroutine state machine
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">when</span>(cont.label){
-        <span style="color:#ae81ff">0</span> -&gt; {
+        <span style="color:#ae81ff">0</span> <span style="color:#f92672">-&gt;</span> {
             <span style="color:#75715e">//will call myAsyncFun with cont.label=1
 </span><span style="color:#75715e"></span>            DelayKt.delay(<span style="color:#ae81ff">100</span>, cont) 
         }
-        <span style="color:#ae81ff">1</span> -&gt; {
-            println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+        <span style="color:#ae81ff">1</span> <span style="color:#f92672">-&gt;</span> {
+            println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
             <span style="color:#75715e">//hands control+result back to caller
-</span><span style="color:#75715e"></span>            cont.resume(result, ...) 
+</span><span style="color:#75715e"></span>            cont.resume(result, <span style="color:#f92672">..</span>.) 
         }
     }
     <span style="color:#75715e">//end: coroutine state machine
@@ -465,7 +463,7 @@ For our purposes, we’ll simplify, and say that the Kotlin compiler will rewrit
 But, as developers, <em>we</em> know when a suspending function will enter and exit; in fact, there’s even a Java/Kotlin paradigm to codifies this: <code>try/finally</code></p>
 <p><code>try/finally</code> is exactly what we need: no matter what happens inside a method body, finally will always be executed last (or, finally!) — this is a guarantee from the JVM, and you can see this reflected in any compiled Java/Kotlin bytecode. <a href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally">Read more here</a></p>
 <p>Armed with this knowledge, and a little bit of Kotlin magic✨, we can write a little wrapper that can be used anywhere:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;E&gt; <span style="color:#a6e22e">trace</span>(name : String, block: (Trace) -&gt; E): E {
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">E</span>&gt; <span style="color:#a6e22e">trace</span>(name : String, block: (Trace) <span style="color:#f92672">-&gt;</span> E): E {
     <span style="color:#66d9ef">val</span> trace = startTrace(name) <span style="color:#75715e">//creates &amp; starts a new Trace
 </span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">try</span> {
         block(trace)
@@ -486,7 +484,7 @@ But, as developers, <em>we</em> know when a suspending function will enter and e
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
     <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
     delay(<span style="color:#ae81ff">100L</span>)   
-    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
     <span style="color:#66d9ef">return</span> result
 }
 </code></pre></div><p>becomes:</p>
@@ -494,8 +492,8 @@ But, as developers, <em>we</em> know when a suspending function will enter and e
     <span style="color:#66d9ef">return</span> trace(<span style="color:#e6db74">&#34;some-other-trace&#34;</span>) {
         <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
         delay(<span style="color:#ae81ff">100L</span>)   
-        println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
-        <span style="color:#66d9ef">return</span>@trace result
+        println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
+        <span style="color:#66d9ef">return</span><span style="color:#a6e22e">@trace</span> result
     }
 }
 </code></pre></div><p>This is our solution! If you want to achieve this same result without nesting your method into a lambda, you can push it into a private function:</p>
@@ -506,7 +504,7 @@ But, as developers, <em>we</em> know when a suspending function will enter and e
 <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">_myAsyncFunction</span>() : Int {
     <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
     delay(<span style="color:#ae81ff">100L</span>)   
-    println(<span style="color:#e6db74">&#34;something to see here: $result&#34;</span>)
+    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
     <span style="color:#66d9ef">return</span> result
 }
 </code></pre></div><p>The Firebase Performance Monitoring Console will now show the total time <code>myAsyncFunction</code> runs, including the time that any actual suspension takes 🎉</p>

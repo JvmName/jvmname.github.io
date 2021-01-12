@@ -5,9 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="">
-<meta name="description" content="A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.
- Ed. note: I have no idea how Hugo is intended to be pronounced; it could be oo-go (á la Hugo Chavez), or hyoo-go, as the name is pronounced in American English. For the punning purposes of the title, I&amp;rsquo;m assuming it&amp;rsquo;s the latter pronunciation.
- This shouldn&amp;rsquo;t be so complicated." />
+<meta name="description" content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;..." />
 <meta name="keywords" content="kotlin, android" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
@@ -22,12 +20,12 @@
 
 
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
     type="text/css">
 
 
 
-<link rel="stylesheet" href="https://jvmname.dev/main.dede02da9537a98158079c023e83573e18127834838ef08172acce888341a797.css">
+<link rel="stylesheet" href="https://jvmname.dev/main.7d7f4bca900f23c51ae65500185594ff08b755308a6b218995056dae2dc8ef54.css">
 
 
 
@@ -53,11 +51,13 @@
 
 
 <meta itemprop="keywords" content="" />
+
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://jvmname.dev/img/books.jpg"/>
 
 <meta name="twitter:title" content="I Go, Hugo, They Go"/>
 <meta name="twitter:description" content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;..."/>
+
 
 
 
@@ -74,7 +74,7 @@
 
 
 
-    <meta property="article:published_time" content="2020-05-18 08:39:55 -0700 MST" />
+    <meta property="article:published_time" content="2020-05-18 08:39:55 -0700 -0700" />
 
 
 
@@ -86,7 +86,10 @@
 
     </head>
 
-    <body class="dark-theme">
+    
+        <body class="dark-theme">
+    
+    
         <div class="container">
             <header class="header">
     <span class="header__inner">
@@ -133,27 +136,39 @@
 
             <div class="content">
                 
-    <main class="post">
+  <main class="post">
 
-        <div class="post-info">
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>10 minutes
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        10 minutes
 
-            
+        
+      </p>
+    </div>
 
-            </p>
-        </div>
+    <article>
+      <h1 class="post-title">
+        <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">I Go, Hugo, They Go</a>
+      </h1>
 
-        <article>
-            <h1 class="post-title">
-                <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">I Go, Hugo, They Go</a>
-            </h1>
+      
+        <div class="post-excerpt">Not exactly &#34;How to get Hugo&#43;Github set up&#34;...</div>
+      
 
-            
-                <img src="https://jvmname.dev/img/books.jpg" class="post-cover" />
-            
+      
+        <figure class="post-cover">
+          <img src="https://jvmname.dev/img/books.jpg" alt="I Go, Hugo, They Go" />
+          
+          
+        </figure>
+      
 
-            <div class="post-content">
-                <p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p>
+      <div class="post-content">
+        <p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p>
 <hr>
 <p><strong>Ed. note:</strong> I have no idea how <code>Hugo</code> is intended to be pronounced; it could be <em><code>oo-go</code></em> (á la <em>Hugo Chavez</em>), or <em><code>hyoo-go</code></em>, as the name is pronounced in American English. For the punning purposes of the title, I&rsquo;m assuming it&rsquo;s the latter pronunciation.</p>
 <hr>
@@ -235,7 +250,7 @@ attr=&quot;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&quot; &gt;}}
     <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
     <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;Posts&#34;</span>
     <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;posts/&#34;</span>
-</code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>'s menu settings (as of 05/2020):</p>
+</code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">menu</span>]
  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
     <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
@@ -313,7 +328,7 @@ git push origin master <span style="color:#75715e"># Push source and build repos
 <ol>
 <li>
 <p>create a <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>CNAME</code> entry</a> to alias <code>www.example.dev</code> &ndash;&gt; <code>&lt;ghuser&gt;.github.io</code></p>
-<p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users&rsquo; browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p>
+<p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users' browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p>
 </li>
 <li>
 <p>create an <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>A/ANAME</code> record</a> to alias <code>example.dev</code> &ndash;&gt; <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub Pages CDN</a> (~equivalent to <code>&lt;ghuser&gt;.github.io</code>).</p>
@@ -384,47 +399,76 @@ echo example.dev &gt; CNAME</code></pre></div>
 <li>Creating and deploying your first Hugo site to Github pages: <a href="https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d">https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d</a></li>
 </ol>
 
-            </div>
-        </article>
+      </div>
+    </article>
 
-        <hr />
+    <hr />
 
-        <div class="post-info">
+    <div class="post-info">
+      
+      
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2064 Words</p>
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        2064 Words
+      </p>
 
-            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-05-18 08:39 -0700</p>
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2020-05-18 11:39 -0400
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
         </div>
 
-        
-            <div class="pagination">
-                <div class="pagination__title">
-                    <span class="pagination__title-h"></span>
-                    <hr />
-                </div>
+        <div class="pagination__buttons">
+          
+            <span class="button previous">
+              <a href="https://jvmname.dev/posts/2020/06/static-in-kotlin/">
+                <span class="button__icon">←</span>
+                <span class="button__text">Static in Kotlin</span>
+              </a>
+            </span>
+          
 
-                <div class="pagination__buttons">
-                    
-                        <span class="button previous">
-                            <a href="https://jvmname.dev/posts/2020/06/static-in-kotlin/">
-                                <span class="button__icon">←</span>
-                                <span class="button__text">Static in Kotlin</span>
-                            </a>
-                        </span>
-                    
+          
+            <span class="button next">
+              <a href="https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/">
+                <span class="button__text">Tracking Performance in Kotlin Suspending Functions</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
 
-                    
-                        <span class="button next">
-                            <a href="https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/">
-                                <span class="button__text">Tracking Performance in Kotlin Suspending Functions</span>
-                                <span class="button__icon">→</span>
-                            </a>
-                        </span>
-                    
-                </div>
-            </div>
-        
-    </main>
+
+    
+
+  </main>
 
             </div>
 
@@ -432,17 +476,16 @@ echo example.dev &gt; CNAME</code></pre></div>
                 <footer class="footer">
     <div class="footer__inner">
         <div class="footer__content">
-            <span>&copy; 2020</span>
+            <span>&copy; 2021</span>
             
-            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span><span><a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
         <div class="footer__content">
             <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
             <span>Made with &#10084; by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
-        </div>
+          </div>
     </div>
 </footer>
 
@@ -454,7 +497,7 @@ echo example.dev &gt; CNAME</code></pre></div>
 
 
 
-<script type="text/javascript" src="https://jvmname.dev/bundle.min.dc716e9092c9820b77f96da294d0120aeeb189b5bcea9752309ebea27fd53bbe6b13cffb2aca8ecf32525647ceb7001f76091de4199ac5a3caa432c070247f5b.js" integrity="sha512-3HFukJLJggt3&#43;W2ilNASCu6xibW86pdSMJ6&#43;on/VO75rE8/7KsqOzzJSVkfOtwAfdgkd5BmaxaPKpDLAcCR/Ww=="></script>
+<script type="text/javascript" src="https://jvmname.dev/bundle.min.b862c998bf2fadf805956282c6e4d3904497bd283eeb6eaf2cd524fe3847346b91be58bb05a267af4953264f0c30eb0f8c85795994df29208421b80c0870671c.js" integrity="sha512-uGLJmL8vrfgFlWKCxuTTkESXvSg&#43;626vLNUk/jhHNGuRvli7BaJnr0lTJk8MMOsPjIV5WZTfKSCEIbgMCHBnHA=="></script>
 
 
 
