@@ -67,10 +67,10 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 <li>I forgot that <code>Flow.collect</code> is a suspending terminal operator, so for an never-ending stream (e.g. a Flow from your Repository), <code>collect</code> will never complete!</li>
 </ol>
 <p><code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only one Flow will start</strong>; the other Flow will patiently wait (forever!):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">init</span>{
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">init</span> {
     scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// ✅ doesn&#39;t emit, but runs fine
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverEnding = flow&lt;Unit { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.collect { println(<span style="color:#e6db74">&#34;neverending!&#34;</span>) } 
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverEnding = flow&lt;Unit&gt; { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.collect { println(<span style="color:#e6db74">&#34;neverending!&#34;</span>) } 
 
         <span style="color:#75715e">// ❌ never runs because `neverEnding`
 </span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverStarting = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect { println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
@@ -115,7 +115,7 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 </ul>
 <p>Also:</p>
 <ul>
-<li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/flow.html#launching-flow">https://kotlinlang.org/docs/flow.html#launching-flow</a></li>
+<li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow">https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow</a></li>
 <li>Kotlin Docs - Async: <a href="https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async">https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async</a></li>
 </ul>
 ]]></content>
