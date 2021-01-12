@@ -45,7 +45,7 @@
 <meta itemprop="description" content="A quick study in CoroutineScope, and why sharing is not always caring.">
 <meta itemprop="datePublished" content="2021-01-11T00:01:19-05:00" />
 <meta itemprop="dateModified" content="2021-01-11T00:01:19-05:00" />
-<meta itemprop="wordCount" content="671">
+<meta itemprop="wordCount" content="803">
 <meta itemprop="image" content="https://jvmname.dev/img/launch.jpg">
 
 
@@ -190,7 +190,7 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 }
 </code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
 <p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p>
-<p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you what I learned: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
+<p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you that: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
     <span style="color:#66d9ef">init</span> {
         <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
@@ -206,7 +206,8 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
             .launchIn(scope)
     }
 }
-</code></pre></div><h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
+</code></pre></div><p>(note: there&rsquo;s another solution involving <code>CoroutienScope.async</code>, see below for that code)</p>
+<h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
 <p>Here&rsquo;s what went wrong at first, and why this code works:</p>
 <p>In case you&rsquo;re not familiar, <code>Flow&lt;T&gt;.launchIn(CoroutineScope)</code> allows you to &ldquo;invert&rdquo; the order of <code>.launch</code> and <code>.collect</code> so that your Flow subscription&hellip;erm..flows 🙃</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { 
@@ -214,18 +215,29 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 }
 <span style="color:#75715e">// ⬆️ these are equivalent ⬇️
 </span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)
-</code></pre></div><p>My mistake here was assuming that this equivalency was generalizable!  <code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only the first Flow receives a live context</strong>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
-</span><span style="color:#75715e"></span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect() <span style="color:#75715e">// ✅ runs fine
-</span><span style="color:#75715e"></span>    flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).collect() <span style="color:#75715e">// ❌ never runs; the Job has already been &#34;consumed&#34;
+</code></pre></div><p>In writing my original bit of code, I made a few mistakes:</p>
+<ol>
+<li>I assumed that <code>launch+collect</code> and <code>launchIn</code> were exactly equivalent – not true with a <code>launch</code> with multiple <code>collect</code> statements! This leads to (2):</li>
+<li>I forgot that <code>Flow.collect</code> is a suspending terminal operator, so for an never-ending stream (e.g. a Flow from your Repository), <code>collect</code> will never complete!</li>
+</ol>
+<p><code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only one Flow will start</strong>; the other Flow will patiently wait (forever!):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">init</span>{
+    scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// ✅ doesn&#39;t emit, but runs fine
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverEnding = flow&lt;Unit { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.collect { println(<span style="color:#e6db74">&#34;neverending!&#34;</span>) } 
+
+        <span style="color:#75715e">// ❌ never runs because `neverEnding`
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverStarting = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect { println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
+    }
+}
+</code></pre></div><p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">init</span> {
+    flow { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.launchIn(scope)  <span style="color:#75715e">// ✅ runs fine
+</span><span style="color:#75715e"></span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope) <span style="color:#75715e">// ✅ also runs fine
 </span><span style="color:#75715e"></span>}
-</code></pre></div><p>The <code>(a, b)</code> Flow will <em>never run</em>; if you observe it using <code>onCompletion</code>, you&rsquo;ll see that it gets cancelled immediately; specifically: <code>kotlinx.coroutines.flow.internal.ChildCancelledException: Child of the scoped flow was cancelled</code>.</p>
-<p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)  <span style="color:#75715e">// ✅ runs fine
-</span><span style="color:#75715e"></span>flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).launchIn(scope) <span style="color:#75715e">// ✅ also runs fine
-</span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
-<p>(Note: I&rsquo;m sure this exact scenario is listed out somewhere in a Roman Elizarov blog post or deep in some docs, but I couldn&rsquo;t find it 😁)</p>
+</code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
 <h2 id="bonus">Bonus</h2>
+<h3 id="extensions">Extensions!</h3>
 <p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style="color:#66d9ef">suspend</span> (T) <span style="color:#f92672">-&gt;</span> Unit): Job {
     <span style="color:#66d9ef">return</span> scope.launch { collect(collector) }
@@ -236,11 +248,29 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 </span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
     .launchIn(scope) { int <span style="color:#f92672">-&gt;</span> println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$int</span><span style="color:#e6db74">&#34;</span>) }
 </code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
-<h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
-<p>My deep appreciation goes out to <a href="https://twitter.com/ianhlake">@iahnhlake</a> and <a href="https://twitter.com/friendlyMikhail">@friendlyMikhail</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</p>
+<h3 id="async-instead-of-launch">Async instead of Launch</h3>
+<p>There&rsquo;s another way to solve the original problem, which <a href="https://blog.danlew.net/">Dan Lew</a> pointed out &ndash; <code>CoroutineScope.async</code>!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">init</span> { 
+    scope.launch { 
+        <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
+            .map { <span style="color:#75715e">/** filter+transform the User */</span> }
+            .shareIn(<span style="color:#66d9ef">this</span>, SharingStarted.WhileSubscribed(), <span style="color:#ae81ff">1</span>)
+        
+        <span style="color:#66d9ef">val</span> sentry = async { userFlow.collect { <span style="color:#75715e">/* consume User for Sentry setup */</span> } }         
+        <span style="color:#66d9ef">val</span> launchDarkly = async { userFlow.collect { <span style="color:#75715e">/* consume User for LaunchDarkly setup */</span> } }         
+        sentry.await() + launchDarkly.await()
+    }
+}
+</code></pre></div><h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<p>My deep appreciation goes out to:</p>
+<ul>
+<li><a href="https://twitter.com/ianhlake">@iahnhlake</a> and <a href="https://twitter.com/friendlyMikhail">@friendlyMikhail</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</li>
+<li><a href="https://twitter.com/DSeweryn">@DSeweryn</a>,<a href="https://blog.danlew.net/">Dan Lew</a>, and <a href="https://twitter.com/geoffreymetais">@geoffreymetais</a> for pointing out that <code>collect</code> is a suspending operator and providing feedback on the code snippets 🙏🏾</li>
+</ul>
 <p>Also:</p>
 <ul>
 <li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/flow.html#launching-flow">https://kotlinlang.org/docs/flow.html#launching-flow</a></li>
+<li>Kotlin Docs - Async: <a href="https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async">https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async</a></li>
 </ul>
 
       </div>
@@ -269,7 +299,7 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
           <line x1="16" y1="17" x2="8" y2="17"></line>
           <polyline points="10 9 9 9 8 9"></polyline>
         </svg>
-        671 Words
+        803 Words
       </p>
 
       <p>
