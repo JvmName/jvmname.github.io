@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="A quick study in CoroutineScope, and why sharing is not always caring." />
+<meta name="keywords" content="kotlin, android, kotlin, coroutines, bugs" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/" />
+
+
+    <title>
+        
+            Don&#39;t Worry, Just Launch :: @JvmName(&#34;Parth&#34;) 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://jvmname.dev/main.7d7f4bca900f23c51ae65500185594ff08b755308a6b218995056dae2dc8ef54.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://jvmname.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://jvmname.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://jvmname.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://jvmname.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://jvmname.dev/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://jvmname.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+
+
+<meta itemprop="name" content="Don&#39;t Worry, Just Launch">
+<meta itemprop="description" content="A quick study in CoroutineScope, and why sharing is not always caring.">
+<meta itemprop="datePublished" content="2021-01-11T00:01:19-05:00" />
+<meta itemprop="dateModified" content="2021-01-11T00:01:19-05:00" />
+<meta itemprop="wordCount" content="671">
+<meta itemprop="image" content="https://jvmname.dev/img/launch.jpg">
+
+
+
+<meta itemprop="keywords" content="kotlin,coroutines,bugs," />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://jvmname.dev/img/launch.jpg"/>
+
+<meta name="twitter:title" content="Don&#39;t Worry, Just Launch"/>
+<meta name="twitter:description" content="A quick study in CoroutineScope, and why sharing is not always caring."/>
+
+
+
+
+    <meta property="og:title" content="Don&#39;t Worry, Just Launch" />
+<meta property="og:description" content="A quick study in CoroutineScope, and why sharing is not always caring." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/" />
+<meta property="og:image" content="https://jvmname.dev/img/launch.jpg" />
+<meta property="article:published_time" content="2021-01-11T00:01:19-05:00" />
+<meta property="article:modified_time" content="2021-01-11T00:01:19-05:00" />
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-01-11 00:01:19 -0500 EST" />
+
+
+
+
+
+
+<script data-goatcounter="https://jvmname.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+    </head>
+
+    
+        <body class="dark-theme">
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://jvmname.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">@JvmName</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#67a2c9;
+                   animation-duration:3.5s;">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://jvmname.dev/posts/">Posts</a></li><li><a href="https://jvmname.dev/speaking/">Speaking</a></li><li><a href="https://jvmname.dev/about/">About Me</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        4 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/">Don&rsquo;t Worry, Just Launch</a>
+      </h1>
+
+      
+        <div class="post-excerpt">A quick study in CoroutineScope, and why sharing is not always caring.</div>
+      
+
+      
+        <figure class="post-cover">
+          <img src="https://jvmname.dev/img/launch.jpg" alt="Don&#39;t Worry, Just Launch" />
+          
+          
+            <figcaption class="center">Photo by <a href="https://unsplash.com/@gezerbatu">Batu Gezer</a></figcaption>
+          
+        </figure>
+      
+
+      <div class="post-content">
+        <p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
+Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p>
+<p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
+    <span style="color:#66d9ef">init</span> { <span style="color:#75715e">// ⚠️ DO NOT USE THIS CODE ⚠️
+</span><span style="color:#75715e"></span>        scope.launch() { 
+            <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
+                .map { <span style="color:#75715e">/** filter+transform the User */</span> }
+                .shareIn(<span style="color:#66d9ef">this</span>, SharingStarted.WhileSubscribed(), <span style="color:#ae81ff">1</span>)
+
+            userFlow
+                .collect { <span style="color:#75715e">/* consume User for Sentry setup */</span> }
+
+            userFlow
+                .collect { <span style="color:#75715e">/** consume for LaunchDarkly setup */</span> }
+        }
+    }
+}
+</code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
+<p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p>
+<p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you what I learned: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
+    <span style="color:#66d9ef">init</span> {
+        <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
+             .map { <span style="color:#75715e">/** filter+transform the User */</span> }  
+             .shareIn(scope, SharingStarted.Eagerly, <span style="color:#ae81ff">1</span>)
+
+        userFlow
+            .onEach { <span style="color:#75715e">/* setup sentry */</span> }
+            .launchIn(scope)
+
+        userFlow
+            .onEach { <span style="color:#75715e">/* setup LaunchDarkly */</span> }
+            .launchIn(scope)
+    }
+}
+</code></pre></div><h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
+<p>Here&rsquo;s what went wrong at first, and why this code works:</p>
+<p>In case you&rsquo;re not familiar, <code>Flow&lt;T&gt;.launchIn(CoroutineScope)</code> allows you to &ldquo;invert&rdquo; the order of <code>.launch</code> and <code>.collect</code> so that your Flow subscription&hellip;erm..flows 🙃</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { 
+    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect()
+}
+<span style="color:#75715e">// ⬆️ these are equivalent ⬇️
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)
+</code></pre></div><p>My mistake here was assuming that this equivalency was generalizable!  <code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only the first Flow receives a live context</strong>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
+</span><span style="color:#75715e"></span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect() <span style="color:#75715e">// ✅ runs fine
+</span><span style="color:#75715e"></span>    flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).collect() <span style="color:#75715e">// ❌ never runs; the Job has already been &#34;consumed&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>The <code>(a, b)</code> Flow will <em>never run</em>; if you observe it using <code>onCompletion</code>, you&rsquo;ll see that it gets cancelled immediately; specifically: <code>kotlinx.coroutines.flow.internal.ChildCancelledException: Child of the scoped flow was cancelled</code>.</p>
+<p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)  <span style="color:#75715e">// ✅ runs fine
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).launchIn(scope) <span style="color:#75715e">// ✅ also runs fine
+</span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
+<p>(Note: I&rsquo;m sure this exact scenario is listed out somewhere in a Roman Elizarov blog post or deep in some docs, but I couldn&rsquo;t find it 😁)</p>
+<h2 id="bonus">Bonus</h2>
+<p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style="color:#66d9ef">suspend</span> (T) <span style="color:#f92672">-&gt;</span> Unit): Job {
+    <span style="color:#66d9ef">return</span> scope.launch { collect(collector) }
+}
+
+<span style="color:#75715e">//Sample Usage:
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> scope = <span style="color:#f92672">..</span>. <span style="color:#75715e">//e.g. viewModelScope
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+    .launchIn(scope) { int <span style="color:#f92672">-&gt;</span> println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$int</span><span style="color:#e6db74">&#34;</span>) }
+</code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
+<h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<p>My deep appreciation goes out to <a href="https://twitter.com/ianhlake">@iahnhlake</a> and <a href="https://twitter.com/friendlyMikhail">@friendlyMikhail</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</p>
+<p>Also:</p>
+<ul>
+<li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/flow.html#launching-flow">https://kotlinlang.org/docs/flow.html#launching-flow</a></li>
+</ul>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://jvmname.dev/tags/kotlin/">kotlin</a></span>
+        <span class="tag"><a href="https://jvmname.dev/tags/coroutines/">coroutines</a></span>
+        <span class="tag"><a href="https://jvmname.dev/tags/bugs/">bugs</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        671 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-01-11 00:01 -0500
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+
+          
+            <span class="button next">
+              <a href="https://jvmname.dev/posts/2020/06/static-in-kotlin/">
+                <span class="button__text">Static in Kotlin</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span><span><a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
+          </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://jvmname.dev/bundle.min.b862c998bf2fadf805956282c6e4d3904497bd283eeb6eaf2cd524fe3847346b91be58bb05a267af4953264f0c30eb0f8c85795994df29208421b80c0870671c.js" integrity="sha512-uGLJmL8vrfgFlWKCxuTTkESXvSg&#43;626vLNUk/jhHNGuRvli7BaJnr0lTJk8MMOsPjIV5WZTfKSCEIbgMCHBnHA=="></script>
+
+
+
+    </body>
+</html>

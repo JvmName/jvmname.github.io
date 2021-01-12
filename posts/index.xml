@@ -5,8 +5,91 @@
         <description>Recent content in Posts on @JvmName(&#34;Parth&#34;)</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Tue, 23 Jun 2020 16:42:26 -0700</lastBuildDate>
+        <lastBuildDate>Mon, 11 Jan 2021 00:01:19 -0500</lastBuildDate>
         <atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Don&#39;t Worry, Just Launch</title>
+            <link>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</link>
+            <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
+            
+            <guid>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</guid>
+            <description>I&amp;rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&amp;rsquo;ve been on the Kotlin train 100%.
+Despite all that Kotlin experience, the new Hatch Credit Android app (launching Q1-2021✨) is the first time I&amp;rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</description>
+            <content type="html"><![CDATA[<p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
+Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p>
+<p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
+    <span style="color:#66d9ef">init</span> { <span style="color:#75715e">// ⚠️ DO NOT USE THIS CODE ⚠️
+</span><span style="color:#75715e"></span>        scope.launch() { 
+            <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
+                .map { <span style="color:#75715e">/** filter+transform the User */</span> }
+                .shareIn(<span style="color:#66d9ef">this</span>, SharingStarted.WhileSubscribed(), <span style="color:#ae81ff">1</span>)
+
+            userFlow
+                .collect { <span style="color:#75715e">/* consume User for Sentry setup */</span> }
+
+            userFlow
+                .collect { <span style="color:#75715e">/** consume for LaunchDarkly setup */</span> }
+        }
+    }
+}
+</code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
+<p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p>
+<p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you what I learned: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
+    <span style="color:#66d9ef">init</span> {
+        <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
+             .map { <span style="color:#75715e">/** filter+transform the User */</span> }  
+             .shareIn(scope, SharingStarted.Eagerly, <span style="color:#ae81ff">1</span>)
+
+        userFlow
+            .onEach { <span style="color:#75715e">/* setup sentry */</span> }
+            .launchIn(scope)
+
+        userFlow
+            .onEach { <span style="color:#75715e">/* setup LaunchDarkly */</span> }
+            .launchIn(scope)
+    }
+}
+</code></pre></div><h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
+<p>Here&rsquo;s what went wrong at first, and why this code works:</p>
+<p>In case you&rsquo;re not familiar, <code>Flow&lt;T&gt;.launchIn(CoroutineScope)</code> allows you to &ldquo;invert&rdquo; the order of <code>.launch</code> and <code>.collect</code> so that your Flow subscription&hellip;erm..flows 🙃</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { 
+    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect()
+}
+<span style="color:#75715e">// ⬆️ these are equivalent ⬇️
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)
+</code></pre></div><p>My mistake here was assuming that this equivalency was generalizable!  <code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only the first Flow receives a live context</strong>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
+</span><span style="color:#75715e"></span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect() <span style="color:#75715e">// ✅ runs fine
+</span><span style="color:#75715e"></span>    flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).collect() <span style="color:#75715e">// ❌ never runs; the Job has already been &#34;consumed&#34;
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>The <code>(a, b)</code> Flow will <em>never run</em>; if you observe it using <code>onCompletion</code>, you&rsquo;ll see that it gets cancelled immediately; specifically: <code>kotlinx.coroutines.flow.internal.ChildCancelledException: Child of the scoped flow was cancelled</code>.</p>
+<p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin">flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)  <span style="color:#75715e">// ✅ runs fine
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#e6db74">&#39;a&#39;</span>, <span style="color:#e6db74">&#39;b&#39;</span>).launchIn(scope) <span style="color:#75715e">// ✅ also runs fine
+</span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
+<p>(Note: I&rsquo;m sure this exact scenario is listed out somewhere in a Roman Elizarov blog post or deep in some docs, but I couldn&rsquo;t find it 😁)</p>
+<h2 id="bonus">Bonus</h2>
+<p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-kotlin" data-lang="kotlin"><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style="color:#66d9ef">suspend</span> (T) <span style="color:#f92672">-&gt;</span> Unit): Job {
+    <span style="color:#66d9ef">return</span> scope.launch { collect(collector) }
+}
+
+<span style="color:#75715e">//Sample Usage:
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> scope = <span style="color:#f92672">..</span>. <span style="color:#75715e">//e.g. viewModelScope
+</span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
+    .launchIn(scope) { int <span style="color:#f92672">-&gt;</span> println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$int</span><span style="color:#e6db74">&#34;</span>) }
+</code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
+<h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<p>My deep appreciation goes out to <a href="https://twitter.com/ianhlake">@iahnhlake</a> and <a href="https://twitter.com/friendlyMikhail">@friendlyMikhail</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</p>
+<p>Also:</p>
+<ul>
+<li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/flow.html#launching-flow">https://kotlinlang.org/docs/flow.html#launching-flow</a></li>
+</ul>
+]]></content>
+        </item>
         
         <item>
             <title>Static in Kotlin</title>
