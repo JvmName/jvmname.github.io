@@ -1,84 +1,64 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://jvmname.dev/</loc>
-    <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/tags/code-reuse/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/tags/github-actions/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/posts/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/tags/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/tags/yaml/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
     <loc>https://jvmname.dev/tags/bugs/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/tags/coroutines/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/tags/kotlin/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jvmname.dev/posts/</loc>
-    <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jvmname.dev/tags/</loc>
-    <lastmod>2021-01-11T00:01:19-05:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/posts/2020/06/static-in-kotlin/</loc>
     <lastmod>2020-06-23T16:42:26-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</loc>
     <lastmod>2020-05-18T08:39:55-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/speaking/</loc>
     <lastmod>2020-05-17T17:57:32-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/about/</loc>
     <lastmod>2020-05-17T17:12:57-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/categories/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/categories/firebase/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/categories/kotlin/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://jvmname.dev/series/</loc>
   </url>
-  
 </urlset>

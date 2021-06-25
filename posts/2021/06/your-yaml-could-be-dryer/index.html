@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="">
+<meta name="description" content="Composite Run Steps aren&#39;t perfect, it&#39;s better than repeating repeating yourself" />
+<meta name="keywords" content="kotlin, android, github actions, yaml, code reuse" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/" />
+
+
+    <title>
+        
+            Your YAML could be DRYer :: @JvmName(&#34;Parth&#34;) 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://jvmname.dev/main.7d7f4bca900f23c51ae65500185594ff08b755308a6b218995056dae2dc8ef54.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://jvmname.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://jvmname.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://jvmname.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://jvmname.dev/site.webmanifest">
+    <link rel="mask-icon" href="https://jvmname.dev/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://jvmname.dev/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+
+
+<meta itemprop="name" content="Your YAML could be DRYer">
+<meta itemprop="description" content="Composite Run Steps aren&#39;t perfect, it&#39;s better than repeating repeating yourself"><meta itemprop="datePublished" content="2021-06-24T16:09:41-04:00" />
+<meta itemprop="dateModified" content="2021-06-24T16:09:41-04:00" />
+<meta itemprop="wordCount" content="517"><meta itemprop="image" content="https://jvmname.dev/img/dry-leaves.jpg">
+<meta itemprop="keywords" content="github actions,yaml,code reuse," />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://jvmname.dev/img/dry-leaves.jpg"/>
+
+<meta name="twitter:title" content="Your YAML could be DRYer"/>
+<meta name="twitter:description" content="Composite Run Steps aren&#39;t perfect, it&#39;s better than repeating repeating yourself"/>
+
+
+
+
+    <meta property="og:title" content="Your YAML could be DRYer" />
+<meta property="og:description" content="Composite Run Steps aren&#39;t perfect, it&#39;s better than repeating repeating yourself" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/" /><meta property="og:image" content="https://jvmname.dev/img/dry-leaves.jpg" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-24T16:09:41-04:00" />
+<meta property="article:modified_time" content="2021-06-24T16:09:41-04:00" />
+
+
+
+
+
+
+
+    <meta property="article:published_time" content="2021-06-24 16:09:41 -0400 EDT" />
+
+
+
+
+
+
+<script data-goatcounter="https://jvmname.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+    </head>
+
+    
+        <body class="dark-theme">
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://jvmname.dev/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">@JvmName</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#67a2c9;
+                   animation-duration:3.5s;">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://jvmname.dev/posts/">Posts</a></li><li><a href="https://jvmname.dev/speaking/">Speaking</a></li><li><a href="https://jvmname.dev/about/">About Me</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        3 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/">Your YAML could be DRYer</a>
+      </h1>
+
+      
+        <div class="post-excerpt">Composite Run Steps aren&#39;t perfect, it&#39;s better than repeating repeating yourself</div>
+      
+
+      
+        <figure class="post-cover">
+          <img src="https://jvmname.dev/img/dry-leaves.jpg" alt="Your YAML could be DRYer" />
+          
+          
+            <figcaption class="center">Photo by <a href="https://unsplash.com/@natvalmun?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Natalie Valverde on Unsplash</a></figcaption>
+          
+        </figure>
+      
+
+      <div class="post-content">
+        <p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
+<p>However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> up the YAML config files.</p>
+<p>However, with a cool new <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</p>
+<h2 id="dont-read-the-docs">Don&rsquo;t read the docs</h2>
+<p>The documentation for Composite Run Steps (linked at the bottom) are great, but they make the <em>terrible</em> assumption that you want to create a whole different repository for your composite action.</p>
+<p>If that&rsquo;s your use-case, great! Otherwise, I&rsquo;m guessing the far more common use-case is to warehouse code, workflow files, <em>and</em> composite action files in the same repository!</p>
+<p>Fortunately, this is possible, the solution just is buried in a <a href="https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7">Github Community link</a> instead of being plainly available in <strong>big bold letters</strong> at the top of the Github&rsquo;s documentation.</p>
+<h2 id="3-steps-to-dryer-yaml">3 Steps to DRYer YAML</h2>
+<ol>
+<li>
+<p>Go through <a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action">the official docs</a> for creating a Composite Run Step Action, except <strong>ignore everything about creating a new repository</strong> — just name your action metadata file as <code>/.github/actions/my-action-name/action.yml</code></p>
+<p>As you&rsquo;ll see in a moment, the <code>my-action-name</code> is important, since that&rsquo;s how you&rsquo;ll reference your action. It can be anything that&rsquo;s legal as a file-path.</p>
+</li>
+<li>
+<p>In your actual Workflow yaml file, replace your repeated shell scripts with the following line; for example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">- - run: sudo apt-get install androidsdk
+</span><span style="color:#f92672">- - run: alias sdkmanager=&#34;androidsdk&#34;  
+</span><span style="color:#f92672">- - name: Update Android Deps
+</span><span style="color:#f92672">-   run: sdkmanager &#34;build-tools;31.0.0-rc5&#34; &#34;platform-tools&#34; &#34;platforms;android-30&#34; &#34;cmdline-tools;latest&#34; &#34;extras;android;m2repository&#34; &#34;extras;google;m2repository&#34; --verbose   
+</span><span style="color:#f92672">-   env:  
+</span><span style="color:#f92672">-     ANDROID_SDK_ROOT: /opt/android/sdk
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ - uses: ./.github/actions/my-action-name
+</span></code></pre></div></li>
+<li>
+<p>Revel in your victory; your workflow files are just a wee bit smaller! 🎉</p>
+</li>
+</ol>
+<p>If you&rsquo;re a visual person, your file heirarchy should look like this:</p>
+<pre><code>repo-root/
+├──.github/
+│   ├──actions/
+│   │   └──my-android-action/
+│   │       └──action.yml
+│   └──workflows/
+│       └──workflow.yml
+└──:app
+</code></pre><p>In my case, across 2 workflow files, I converted 40 lines of YAML to 14 lines, with the benefit of better maintainability moving forward.</p>
+<h2 id="limitations">Limitations</h2>
+<p>As of this writing (06/2021) Composite Run Step Actions don&rsquo;t support <em>importing other actions</em> &ndash; meaning you&rsquo;ll have to do anything involving a <code>uses</code> statement the old-fashioned way, for now<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build App</span>
+  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">eskatos/gradle-command-action@v1</span>
+  <span style="color:#f92672">id</span>: <span style="color:#ae81ff">gradle</span>
+  <span style="color:#f92672">with</span>:
+    <span style="color:#f92672">wrapper-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">dependencies-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">configuration-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">arguments</span>: :<span style="color:#ae81ff">app:assembleDebug --scan</span>
+</code></pre></div><p>Composite Run Actions also don&rsquo;t support conditionals, timeouts, referencing secrets, and a few other things. The <a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">Metadata Syntax doc</a> has the full enumeration of allowable items; everything else is unsupported.</p>
+<h2 id="wrap-up">Wrap-up</h2>
+<p>What did I miss? Is there some super-secret way to reuse YAML I don&rsquo;t know about?</p>
+<p>Send me a note at <a href="https://twitter.com/jvmname">@JvmName</a>!</p>
+<h4 id="linksreferences">Links/References</h4>
+<ol>
+<li>
+<p>Github&rsquo;s Composite Run Steps docs</p>
+<p><a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action">https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action</a></p>
+</li>
+<li>
+<p>Metadata Syntax Doc:</p>
+<p><a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions</a></p>
+</li>
+<li>
+<p><em>GitHub Composite Actions - STOP wasting your time and create reusable actions</em> <br>
+<a href="https://dev.to/n3wt0n/github-composite-actions-nest-actions-within-actions-3e5l">https://dev.to/n3wt0n/github-composite-actions-nest-actions-within-actions-3e5l</a></p>
+</li>
+<li>
+<p>Github Community</p>
+<p><a href="https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7">https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7</a></p>
+</li>
+</ol>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>&ldquo;New&rdquo; meaning &ldquo;I just discovered it yesterday&rdquo;; I have no idea how long it&rsquo;s been out.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>It looks like Github has an <a href="https://github.com/actions/runner/pull/1144/files">Architecture Decision Record</a> that&rsquo;s been accepted&hellip;so now it&rsquo;s just a matter of time?&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="https://jvmname.dev/tags/github-actions/">github actions</a></span>
+        <span class="tag"><a href="https://jvmname.dev/tags/yaml/">yaml</a></span>
+        <span class="tag"><a href="https://jvmname.dev/tags/code-reuse/">code reuse</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        517 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-06-24 16:09 -0400
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+      <div class="pagination">
+        <div class="pagination__title">
+          <span class="pagination__title-h"></span>
+          <hr />
+        </div>
+
+        <div class="pagination__buttons">
+          
+
+          
+            <span class="button next">
+              <a href="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/">
+                <span class="button__text">Don&#39;t Worry, Just Launch</span>
+                <span class="button__icon">→</span>
+              </a>
+            </span>
+          
+        </div>
+      </div>
+    
+
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2021</span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span><span><a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
+          </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://jvmname.dev/bundle.min.402f23da08d629511bf6692077c985e27e0cb2c49d219b880aabad56a1088cba19771f55765671031d869bac2b680da7da6e84d69305e8939ffa6d96bf95b446.js" integrity="sha512-QC8j2gjWKVEb9mkgd8mF4n4MssSdIZuICqutVqEIjLoZdx9VdlZxAx2Gm6wraA2n2m6E1pMF6JOf&#43;m2Wv5W0Rg=="></script>
+
+
+
+    </body>
+</html>

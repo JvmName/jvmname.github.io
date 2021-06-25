@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>code reuse on @JvmName(&#34;Parth&#34;)</title>
+    <link>https://jvmname.dev/tags/code-reuse/</link>
+    <description>Recent content in code reuse on @JvmName(&#34;Parth&#34;)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+    <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate><atom:link href="https://jvmname.dev/tags/code-reuse/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Your YAML could be DRYer</title>
+      <link>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</link>
+      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+      
+      <guid>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</guid>
+      <description>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.
+However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to DRY up the YAML config files.
+However, with a cool new 1 feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -5,8 +5,101 @@
         <description>Recent content in Posts on @JvmName(&#34;Parth&#34;)</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Mon, 11 Jan 2021 00:01:19 -0500</lastBuildDate>
+        <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate>
         <atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Your YAML could be DRYer</title>
+            <link>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</link>
+            <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+            
+            <guid>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</guid>
+            <description>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.
+However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to DRY up the YAML config files.
+However, with a cool new 1 feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</description>
+            <content type="html"><![CDATA[<p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
+<p>However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> up the YAML config files.</p>
+<p>However, with a cool new <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</p>
+<h2 id="dont-read-the-docs">Don&rsquo;t read the docs</h2>
+<p>The documentation for Composite Run Steps (linked at the bottom) are great, but they make the <em>terrible</em> assumption that you want to create a whole different repository for your composite action.</p>
+<p>If that&rsquo;s your use-case, great! Otherwise, I&rsquo;m guessing the far more common use-case is to warehouse code, workflow files, <em>and</em> composite action files in the same repository!</p>
+<p>Fortunately, this is possible, the solution just is buried in a <a href="https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7">Github Community link</a> instead of being plainly available in <strong>big bold letters</strong> at the top of the Github&rsquo;s documentation.</p>
+<h2 id="3-steps-to-dryer-yaml">3 Steps to DRYer YAML</h2>
+<ol>
+<li>
+<p>Go through <a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action">the official docs</a> for creating a Composite Run Step Action, except <strong>ignore everything about creating a new repository</strong> — just name your action metadata file as <code>/.github/actions/my-action-name/action.yml</code></p>
+<p>As you&rsquo;ll see in a moment, the <code>my-action-name</code> is important, since that&rsquo;s how you&rsquo;ll reference your action. It can be anything that&rsquo;s legal as a file-path.</p>
+</li>
+<li>
+<p>In your actual Workflow yaml file, replace your repeated shell scripts with the following line; for example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff"><span style="color:#f92672">- - run: sudo apt-get install androidsdk
+</span><span style="color:#f92672">- - run: alias sdkmanager=&#34;androidsdk&#34;  
+</span><span style="color:#f92672">- - name: Update Android Deps
+</span><span style="color:#f92672">-   run: sdkmanager &#34;build-tools;31.0.0-rc5&#34; &#34;platform-tools&#34; &#34;platforms;android-30&#34; &#34;cmdline-tools;latest&#34; &#34;extras;android;m2repository&#34; &#34;extras;google;m2repository&#34; --verbose   
+</span><span style="color:#f92672">-   env:  
+</span><span style="color:#f92672">-     ANDROID_SDK_ROOT: /opt/android/sdk
+</span><span style="color:#f92672"></span><span style="color:#a6e22e">+ - uses: ./.github/actions/my-action-name
+</span></code></pre></div></li>
+<li>
+<p>Revel in your victory; your workflow files are just a wee bit smaller! 🎉</p>
+</li>
+</ol>
+<p>If you&rsquo;re a visual person, your file heirarchy should look like this:</p>
+<pre><code>repo-root/
+├──.github/
+│   ├──actions/
+│   │   └──my-android-action/
+│   │       └──action.yml
+│   └──workflows/
+│       └──workflow.yml
+└──:app
+</code></pre><p>In my case, across 2 workflow files, I converted 40 lines of YAML to 14 lines, with the benefit of better maintainability moving forward.</p>
+<h2 id="limitations">Limitations</h2>
+<p>As of this writing (06/2021) Composite Run Step Actions don&rsquo;t support <em>importing other actions</em> &ndash; meaning you&rsquo;ll have to do anything involving a <code>uses</code> statement the old-fashioned way, for now<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build App</span>
+  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">eskatos/gradle-command-action@v1</span>
+  <span style="color:#f92672">id</span>: <span style="color:#ae81ff">gradle</span>
+  <span style="color:#f92672">with</span>:
+    <span style="color:#f92672">wrapper-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">dependencies-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">configuration-cache-enabled</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">arguments</span>: :<span style="color:#ae81ff">app:assembleDebug --scan</span>
+</code></pre></div><p>Composite Run Actions also don&rsquo;t support conditionals, timeouts, referencing secrets, and a few other things. The <a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">Metadata Syntax doc</a> has the full enumeration of allowable items; everything else is unsupported.</p>
+<h2 id="wrap-up">Wrap-up</h2>
+<p>What did I miss? Is there some super-secret way to reuse YAML I don&rsquo;t know about?</p>
+<p>Send me a note at <a href="https://twitter.com/jvmname">@JvmName</a>!</p>
+<h4 id="linksreferences">Links/References</h4>
+<ol>
+<li>
+<p>Github&rsquo;s Composite Run Steps docs</p>
+<p><a href="https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action">https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action</a></p>
+</li>
+<li>
+<p>Metadata Syntax Doc:</p>
+<p><a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions</a></p>
+</li>
+<li>
+<p><em>GitHub Composite Actions - STOP wasting your time and create reusable actions</em> <br>
+<a href="https://dev.to/n3wt0n/github-composite-actions-nest-actions-within-actions-3e5l">https://dev.to/n3wt0n/github-composite-actions-nest-actions-within-actions-3e5l</a></p>
+</li>
+<li>
+<p>Github Community</p>
+<p><a href="https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7">https://github.community/t/path-to-action-in-the-same-repository-as-workflow/16952/7</a></p>
+</li>
+</ol>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>&ldquo;New&rdquo; meaning &ldquo;I just discovered it yesterday&rdquo;; I have no idea how long it&rsquo;s been out.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>It looks like Github has an <a href="https://github.com/actions/runner/pull/1144/files">Architecture Decision Record</a> that&rsquo;s been accepted&hellip;so now it&rsquo;s just a matter of time?&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+        </item>
         
         <item>
             <title>Don&#39;t Worry, Just Launch</title>
@@ -444,8 +537,7 @@ git push origin master <span style="color:#75715e"># Push source and build repos
 <strong>This is okay, and is expected.</strong></li>
 </ol>
 <p>Besides that convolution (I&rsquo;m sure that decision made sense to <em>someone</em>) the Google Domains page is pretty straightforward, but just to check your work, this is what my config looks like (as of 05/2020):
-<figure>
-    <img src="/img/google-domain-setup.png"/> 
+<figure><img src="/img/google-domain-setup.png"/>
 </figure>
 </p>
 <p>⚠️ Note: I did this while I was based in Arizona (US west coast), and so probably experienced very fast propagation times from Google&rsquo;s DNS servers ⚡️. Google claims that propagating these changes can take up to 48 hours; if things aren&rsquo;t working, but you&rsquo;re 115% sure that you typed everything in correctly, come back in a day and try again.</p>
@@ -464,15 +556,13 @@ echo example.dev &gt; CNAME</code></pre></div>
 <h2 id="step-8-the-waiting-game">Step 8: The waiting game</h2>
 <p>That&rsquo;s all the &ldquo;work&rdquo; you have to do! Clicking the HTTPS box in your settings will kick off a bunch of automated processes on GitHub&rsquo;s side to set up the correct certificate chains using Let&rsquo;s Encrypt.</p>
 <p>This is necessary because <a href="https://domains.google/tld/security/">Google Domains <em>requires</em> all traffic</a> to your <code>(www.)example.dev</code> domain(s) to be encrypted by way of <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security#HSTS_mechanism_overview"><strong>H</strong>TTP <strong>S</strong>trict <strong>T</strong>ransport <strong>S</strong>ecurity (HSTS)</a>. If you tried to navigate to <code>http://example.dev</code> <em>without</em> GitHub&rsquo;s cert chain set up, you would get an error like this:</p>
-<figure><a href="https://i.stack.imgur.com/83l43.png">
-    <img src="https://i.stack.imgur.com/83l43.png" width="450"/> </a>
+<figure><a href="https://i.stack.imgur.com/83l43.png"><img src="https://i.stack.imgur.com/83l43.png" width="450"/></a>
 </figure>
 
 <p>In my experience, I had to play the waiting game for ~2 hours; depending on your location and whatever service worker load GitHub is experiencing at the moment, it might take more or less time to get your HTTPS cert set up. <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub claims</a> it can take up for 24 hours for the HTTPS option to even be <em>available</em> ⏳</p>
 <h2 id="step-9-success-">Step 9: Success 🎉</h2>
 <p>At some point, the HTTPS certificate gods will smile upon you, and your GitHub Page will have an HTTPS certificate. You&rsquo;ll know that the gods have accepted your blood-offering because you&rsquo;ll see a little green banner in your GitHub repo <code>&lt;ghuser&gt;.github.io</code> settings like this:</p>
-<figure>
-    <img src="/img/gh-page-published.png"/> 
+<figure><img src="/img/gh-page-published.png"/>
 </figure>
 
 <p>That&rsquo;s the ballgame! Everything should look and work exactly as when you run <code>hugo server</code>!</p>
@@ -508,8 +598,7 @@ echo example.dev &gt; CNAME</code></pre></div>
 Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
 But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.
 Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
-            <content type="html"><![CDATA[<figure>
-    <img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"/> <figcaption>
+            <content type="html"><![CDATA[<figure><img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"/><figcaption>
             <h4>Suspended Cups</h4><p><a href="https://unsplash.com/photos/NEc3YEN1FFw">Chris Scott</a></p>
         </figcaption>
 </figure>
