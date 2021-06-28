@@ -14,10 +14,10 @@
             <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
             
             <guid>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</guid>
-            <description>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.
+            <description>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.
 However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to DRY up the YAML config files.
 However, with a cool new 1 feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</description>
-            <content type="html"><![CDATA[<p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
+            <content type="html"><![CDATA[<p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
 <p>However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> up the YAML config files.</p>
 <p>However, with a cool new <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</p>
 <h2 id="dont-read-the-docs">Don&rsquo;t read the docs</h2>
