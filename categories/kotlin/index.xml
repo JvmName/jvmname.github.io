@@ -14,7 +14,7 @@
       
       <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
       <description>Suspended CupsChris Scott
-  Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }
+Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }
 Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
 But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.
 Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
