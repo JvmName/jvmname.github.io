@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="author" content="">
 <meta name="description" content="What&#39;s a companion object between friends?" />
@@ -20,13 +21,9 @@
 
 
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet"
-    type="text/css">
 
 
-
-<link rel="stylesheet" href="https://jvmname.dev/main.c57c2d11ac6cd4726bb3121edc6aa95f8117ad28152d4d4f89380ce94b57c2b8.css">
-
+<link rel="stylesheet" href="https://jvmname.dev/main.c199a1c61fe5f3331a38c93442c371ee9259edcc7e52d357ce7b12fae1ee3510.css" integrity="sha256-wZmhxh/l8zMaOMk0QsNx7pJZ7cx&#43;UtNXznsS&#43;uHuNRA=">
 
 
 
@@ -34,41 +31,45 @@
     <link rel="icon" type="image/png" sizes="32x32" href="https://jvmname.dev/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://jvmname.dev/favicon-16x16.png">
     <link rel="manifest" href="https://jvmname.dev/site.webmanifest">
-    <link rel="mask-icon" href="https://jvmname.dev/safari-pinned-tab.svg" color="#252627">
+    <link rel="mask-icon" href="https://jvmname.dev/safari-pinned-tab.svg" color="">
     <link rel="shortcut icon" href="https://jvmname.dev/favicon.ico">
-    <meta name="msapplication-TileColor" content="#252627">
-    <meta name="theme-color" content="#252627">
+    <meta name="msapplication-TileColor" content="">
 
 
 
-<meta itemprop="name" content="Static in Kotlin">
-<meta itemprop="description" content="What&#39;s a companion object between friends?"><meta itemprop="datePublished" content="2020-06-23T16:42:26-07:00" />
-<meta itemprop="dateModified" content="2020-06-23T16:42:26-07:00" />
-<meta itemprop="wordCount" content="946"><meta itemprop="image" content="https://jvmname.dev/img/carabiner.webp">
-<meta itemprop="keywords" content="kotlin," />
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://jvmname.dev/img/carabiner.webp"/>
+  <meta itemprop="name" content="Static in Kotlin">
+  <meta itemprop="description" content="What&#39;s a companion object between friends?">
+  <meta itemprop="datePublished" content="2020-06-23T16:42:26-07:00">
+  <meta itemprop="dateModified" content="2020-06-23T16:42:26-07:00">
+  <meta itemprop="wordCount" content="946">
+  <meta itemprop="image" content="https://jvmname.dev/img/carabiner.webp">
+  <meta itemprop="keywords" content="Kotlin">
 
-<meta name="twitter:title" content="Static in Kotlin"/>
-<meta name="twitter:description" content="What&#39;s a companion object between friends?"/>
-
-
-
-
-    <meta property="og:title" content="Static in Kotlin" />
-<meta property="og:description" content="What&#39;s a companion object between friends?" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://jvmname.dev/posts/2020/06/static-in-kotlin/" /><meta property="og:image" content="https://jvmname.dev/img/carabiner.webp" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-06-23T16:42:26-07:00" />
-<meta property="article:modified_time" content="2020-06-23T16:42:26-07:00" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://jvmname.dev/img/carabiner.webp">
+  <meta name="twitter:title" content="Static in Kotlin">
+  <meta name="twitter:description" content="What&#39;s a companion object between friends?">
 
 
 
+    <meta property="og:url" content="https://jvmname.dev/posts/2020/06/static-in-kotlin/">
+  <meta property="og:site_name" content="@JvmName(&#34;Parth&#34;)">
+  <meta property="og:title" content="Static in Kotlin">
+  <meta property="og:description" content="What&#39;s a companion object between friends?">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-06-23T16:42:26-07:00">
+    <meta property="article:modified_time" content="2020-06-23T16:42:26-07:00">
+    <meta property="article:tag" content="Kotlin">
+    <meta property="og:image" content="https://jvmname.dev/img/carabiner.webp">
 
 
 
 
-    <meta property="article:published_time" content="2020-06-23 16:42:26 -0700 -0700" />
+
+
+    <meta property="article:published_time" content="2020-06-23 16:42:26 -0700 PDT" />
 
 
 
@@ -78,10 +79,13 @@
 <script data-goatcounter="https://jvmname.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
+
+
+
     </head>
 
     
-        <body class="dark-theme">
+        <body>
     
     
         <div class="container">
@@ -91,7 +95,8 @@
     <div class="logo">
         
             <span class="logo__mark">></span>
-            <span class="logo__text">@JvmName</span>
+            <span class="logo__text ">
+                @JvmName</span>
             <span class="logo__cursor" style=
                   "
                    background-color:#67a2c9;
@@ -116,13 +121,11 @@
                     </svg>
                 </span>
             
-
-            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
-  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
-  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
-</svg>
-</span>
+                <span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+   13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+ </svg></span>
         </span>
     </span>
 </header>
@@ -163,36 +166,41 @@
         </figure>
       
 
+      
+
       <div class="post-content">
         <hr>
 <p><em>ed. note:</em> This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</p>
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
 <p>From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span> 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> 
-</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(...)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>But it&rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">navigate</span>() { 
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>But you&rsquo;ll note that this doesn&rsquo;t achieve the same result as our Java snippet; a glance at the generated Java reveals this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">LOG</span><span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>Yikes! Each new instance of <code>Direction</code> will spin up a new <code>LOG</code> as well, which can get expensive, if we&rsquo;re not careful.</p>
+<pre><code class="language-java">public class Direction { 
+    private static final Logger logger = LoggerFactory.getLogger(Direction.class)
+    
+    public void navigate() { 
+        logger.info(...)
+    }
+}
+</code></pre>
+<p>But it&rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
+<pre><code class="language-kotlin">class Direction { 
+    private val LOG = LoggerFactory.getLogger(Direction::class.java)
+    
+    public fun navigate() { 
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+</code></pre>
+<p>But you&rsquo;ll note that this doesn&rsquo;t achieve the same result as our Java snippet; a glance at the generated Java reveals this:</p>
+<pre><code class="language-java">public final class Direction {
+   private final Logger LOG = LoggerFactory.getLogger(Direction.class);
+
+   public final void navigate() {
+      this.LOG.info(&quot;println(TAG)&quot;);
+   }
+}
+</code></pre>
+<p>Yikes! Each new instance of <code>Direction</code> will spin up a new <code>LOG</code> as well, which can get expensive, if we&rsquo;re not careful.</p>
 <p>This generalizes to a whole bunch of situations where we&rsquo;d prefer to have one instance of something available to a class. In Java, we&rsquo;d use <code>static</code> to solve this problem.</p>
 <h2 id="automatic-static">Automatic Static</h2>
 <p>Naturally, Kotlin doesn&rsquo;t have any <code>static</code> keywords. Nevertheless, from our encyclopedic knowledge of Kotlin reserved keywords, we know about <code>const</code>. If we combine that with a <code>companion object</code>, can we get what we want?</p>
@@ -202,63 +210,70 @@
 <li><code>Logger</code> isn&rsquo;t a primitive/String, and <code>const</code> only works with primitives</li>
 </ol>
 <p>That&rsquo;s fine, what if we remove the <code>const</code> - isn&rsquo;t a companion object basically like a Java <code>static final</code>?</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> void navigate() { 
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The Java we generate is roughly:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span> Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      LOG<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t really concern me much. On Android, R8 happily inline that (assuming you&rsquo;ve enabled the <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#allowaccessmodification"><code>-accessmodification</code> flag</a>), and on other systems (e.g. backend), the JVM should inline that as well.</p>
+<pre><code class="language-kotlin">class Direction { 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(Direction::class.java)
+    }
+    
+    public void navigate() { 
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+
+</code></pre>
+<p>The Java we generate is roughly:</p>
+<pre><code class="language-java">public final class Direction {
+   private static final Logger LOG = LoggerFactory.getLogger(Direction.class);
+   public static final Direction.Companion Companion = new Direction.Companion();
+
+   public final void navigate() {
+      LOG.info(&quot;println(TAG)&quot;);
+   }
+
+   public static final class Companion {
+      private Companion() {}
+   }
+}
+
+</code></pre>
+<p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t really concern me much. On Android, R8 happily inline that (assuming you&rsquo;ve enabled the <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#allowaccessmodification"><code>-accessmodification</code> flag</a>), and on other systems (e.g. backend), the JVM should inline that as well.</p>
 <p>But I don&rsquo;t get paid to write pretty generated Java code, I get paid to write Kotlin. It&rsquo;s not a lot to type, but <code>companion object</code> with all those newlines can wear on you!</p>
 <p>Well, what about a top-level declaration? Putting our <code>Logger</code> setup there will definitely make it <code>static</code>. Let&rsquo;s check it out!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">navigate</span>() {
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Gives us:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DirectionKt</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// $FF: synthetic method
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger <span style="color:#a6e22e">access$getLOG$p</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> LOG<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      MyClassKt<span style="color:#f92672">.</span><span style="color:#a6e22e">access$getLOG$p</span><span style="color:#f92672">().</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>That synthetic accessor makes sense, since you&rsquo;re essentially calling another class&rsquo;s private field.</p>
+<pre><code class="language-kotlin">private val LOG = LoggerFactory.getLogger(Direction::class.java)
+
+class Direction {
+    fun navigate() {
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+</code></pre>
+<p>Gives us:</p>
+<pre><code class="language-java">public final class DirectionKt {
+   private static final Logger LOG = LoggerFactory.getLogger(Direction.class);
+
+   // $FF: synthetic method
+   public static final Logger access$getLOG$p() {
+      return LOG;
+   }
+}
+
+public final class Direction {
+   public final void navigate() {
+      MyClassKt.access$getLOG$p().info(&quot;println(TAG)&quot;);
+   }
+}
+</code></pre>
+<p>That synthetic accessor makes sense, since you&rsquo;re essentially calling another class&rsquo;s private field.</p>
 <p>For folks who got into Kotlin but never wrote much Java, this generated code might be a bit surprising. But don&rsquo;t worry &ndash; the perf impact there is negligible; once again, R8 or JVM HotSpot will realistically inline that for you.</p>
 <p>But is this really the end of the road? Can Kotlin really only be half as &ldquo;space-efficient&rdquo; as Java?</p>
 <h2 id="whats-in-a-name">What&rsquo;s in a name?</h2>
 <p>The problem here is that Kotlin seems to generate another <code>DirectionKt</code> class to warehouse the static elements - akin to a companion object. But what if there was a way to direct Kotlin to &ldquo;merge&rdquo; the <code>*Kt</code> class with the &ldquo;real&rdquo; class?</p>
 <p>Perhaps <code>@JvmName</code> could save us from multiple classes? More specifically, prepending <code>@file:JvmName(&quot;Direction&quot;)</code> to our previous Kotlin snippet gives us:</p>
 <p>&hellip; a compile error 💀</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>e: /Users/parth/.../Direction.kt: <span style="color:#f92672">(</span>1, 1<span style="color:#f92672">)</span>: Duplicate JVM class name <span style="color:#e6db74">&#39;Direction&#39;</span> generated from: 
-</span></span><span style="display:flex;"><span>package-fragment, Direction
-</span></span></code></pre></div><p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
+<pre><code class="language-shell">e: /Users/parth/.../Direction.kt: (1, 1): Duplicate JVM class name 'Direction' generated from: 
+package-fragment, Direction
+</code></pre>
+<p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
 <p>Darn.</p>
 <hr>
 <h2 id="conclusions---how-to-be-static">Conclusions - how to be static</h2>
@@ -319,7 +334,7 @@ Have fun tracking down that logging bug! 🙀🐛</p>
           <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
         
-          2020-06-24 00:42 &#43;0100
+          2020-06-23 16:42 -0700
         
 
          
@@ -329,34 +344,34 @@ Have fun tracking down that logging bug! 🙀🐛</p>
     </div>
 
     
-      <div class="pagination">
-        <div class="pagination__title">
-          <span class="pagination__title-h"></span>
-          <hr />
-        </div>
+    <div class="pagination">
+        
 
         <div class="pagination__buttons">
-          
+            
             <span class="button previous">
-              <a href="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/">
-                <span class="button__icon">←</span>
-                <span class="button__text">Don&#39;t Worry, Just Launch</span>
-              </a>
+                <a href="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">Don&#39;t Worry, Just Launch</span>
+                </a>
             </span>
-          
+            
 
-          
+            
             <span class="button next">
-              <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">
-                <span class="button__text">I Go, Hugo, They Go</span>
-                <span class="button__icon">→</span>
-              </a>
+                <a href="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/">
+                    <span class="button__text">I Go, Hugo, They Go</span>
+                    <span class="button__icon">→</span>
+                </a>
             </span>
-          
+            
         </div>
-      </div>
+    </div>
+
+
     
 
+    
 
     
 
@@ -366,19 +381,8 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 
             
                 <footer class="footer">
-    <div class="footer__inner">
-        <div class="footer__content">
-            <span>&copy; 2023</span>
-            
-            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span><span><a href="https://jvmname.dev/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
-        </div>
-    </div>
-    <div class="footer__inner">
-        <div class="footer__content">
-            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
-            <span>Made with &#10084; by <a href="https://github.com/rhazdon">Djordje Atlialp</a></span>
-          </div>
-    </div>
+    
+    
 </footer>
 
             
@@ -388,8 +392,8 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 
 
 
+<script type="text/javascript" src="https://jvmname.dev/bundle.min.d0ef03bb3e145d67081be3f951e462a7335b20d79c12fe039222b4fd51467c2ea05dfb3f6bffa54ffaf799ab9cc63d6469a88ecfc86f3d69032a86ab7d536347.js" integrity="sha512-0O8Duz4UXWcIG&#43;P5UeRipzNbINecEv4DkiK0/VFGfC6gXfs/a/&#43;lT/r3maucxj1kaaiOz8hvPWkDKoarfVNjRw=="></script>
 
-<script type="text/javascript" src="https://jvmname.dev/bundle.min.a4eac012fea76eff9eea112be44ebb76ac21a5c582ef3093fe87dfa4179909db42f63eccff12fc8f200ac4c1281ef68699cad5228949087d17865c3685bbb12b.js" integrity="sha512-pOrAEv6nbv&#43;e6hEr5E67dqwhpcWC7zCT/offpBeZCdtC9j7M/xL8jyAKxMEoHvaGmcrVIolJCH0Xhlw2hbuxKw=="></script>
 
 
 

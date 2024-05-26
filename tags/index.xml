@@ -4,62 +4,52 @@
     <title>Tags on @JvmName(&#34;Parth&#34;)</title>
     <link>https://jvmname.dev/tags/</link>
     <description>Recent content in Tags on @JvmName(&#34;Parth&#34;)</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate><atom:link href="https://jvmname.dev/tags/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate>
+    <atom:link href="https://jvmname.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>code reuse</title>
+      <title>Code Reuse</title>
       <link>https://jvmname.dev/tags/code-reuse/</link>
-      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/code-reuse/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>github actions</title>
+      <title>Github Actions</title>
       <link>https://jvmname.dev/tags/github-actions/</link>
-      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/github-actions/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>yaml</title>
+      <title>Yaml</title>
       <link>https://jvmname.dev/tags/yaml/</link>
-      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/yaml/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>bugs</title>
+      <title>Bugs</title>
       <link>https://jvmname.dev/tags/bugs/</link>
-      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/bugs/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>coroutines</title>
+      <title>Coroutines</title>
       <link>https://jvmname.dev/tags/coroutines/</link>
-      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/coroutines/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>kotlin</title>
+      <title>Kotlin</title>
       <link>https://jvmname.dev/tags/kotlin/</link>
-      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
-      
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://jvmname.dev/tags/kotlin/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

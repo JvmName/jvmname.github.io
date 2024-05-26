@@ -4,8 +4,9 @@
         <link>https://jvmname.dev/posts/</link>
         <description>Recent content in Posts on @JvmName(&#34;Parth&#34;)</description>
         <generator>Hugo -- gohugo.io</generator>
-        <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate>
+        <language>en</language>
+        <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+        <lastBuildDate>Sun, 27 Nov 2022 22:04:18 -0500</lastBuildDate>
         <atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
@@ -32,20 +33,21 @@ However, with a cool new 1 feature called Composite Run Steps, your repeated she
 </li>
 <li>
 <p>In your actual Workflow yaml file, replace your repeated shell scripts with the following line; for example:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-diff" data-lang="diff"><span style="display:flex;"><span><span style="color:#f92672">- - run: sudo apt-get install androidsdk
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672">- - run: alias sdkmanager=&#34;androidsdk&#34;  
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672">- - name: Update Android Deps
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-   run: sdkmanager &#34;build-tools;31.0.0-rc5&#34; &#34;platform-tools&#34; &#34;platforms;android-30&#34; &#34;cmdline-tools;latest&#34; &#34;extras;android;m2repository&#34; &#34;extras;google;m2repository&#34; --verbose   
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-   env:  
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672">-     ANDROID_SDK_ROOT: /opt/android/sdk
-</span></span></span><span style="display:flex;"><span><span style="color:#f92672"></span><span style="color:#a6e22e">+ - uses: ./.github/actions/my-action-name
-</span></span></span></code></pre></div></li>
+<pre><code class="language-diff">- - run: sudo apt-get install androidsdk
+- - run: alias sdkmanager=&quot;androidsdk&quot;  
+- - name: Update Android Deps
+-   run: sdkmanager &quot;build-tools;31.0.0-rc5&quot; &quot;platform-tools&quot; &quot;platforms;android-30&quot; &quot;cmdline-tools;latest&quot; &quot;extras;android;m2repository&quot; &quot;extras;google;m2repository&quot; --verbose   
+-   env:  
+-     ANDROID_SDK_ROOT: /opt/android/sdk
++ - uses: ./.github/actions/my-action-name
+</code></pre>
+</li>
 <li>
 <p>Revel in your victory; your workflow files are just a wee bit smaller! 🎉</p>
 </li>
 </ol>
 <p>If you&rsquo;re a visual person, your file heirarchy should look like this:</p>
-<pre tabindex="0"><code>repo-root/
+<pre><code>repo-root/
 ├──.github/
 │   ├──actions/
 │   │   └──my-android-action/
@@ -53,18 +55,20 @@ However, with a cool new 1 feature called Composite Run Steps, your repeated she
 │   └──workflows/
 │       └──workflow.yml
 └──:app
-</code></pre><p>In my case, across 2 workflow files, I converted 40 lines of YAML to 14 lines, with the benefit of better maintainability moving forward.</p>
+</code></pre>
+<p>In my case, across 2 workflow files, I converted 40 lines of YAML to 14 lines, with the benefit of better maintainability moving forward.</p>
 <h2 id="limitations">Limitations</h2>
 <p>As of this writing (06/2021) Composite Run Step Actions don&rsquo;t support <em>importing other actions</em> &ndash; meaning you&rsquo;ll have to do anything involving a <code>uses</code> statement the old-fashioned way, for now<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build App</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">eskatos/gradle-command-action@v1</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">id</span>: <span style="color:#ae81ff">gradle</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">with</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">wrapper-cache-enabled</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">dependencies-cache-enabled</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">configuration-cache-enabled</span>: <span style="color:#66d9ef">true</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">arguments</span>: :<span style="color:#ae81ff">app:assembleDebug --scan</span>
-</span></span></code></pre></div><p>Composite Run Actions also don&rsquo;t support conditionals, timeouts, referencing secrets, and a few other things. The <a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">Metadata Syntax doc</a> has the full enumeration of allowable items; everything else is unsupported.</p>
+<pre><code class="language-yaml">- name: Build App
+  uses: eskatos/gradle-command-action@v1
+  id: gradle
+  with:
+    wrapper-cache-enabled: true
+    dependencies-cache-enabled: true
+    configuration-cache-enabled: true
+    arguments: :app:assembleDebug --scan
+</code></pre>
+<p>Composite Run Actions also don&rsquo;t support conditionals, timeouts, referencing secrets, and a few other things. The <a href="https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-run-steps-actions">Metadata Syntax doc</a> has the full enumeration of allowable items; everything else is unsupported.</p>
 <h2 id="wrap-up">Wrap-up</h2>
 <p>What did I miss? Is there some super-secret way to reuse YAML I don&rsquo;t know about?</p>
 <p>Send me a note at <a href="https://twitter.com/jvmname">@JvmName</a>!</p>
@@ -112,95 +116,102 @@ Despite all that Kotlin experience, the new Hatch Credit Android app (launching 
             <content type="html"><![CDATA[<p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
 Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p>
 <p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">init</span> { <span style="color:#75715e">// ⚠️ DO NOT USE THIS CODE ⚠️
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        scope.launch() { 
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
-</span></span><span style="display:flex;"><span>                .map { <span style="color:#75715e">/** filter+transform the User */</span> }
-</span></span><span style="display:flex;"><span>                .shareIn(<span style="color:#66d9ef">this</span>, SharingStarted.WhileSubscribed(), <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            userFlow
-</span></span><span style="display:flex;"><span>                .collect { <span style="color:#75715e">/* consume User for Sentry setup */</span> }
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>            userFlow
-</span></span><span style="display:flex;"><span>                .collect { <span style="color:#75715e">/** consume for LaunchDarkly setup */</span> }
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
+<pre><code class="language-kotlin">class Analytics {
+    init { // ⚠️ DO NOT USE THIS CODE ⚠️
+        scope.launch() { 
+            val userFlow = userRepo.observeUser(refresh = false)
+                .map { /** filter+transform the User */ }
+                .shareIn(this, SharingStarted.WhileSubscribed(), 1)
+
+            userFlow
+                .collect { /* consume User for Sentry setup */ }
+
+            userFlow
+                .collect { /** consume for LaunchDarkly setup */ }
+        }
+    }
+}
+</code></pre>
+<p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
 <p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p>
 <p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you that: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Analytics</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">init</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
-</span></span><span style="display:flex;"><span>             .map { <span style="color:#75715e">/** filter+transform the User */</span> }  
-</span></span><span style="display:flex;"><span>             .shareIn(scope, SharingStarted.Eagerly, <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        userFlow
-</span></span><span style="display:flex;"><span>            .onEach { <span style="color:#75715e">/* setup sentry */</span> }
-</span></span><span style="display:flex;"><span>            .launchIn(scope)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        userFlow
-</span></span><span style="display:flex;"><span>            .onEach { <span style="color:#75715e">/* setup LaunchDarkly */</span> }
-</span></span><span style="display:flex;"><span>            .launchIn(scope)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>(note: there&rsquo;s another solution involving <code>CoroutineScope.async</code>, see below for that code)</p>
+<pre><code class="language-kotlin">class Analytics {
+    init {
+        val userFlow = userRepo.observeUser(refresh = false)
+             .map { /** filter+transform the User */ }  
+             .shareIn(scope, SharingStarted.Eagerly, 1)
+
+        userFlow
+            .onEach { /* setup sentry */ }
+            .launchIn(scope)
+
+        userFlow
+            .onEach { /* setup LaunchDarkly */ }
+            .launchIn(scope)
+    }
+}
+</code></pre>
+<p>(note: there&rsquo;s another solution involving <code>CoroutineScope.async</code>, see below for that code)</p>
 <h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
 <p>Here&rsquo;s what went wrong at first, and why this code works:</p>
 <p>In case you&rsquo;re not familiar, <code>Flow&lt;T&gt;.launchIn(CoroutineScope)</code> turns your <code>launch</code> into a kind of postfix operator instead of having to nesting a <code>collect</code> inside a <code>launch</code> block.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>scope.launch { 
-</span></span><span style="display:flex;"><span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect()
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// ⬆️ these are equivalent ⬇️
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope)
-</span></span></code></pre></div><p>In writing my original bit of code, I made a few mistakes:</p>
+<pre><code class="language-kotlin">scope.launch { 
+    flowOf(1, 2, 3).collect()
+}
+// ⬆️ these are equivalent ⬇️
+flowOf(1, 2, 3).launchIn(scope)
+</code></pre>
+<p>In writing my original bit of code, I made a few mistakes:</p>
 <ol>
 <li>I assumed that <code>launch+collect</code> and <code>launchIn</code> were exactly equivalent – not true when your <code>launch</code> has multiple <code>collect</code> statements! This leads to (2):</li>
 <li>I forgot that <code>Flow.collect</code> is a suspending terminal operator, so for a never-ending stream (e.g. a Flow from your Repository), <code>collect</code> will never complete!</li>
 </ol>
 <p><code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only one Flow will start</strong>; the other Flow will patiently wait (forever!):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">init</span> {
-</span></span><span style="display:flex;"><span>    scope.launch { <span style="color:#75715e">// ⚠️ BAD CODE DON&#39;T DO THIS
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// ✅ doesn&#39;t emit, but runs fine
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverEnding = flow&lt;Unit&gt; { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.collect { println(<span style="color:#e6db74">&#34;neverending!&#34;</span>) } 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// ❌ never runs because `neverEnding`
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">val</span> neverStarting = flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).collect { println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$it</span><span style="color:#e6db74">&#34;</span>) }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">init</span> {
-</span></span><span style="display:flex;"><span>    flow { <span style="color:#66d9ef">while</span>(<span style="color:#66d9ef">true</span>) delay(<span style="color:#ae81ff">100</span>) }.launchIn(scope)  <span style="color:#75715e">// ✅ runs fine
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>).launchIn(scope) <span style="color:#75715e">// ✅ also runs fine
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
-</span></span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
+<pre><code class="language-kotlin">init {
+    scope.launch { // ⚠️ BAD CODE DON'T DO THIS
+        // ✅ doesn't emit, but runs fine
+        val neverEnding = flow&lt;Unit&gt; { while(true) delay(100) }.collect { println(&quot;neverending!&quot;) } 
+
+        // ❌ never runs because `neverEnding`
+        val neverStarting = flowOf(1, 2, 3).collect { println(&quot;$it&quot;) }
+    }
+}
+</code></pre>
+<p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
+<pre><code class="language-kotlin">init {
+    flow { while(true) delay(100) }.launchIn(scope)  // ✅ runs fine
+    flowOf(1, 2, 3).launchIn(scope) // ✅ also runs fine
+}
+</code></pre>
+<p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
 <h2 id="bonus">Bonus</h2>
 <h3 id="extensions">Extensions!</h3>
 <p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">T</span>&gt; <span style="color:#a6e22e">Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style="color:#66d9ef">suspend</span> (T) <span style="color:#f92672">-&gt;</span> Unit): Job {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> scope.launch { collect(collector) }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//Sample Usage:
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> scope = <span style="color:#f92672">..</span>. <span style="color:#75715e">//e.g. viewModelScope
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>flowOf(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>)
-</span></span><span style="display:flex;"><span>    .launchIn(scope) { int <span style="color:#f92672">-&gt;</span> println(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">$int</span><span style="color:#e6db74">&#34;</span>) }
-</span></span></code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
+<pre><code class="language-kotlin">fun &lt;T&gt; Flow&lt;T&gt;.launchIn(scope: CoroutineScope, collector: suspend (T) -&gt; Unit): Job {
+    return scope.launch { collect(collector) }
+}
+
+//Sample Usage:
+val scope = ... //e.g. viewModelScope
+flowOf(1, 2, 3)
+    .launchIn(scope) { int -&gt; println(&quot;$int&quot;) }
+</code></pre>
+<p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
 <h3 id="async-instead-of-launch">Async instead of Launch</h3>
 <p>There&rsquo;s another way to solve the original problem, which <a href="https://blog.danlew.net/">Dan Lew</a> pointed out &ndash; <code>CoroutineScope.async</code>!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">init</span> { 
-</span></span><span style="display:flex;"><span>    scope.launch { 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#66d9ef">false</span>)
-</span></span><span style="display:flex;"><span>            .map { <span style="color:#75715e">/** filter+transform the User */</span> }
-</span></span><span style="display:flex;"><span>            .shareIn(<span style="color:#66d9ef">this</span>, SharingStarted.WhileSubscribed(), <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>        
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> sentry = async { userFlow.collect { <span style="color:#75715e">/* consume User for Sentry setup */</span> } }         
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> launchDarkly = async { userFlow.collect { <span style="color:#75715e">/* consume User for LaunchDarkly setup */</span> } }         
-</span></span><span style="display:flex;"><span>        sentry.await() + launchDarkly.await()
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<pre><code class="language-kotlin">init { 
+    scope.launch { 
+        val userFlow = userRepo.observeUser(refresh = false)
+            .map { /** filter+transform the User */ }
+            .shareIn(this, SharingStarted.WhileSubscribed(), 1)
+        
+        val sentry = async { userFlow.collect { /* consume User for Sentry setup */ } }         
+        val launchDarkly = async { userFlow.collect { /* consume User for LaunchDarkly setup */ } }         
+        sentry.await() + launchDarkly.await()
+    }
+}
+</code></pre>
+<h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
 <p>My deep appreciation goes out to:</p>
 <ul>
 <li><a href="https://twitter.com/ianhlake">Ian Lake</a> and <a href="https://twitter.com/friendlyMikhail">Mike Nakhimovich</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</li>
@@ -229,30 +240,33 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
 <p>From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span> 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger logger <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> 
-</span></span><span style="display:flex;"><span>        logger<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(...)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>But it&rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">navigate</span>() { 
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>But you&rsquo;ll note that this doesn&rsquo;t achieve the same result as our Java snippet; a glance at the generated Java reveals this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">LOG</span><span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>Yikes! Each new instance of <code>Direction</code> will spin up a new <code>LOG</code> as well, which can get expensive, if we&rsquo;re not careful.</p>
+<pre><code class="language-java">public class Direction { 
+    private static final Logger logger = LoggerFactory.getLogger(Direction.class)
+    
+    public void navigate() { 
+        logger.info(...)
+    }
+}
+</code></pre>
+<p>But it&rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:</p>
+<pre><code class="language-kotlin">class Direction { 
+    private val LOG = LoggerFactory.getLogger(Direction::class.java)
+    
+    public fun navigate() { 
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+</code></pre>
+<p>But you&rsquo;ll note that this doesn&rsquo;t achieve the same result as our Java snippet; a glance at the generated Java reveals this:</p>
+<pre><code class="language-java">public final class Direction {
+   private final Logger LOG = LoggerFactory.getLogger(Direction.class);
+
+   public final void navigate() {
+      this.LOG.info(&quot;println(TAG)&quot;);
+   }
+}
+</code></pre>
+<p>Yikes! Each new instance of <code>Direction</code> will spin up a new <code>LOG</code> as well, which can get expensive, if we&rsquo;re not careful.</p>
 <p>This generalizes to a whole bunch of situations where we&rsquo;d prefer to have one instance of something available to a class. In Java, we&rsquo;d use <code>static</code> to solve this problem.</p>
 <h2 id="automatic-static">Automatic Static</h2>
 <p>Naturally, Kotlin doesn&rsquo;t have any <code>static</code> keywords. Nevertheless, from our encyclopedic knowledge of Kotlin reserved keywords, we know about <code>const</code>. If we combine that with a <code>companion object</code>, can we get what we want?</p>
@@ -262,63 +276,70 @@ From my old-timey Java days, I know that the idiomatic way to set up an SLF4J lo
 <li><code>Logger</code> isn&rsquo;t a primitive/String, and <code>const</code> only works with primitives</li>
 </ol>
 <p>That&rsquo;s fine, what if we remove the <code>const</code> - isn&rsquo;t a companion object basically like a Java <code>static final</code>?</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> { 
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">companion</span> <span style="color:#66d9ef">object</span> {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> void navigate() { 
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The Java we generate is roughly:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span> Companion <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">Companion</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      LOG<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Companion</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">private</span> <span style="color:#a6e22e">Companion</span><span style="color:#f92672">()</span> <span style="color:#f92672">{}</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t really concern me much. On Android, R8 happily inline that (assuming you&rsquo;ve enabled the <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#allowaccessmodification"><code>-accessmodification</code> flag</a>), and on other systems (e.g. backend), the JVM should inline that as well.</p>
+<pre><code class="language-kotlin">class Direction { 
+    companion object {
+        private val LOG = LoggerFactory.getLogger(Direction::class.java)
+    }
+    
+    public void navigate() { 
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+
+</code></pre>
+<p>The Java we generate is roughly:</p>
+<pre><code class="language-java">public final class Direction {
+   private static final Logger LOG = LoggerFactory.getLogger(Direction.class);
+   public static final Direction.Companion Companion = new Direction.Companion();
+
+   public final void navigate() {
+      LOG.info(&quot;println(TAG)&quot;);
+   }
+
+   public static final class Companion {
+      private Companion() {}
+   }
+}
+
+</code></pre>
+<p>Hey! That&rsquo;s not bad! Pretty efficient, and the extra <code>Companion</code> class doesn&rsquo;t really concern me much. On Android, R8 happily inline that (assuming you&rsquo;ve enabled the <a href="https://www.guardsquare.com/en/products/proguard/manual/usage#allowaccessmodification"><code>-accessmodification</code> flag</a>), and on other systems (e.g. backend), the JVM should inline that as well.</p>
 <p>But I don&rsquo;t get paid to write pretty generated Java code, I get paid to write Kotlin. It&rsquo;s not a lot to type, but <code>companion object</code> with all those newlines can wear on you!</p>
 <p>Well, what about a top-level declaration? Putting our <code>Logger</code> setup there will definitely make it <code>static</code>. Let&rsquo;s check it out!</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">val</span> LOG = LoggerFactory.getLogger(Direction<span style="color:#f92672">::</span><span style="color:#66d9ef">class</span>.java)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">navigate</span>() {
-</span></span><span style="display:flex;"><span>        LOG.info(<span style="color:#e6db74">&#34;println(TAG)&#34;</span>)
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Gives us:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DirectionKt</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger LOG <span style="color:#f92672">=</span> LoggerFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Direction<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>   <span style="color:#75715e">// $FF: synthetic method
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Logger <span style="color:#a6e22e">access$getLOG$p</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> LOG<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Direction</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">navigate</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      MyClassKt<span style="color:#f92672">.</span><span style="color:#a6e22e">access$getLOG$p</span><span style="color:#f92672">().</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;println(TAG)&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>   <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>That synthetic accessor makes sense, since you&rsquo;re essentially calling another class&rsquo;s private field.</p>
+<pre><code class="language-kotlin">private val LOG = LoggerFactory.getLogger(Direction::class.java)
+
+class Direction {
+    fun navigate() {
+        LOG.info(&quot;println(TAG)&quot;)
+    }
+}
+</code></pre>
+<p>Gives us:</p>
+<pre><code class="language-java">public final class DirectionKt {
+   private static final Logger LOG = LoggerFactory.getLogger(Direction.class);
+
+   // $FF: synthetic method
+   public static final Logger access$getLOG$p() {
+      return LOG;
+   }
+}
+
+public final class Direction {
+   public final void navigate() {
+      MyClassKt.access$getLOG$p().info(&quot;println(TAG)&quot;);
+   }
+}
+</code></pre>
+<p>That synthetic accessor makes sense, since you&rsquo;re essentially calling another class&rsquo;s private field.</p>
 <p>For folks who got into Kotlin but never wrote much Java, this generated code might be a bit surprising. But don&rsquo;t worry &ndash; the perf impact there is negligible; once again, R8 or JVM HotSpot will realistically inline that for you.</p>
 <p>But is this really the end of the road? Can Kotlin really only be half as &ldquo;space-efficient&rdquo; as Java?</p>
 <h2 id="whats-in-a-name">What&rsquo;s in a name?</h2>
 <p>The problem here is that Kotlin seems to generate another <code>DirectionKt</code> class to warehouse the static elements - akin to a companion object. But what if there was a way to direct Kotlin to &ldquo;merge&rdquo; the <code>*Kt</code> class with the &ldquo;real&rdquo; class?</p>
 <p>Perhaps <code>@JvmName</code> could save us from multiple classes? More specifically, prepending <code>@file:JvmName(&quot;Direction&quot;)</code> to our previous Kotlin snippet gives us:</p>
 <p>&hellip; a compile error 💀</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>e: /Users/parth/.../Direction.kt: <span style="color:#f92672">(</span>1, 1<span style="color:#f92672">)</span>: Duplicate JVM class name <span style="color:#e6db74">&#39;Direction&#39;</span> generated from: 
-</span></span><span style="display:flex;"><span>package-fragment, Direction
-</span></span></code></pre></div><p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
+<pre><code class="language-shell">e: /Users/parth/.../Direction.kt: (1, 1): Duplicate JVM class name 'Direction' generated from: 
+package-fragment, Direction
+</code></pre>
+<p>(Fun fact: the IntelliJ IDEA 2020.2 EAP totally lets you put the <code>@file:JvmName</code> thing without showing you any lint or warnings)</p>
 <p>Darn.</p>
 <hr>
 <h2 id="conclusions---how-to-be-static">Conclusions - how to be static</h2>
@@ -395,8 +416,9 @@ This shouldn&amp;rsquo;t be so complicated. Somehow, with all the resources onli
 <h4 id="caveat-2-customize-your-output-dir">Caveat 2: Customize your output dir</h4>
 <p>By default, the <code>hugo</code> command will emit generated HTML in <code>blog-source/public</code>. Since we&rsquo;re planning on pushing the generated output to <code>&lt;ghuser&gt;.github.io</code>, let&rsquo;s define the output directory as that!</p>
 <p>In your <code>config.toml</code> (or <code>yaml</code>/<code>json</code>), find the key <code>publishDir</code> and update it to:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span><span style="color:#a6e22e">publishDir</span>   = <span style="color:#e6db74">&#34;&lt;ghuser&gt;.github.io&#34;</span>
-</span></span></code></pre></div><p><em>Note:</em> if it exists, you should <code>rm -r public</code>, since it&rsquo;s useless now. Don&rsquo;t worry, that whole folder is generated code, so you can blow it away with reckless abandon 💥</p>
+<pre><code class="language-toml">publishDir   = &quot;&lt;ghuser&gt;.github.io&quot;
+</code></pre>
+<p><em>Note:</em> if it exists, you should <code>rm -r public</code>, since it&rsquo;s useless now. Don&rsquo;t worry, that whole folder is generated code, so you can blow it away with reckless abandon 💥</p>
 <h4 id="caveat-3-choose-your-theme">Caveat 3: Choose your theme</h4>
 <p>In general, I&rsquo;d recommend a theme that has an <code>exampleSite</code> directory in the theme&rsquo;s Github repo (e.g. <a href="https://github.com/rhazdon/hugo-theme-hello-friend-ng/tree/master/exampleSite"><code>hello-friend-ng/exampleSite/</code></a>).</p>
 <p>This makes it drop-dead-simple to copy the config from <code>exampleSite/config.toml</code> to your top-level <code>config.toml</code>, as opposed to having to comb through documentation to find the necessary configuration parameters - ain&rsquo;t nobody got time for that!</p>
@@ -406,11 +428,11 @@ This shouldn&amp;rsquo;t be so complicated. Somehow, with all the resources onli
 <ol>
 <li>in your local <code>blog-source/</code> directory, run <code>git init</code> to create a new local Git repo</li>
 <li>go through your standard <em>&ldquo;create a new repository&rdquo;</em> flow on GitHub</li>
-<li>finally, add the remote origin to your local repo: <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git remote add origin git@github.com:&lt;ghuser&gt;/blog-source.git </span></span></code></pre></div></li>
+<li>finally, add the remote origin to your local repo: <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span> git remote add origin git@github.com:&lt;ghuser&gt;/blog-source.git </span></span></code></pre></div></li>
 </ol>
 <p>If you like, you can do a quick test to make sure everything works as expected:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git add .
-</span></span><span style="display:flex;"><span>git commit -am <span style="color:#e6db74">&#34;initial commit&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;initial commit&#34;</span>
 </span></span><span style="display:flex;"><span>git push origin master</span></span></code></pre></div>
 <hr>
 <h1 id="step-4-write-revise-repeat">Step 4: Write, Revise, Repeat</h1>
@@ -419,60 +441,64 @@ This shouldn&amp;rsquo;t be so complicated. Somehow, with all the resources onli
 <h4 id="images-and-hugo-shortcodes">Images and Hugo Shortcodes</h4>
 <p>Hugo defines some <a href="https://gohugo.io/content-management/shortcodes/">markdown-friendly shortcodes</a>. which, oestensibly, is easier than hand-coding HTML.</p>
 <p>I&rsquo;ve found the <code>figure</code> shortcode to be useful for just chucking images into your markdown files:</p>
-<pre tabindex="0"><code>{{&lt; figure src=&#34;https://jvmname.dev/img/spf13.jpg&#34; title=&#34;Steve Francia&#34; &gt;}}
-</code></pre><p>It works for content placed into the <code>/static/*</code> dir, as well as any web content:</p>
-<pre tabindex="0"><code>{{&lt; figure src=&#34;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9&#34; 
-title=&#34;Suspended Cups&#34; 
-attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
-</code></pre><p>I don&rsquo;t write HTML for a living, so, to me, this feels easier than having to read the W3C spec to learn how the <code>&lt;figure&gt;</code> tag works.</p>
+<pre><code>{{&lt; figure src=&quot;/img/spf13.jpg&quot; title=&quot;Steve Francia&quot; &gt;}}
+</code></pre>
+<p>It works for content placed into the <code>/static/*</code> dir, as well as any web content:</p>
+<pre><code>{{&lt; figure src=&quot;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9&quot; 
+title=&quot;Suspended Cups&quot; 
+attr=&quot;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&quot; &gt;}}
+</code></pre>
+<p>I don&rsquo;t write HTML for a living, so, to me, this feels easier than having to read the W3C spec to learn how the <code>&lt;figure&gt;</code> tag works.</p>
 <p><em>Note:</em> if you want to do more heavy-weight processing at &ldquo;compile-time&rdquo;, <a href="https://laurakalbag.com/processing-responsive-images-with-hugo/">Laura Kalbag has a great blog post</a> on image processing.</p>
 <h4 id="content-directories">Content Directories</h4>
 <p>AKA <a href="https://gohugo.io/content-management/page-bundles/"><em>page bundles</em> </a> in Hugo parlance. They&rsquo;re all arbitrary names, and most themes will have some pre-defined top-level pages in the <code>config.toml</code>. For the theme I use, <code>hello-friend-ng</code>, the defaults were:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">menu</span>]
-</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;about&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;About&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;about/&#34;</span>
-</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;Posts&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;posts/&#34;</span>
-</span></span></code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[<span style="color:#a6e22e">menu</span>]
-</span></span><span style="display:flex;"><span> [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;posts&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;Posts&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;posts/&#34;</span>
-</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">identifier</span>  = <span style="color:#e6db74">&#34;speaking&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>        = <span style="color:#e6db74">&#34;Speaking&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span>         = <span style="color:#e6db74">&#34;speaking/&#34;</span>
-</span></span><span style="display:flex;"><span>  [[<span style="color:#a6e22e">menu</span>.<span style="color:#a6e22e">main</span>]]
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">identifier</span> = <span style="color:#e6db74">&#34;about&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">name</span>       = <span style="color:#e6db74">&#34;Me&#34;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">url</span>        = <span style="color:#e6db74">&#34;about/&#34;</span>
-</span></span></code></pre></div><p>⚠️⚠️ If you change the <code>url</code>s for any menu items, just make sure you rename the directory in <code>content/</code> as well - e.g. <code>mv content/posts content/blog</code>.</p>
+<pre><code class="language-toml">[menu]
+  [[menu.main]]
+    identifier = &quot;about&quot;
+    name       = &quot;About&quot;
+    url        = &quot;about/&quot;
+  [[menu.main]]
+    identifier = &quot;posts&quot;
+    name       = &quot;Posts&quot;
+    url        = &quot;posts/&quot;
+</code></pre>
+<p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p>
+<pre><code class="language-toml">[menu]
+ [[menu.main]]
+    identifier = &quot;posts&quot;
+    name       = &quot;Posts&quot;
+    url        = &quot;posts/&quot;
+  [[menu.main]]
+    identifier  = &quot;speaking&quot;
+    name        = &quot;Speaking&quot;
+    url         = &quot;speaking/&quot;
+  [[menu.main]]
+    identifier = &quot;about&quot;
+    name       = &quot;Me&quot;
+    url        = &quot;about/&quot;
+</code></pre>
+<p>⚠️⚠️ If you change the <code>url</code>s for any menu items, just make sure you rename the directory in <code>content/</code> as well - e.g. <code>mv content/posts content/blog</code>.</p>
 <hr>
 <h2 id="step-5-create-github-pages-repo--submodule">Step 5: Create GitHub Pages Repo + Submodule</h2>
 <ol>
 <li><strong>Double-check your Hugo config</strong> - At this point, we haven&rsquo;t set up the DNS infra to support any custom domains, so let&rsquo;s double-check that our main <code>config.toml</code> is using the &ldquo;boring&rdquo; Github-pages base URL:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> <span style="color:#a6e22e">baseURL</span>     = <span style="color:#e6db74">&#34;&lt;ghuser&gt;.github.io&#34;</span>    </span></span></code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> baseURL     = <span style="color:#5af78e">&#34;&lt;ghuser&gt;.github.io&#34;</span>    </span></span></code></pre></div></li>
 <li><strong>Create the GH Page repo</strong> - follow the steps on <a href="https://help.github.com/en/github/working-with-github-pages/creating-a-github-pages-site">Creating a GitHub Pages site article</a>.</li>
 <li><strong>Clone the repo locally</strong> - <code>git clone git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git</code></li>
 <li><strong>Link repo as submodule</strong> - In your <strong>blog-sources/</strong> repo, create a submodule link to your GH-page repo:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> git submodule add git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git </span></span></code></pre></div></li>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> git submodule add git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git </span></span></code></pre></div></li>
 <li><strong>Kick the tires</strong> - Now that you have a submodule link inside <code>blog-sources/</code>, let&rsquo;s make some commits to make sure everything got hooked up properly on your machine:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># in blog-sources</span>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># in blog-sources</span>
 </span></span><span style="display:flex;"><span>git add .
-</span></span><span style="display:flex;"><span>git commit -am <span style="color:#e6db74">&#34;committing Hugo content sources&#34;</span> <span style="color:#75715e">#&#34;outer&#34; commit</span>
-</span></span><span style="display:flex;"><span>git push origin master <span style="color:#75715e"># push the sources to `blog-sources`</span>
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;committing Hugo content sources&#34;</span> <span style="color:#78787e">#&#34;outer&#34; commit</span>
+</span></span><span style="display:flex;"><span>git push origin master <span style="color:#78787e"># push the sources to `blog-sources`</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hugo <span style="color:#75715e">#generate the HTML from our sources</span>
+</span></span><span style="display:flex;"><span>hugo <span style="color:#78787e">#generate the HTML from our sources</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>cd &lt;ghuser&gt;.github.io <span style="color:#75715e"># now we&#39;re inside the submodule</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> &lt;ghuser&gt;.github.io <span style="color:#78787e"># now we&#39;re inside the submodule</span>
 </span></span><span style="display:flex;"><span>git add .
-</span></span><span style="display:flex;"><span>git commit -am <span style="color:#e6db74">&#34;committing Hugo generated HTML&#34;</span> <span style="color:#75715e">#&#34;inner&#34; commit</span>
-</span></span><span style="display:flex;"><span>git push origin master <span style="color:#75715e"># push the generated content to &lt;ghuser&gt;.github.io</span></span></span></code></pre></div></li>
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;committing Hugo generated HTML&#34;</span> <span style="color:#78787e">#&#34;inner&#34; commit</span>
+</span></span><span style="display:flex;"><span>git push origin master <span style="color:#78787e"># push the generated content to &lt;ghuser&gt;.github.io</span></span></span></code></pre></div></li>
 <li>If all is right with the world, if you go to the GitHub page for <code>blog-sources</code>, you should see your &ldquo;outer&rdquo; commit; ditto for your <code>&lt;ghuser&gt;.github.io</code> repo.</li>
 </ol>
 <p>In fact, wait about 5 minutes for GitHub to build+deploy&hellip;and then if you navigate to <code>www.&lt;ghuser&gt;.github.io</code>, you should see your website! 🎉🎉</p>
@@ -480,28 +506,30 @@ attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
 <hr>
 <h2 id="step-6-deployment">Step 6: Deployment</h2>
 <p>I stole this script in totality from <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/">Hugo: Host on GitHub</a>. It&rsquo;s useful, if only because it allows us to build+commit+push to GitHub in one line.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>set -e <span style="color:#75715e"># If a command fails then the deploy stops</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>printf <span style="color:#e6db74">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>hugo <span style="color:#75715e"># Build the project.</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>cd &lt;ghuser&gt;.github.io <span style="color:#75715e"># Go to generated output folder</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>git add . <span style="color:#75715e"># Add changes to git.</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rebuilding site </span><span style="color:#66d9ef">$(</span>date<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
-</span></span><span style="display:flex;"><span>	msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$*<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
-</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span> <span style="color:#75715e"># Commit changes.</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>git push origin master <span style="color:#75715e"># Push source and build repos.</span>
-</span></span></code></pre></div><p>Assuming you put it in a file <code>deploy.sh</code>, you&rsquo;d use it from <code>blog-sources/</code> as:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./deploy.sh <span style="color:#e6db74">&#34;my optional commit message&#34;</span>
-</span></span></code></pre></div><p>A few notes:</p>
+<pre><code class="language-shell">#!/bin/sh
+
+set -e # If a command fails then the deploy stops
+
+printf &quot;\033[0;32mDeploying updates to GitHub...\033[0m\n&quot;
+
+hugo # Build the project.
+
+cd &lt;ghuser&gt;.github.io # Go to generated output folder
+
+git add . # Add changes to git.
+
+msg=&quot;rebuilding site $(date)&quot;
+if [ -n &quot;$*&quot; ]; then
+	msg=&quot;$*&quot;
+fi
+git commit -m &quot;$msg&quot; # Commit changes.
+
+git push origin master # Push source and build repos.
+</code></pre>
+<p>Assuming you put it in a file <code>deploy.sh</code>, you&rsquo;d use it from <code>blog-sources/</code> as:</p>
+<pre><code class="language-shell">./deploy.sh &quot;my optional commit message&quot;
+</code></pre>
+<p>A few notes:</p>
 <ul>
 <li>this script &ldquo;fails fast&rdquo;: e.g., it will not push to <code>master</code> if there&rsquo;s no staged changes to commit, even if there are other commits that could be pushed</li>
 <li>this script leaves you in the <code>&lt;ghuser&gt;.github.io</code> submodule</li>
@@ -520,11 +548,12 @@ attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
 <li>
 <p>create an <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>A/ANAME</code> record</a> to alias <code>example.dev</code> &ndash;&gt; <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub Pages CDN</a> (~equivalent to <code>&lt;ghuser&gt;.github.io</code>).</p>
 <p>At the time of this writing (05/2020), the four IP addresses you&rsquo;ll need to alias are:</p>
-<pre tabindex="0"><code>185.199.108.153
+<pre><code>185.199.108.153
 185.199.109.153
 185.199.110.153
 185.199.111.153
-</code></pre></li>
+</code></pre>
+</li>
 </ol>
 <p>This post is long enough, and I&rsquo;ll be honest, I don&rsquo;t <em>fully</em> understand the difference between <code>example.dev</code> and <code>www.example.dev</code>, so I&rsquo;ll leave that to someobody else to explain. All I know is that I ended up needing both 🤷🏾‍♂️</p>
 <p>There&rsquo;s 2 things that weren&rsquo;t apparent to me when configuring this in Google Domains:</p>
@@ -535,18 +564,18 @@ attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
 <strong>This is okay, and is expected.</strong></li>
 </ol>
 <p>Besides that convolution (I&rsquo;m sure that decision made sense to <em>someone</em>) the Google Domains page is pretty straightforward, but just to check your work, this is what my config looks like (as of 05/2020):
-<figure><img src="/img/google-domain-setup.png"/>
+<figure><img src="/img/google-domain-setup.png">
 </figure>
 </p>
 <p>⚠️ Note: I did this while I was based in Arizona (US west coast), and so probably experienced very fast propagation times from Google&rsquo;s DNS servers ⚡️. Google claims that propagating these changes can take up to 48 hours; if things aren&rsquo;t working, but you&rsquo;re 115% sure that you typed everything in correctly, come back in a day and try again.</p>
 <h4 id="72-hugogithub-config">7.2: Hugo/GitHub Config</h4>
 <p>Here, we&rsquo;ll be telling Hugo and GitHub what URL to use.</p>
 <p>You&rsquo;ll need to update the <code>baseURL</code> in the <code>config.toml</code> file to point to your fancy new domain:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> <span style="color:#a6e22e">baseURL</span> = <span style="color:#e6db74">&#34;https://example.dev&#34;</span>    </span></span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> baseURL = <span style="color:#5af78e">&#34;https://example.dev&#34;</span>    </span></span></code></pre></div></p>
 <p>Additionally, GitHub requires a little config file to be at the top-level of the <code>*.github.io</code> repo so its CDN knows how to generate the redirects. Instead of checking this file into the repo directly, let&rsquo;s put it in the <strong>sources</strong> repo, so we can be assured it&rsquo;ll always be copied over when we generate a new website:</p>
-<p><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd static  <span style="color:#75715e">#in blog-sources/</span>
+<p><div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> static  <span style="color:#78787e">#in blog-sources/</span>
 </span></span><span style="display:flex;"><span>touch CNAME
-</span></span><span style="display:flex;"><span>echo example.dev &gt; CNAME</span></span></code></pre></div>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> example.dev &gt; CNAME</span></span></code></pre></div>
 (from the <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain">Hugo Docs</a>)</p>
 <p>Fun fact, this is the same file that&rsquo;s generated if you go to your Github repo settings -&gt; <strong>Github Pages</strong> -&gt; <strong>Custom domain</strong> -&gt; and enter <code>example.dev</code></p>
 <p>At this point, run <code>./deploy.sh</code>, then go to your repo settings for <code>&lt;ghuser&gt;.github.io</code>, find the section called <strong>GitHub Pages</strong>, and enable <code>✅ Enforce HTTPS</code>.</p>
@@ -554,13 +583,13 @@ attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
 <h2 id="step-8-the-waiting-game">Step 8: The waiting game</h2>
 <p>That&rsquo;s all the &ldquo;work&rdquo; you have to do! Clicking the HTTPS box in your settings will kick off a bunch of automated processes on GitHub&rsquo;s side to set up the correct certificate chains using Let&rsquo;s Encrypt.</p>
 <p>This is necessary because <a href="https://domains.google/tld/security/">Google Domains <em>requires</em> all traffic</a> to your <code>(www.)example.dev</code> domain(s) to be encrypted by way of <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security#HSTS_mechanism_overview"><strong>H</strong>TTP <strong>S</strong>trict <strong>T</strong>ransport <strong>S</strong>ecurity (HSTS)</a>. If you tried to navigate to <code>http://example.dev</code> <em>without</em> GitHub&rsquo;s cert chain set up, you would get an error like this:</p>
-<figure><a href="https://i.stack.imgur.com/83l43.png"><img src="https://i.stack.imgur.com/83l43.png" width="450"/></a>
+<figure><a href="https://i.stack.imgur.com/83l43.png"><img src="https://i.stack.imgur.com/83l43.png" width="450"></a>
 </figure>
 
 <p>In my experience, I had to play the waiting game for ~2 hours; depending on your location and whatever service worker load GitHub is experiencing at the moment, it might take more or less time to get your HTTPS cert set up. <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub claims</a> it can take up for 24 hours for the HTTPS option to even be <em>available</em> ⏳</p>
 <h2 id="step-9-success-">Step 9: Success 🎉</h2>
 <p>At some point, the HTTPS certificate gods will smile upon you, and your GitHub Page will have an HTTPS certificate. You&rsquo;ll know that the gods have accepted your blood-offering because you&rsquo;ll see a little green banner in your GitHub repo <code>&lt;ghuser&gt;.github.io</code> settings like this:</p>
-<figure><img src="/img/gh-page-published.png"/>
+<figure><img src="/img/gh-page-published.png">
 </figure>
 
 <p>That&rsquo;s the ballgame! Everything should look and work exactly as when you run <code>hugo server</code>!</p>
@@ -596,30 +625,32 @@ Using Firebase Performance Monitoring to track the performance of a plain-ol’ 
 Wait a few moments, and you’ll see some-trace-name in the Firebase Console!
 But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.
 Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
-            <content type="html"><![CDATA[<figure><img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"/><figcaption>
-            <h4>Suspended Cups</h4><p><a href="https://unsplash.com/photos/NEc3YEN1FFw">Chris Scott</a></p>
-        </figcaption>
+            <content type="html"><![CDATA[<figure><img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"><figcaption>
+      <h4>Suspended Cups</h4><p><a href="https://unsplash.com/photos/NEc3YEN1FFw">Chris Scott</a></p>
+    </figcaption>
 </figure>
 
 <p>Using <a href="https://firebase.google.com/docs/perf-mon/get-started-android">Firebase Performance Monitoring</a> to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the <a href="https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation">@AddTrace annotation</a>:
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@AddTrace</span>(<span style="color:#e6db74">&#34;some-trace-name&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myBoringFunction</span>() {
-</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;nothing to see here!&#34;</span>)
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff9f43">@AddTrace</span>(<span style="color:#5af78e">&#34;some-trace-name&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">fun</span> <span style="color:#57c7ff">myBoringFunction</span>() {
+</span></span><span style="display:flex;"><span>    println(<span style="color:#5af78e">&#34;nothing to see here!&#34;</span>)
 </span></span><span style="display:flex;"><span>}</span></span></code></pre></div></p>
 <p>Wait a few moments, and you’ll see <code>some-trace-name</code> in the Firebase Console!</p>
 <p>But what if you want to track the performance of a <code>suspend</code> function? Unfortunately, this is not as straightforward.</p>
 <h2 id="attempt-1-suspending-disbelief">Attempt #1: Suspending Disbelief</h2>
 <p>Let’s say you have some uncomplicated suspending function, like so:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100L</span>)   
-</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>A naive attempt to track this function’s performance would, as you might expect, to use <code>@AddTrace</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#a6e22e">@AddTrace</span>(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int { <span style="color:#f92672">..</span>. }
-</span></span></code></pre></div><p>Just eyeballing it, it should work, right? Even if you compile, the <code>firebase-perf</code> Gradle plugin won’t complain, and the Firebase Performance Monitoring library won’t crash your app. So maybe everything will Just Work? 🤞🏽</p>
+<pre><code class="language-kotlin">suspend fun myAsyncFunction() : Int {
+    val result = 1 + 1
+    delay(100L)   
+    println(&quot;something to see here: $result&quot;)
+    return result
+}
+</code></pre>
+<p>A naive attempt to track this function’s performance would, as you might expect, to use <code>@AddTrace</code>:</p>
+<pre><code class="language-kotlin">@AddTrace(&quot;some-other-trace-name&quot;)
+suspend fun myAsyncFunction() : Int { ... }
+</code></pre>
+<p>Just eyeballing it, it should work, right? Even if you compile, the <code>firebase-perf</code> Gradle plugin won’t complain, and the Firebase Performance Monitoring library won’t crash your app. So maybe everything will Just Work? 🤞🏽</p>
 <p><strong>Plot Twist: it won’t work.</strong></p>
 <p>To understand <em>why</em> it doesn’t work, you’ll need to understand two things:</p>
 <ol>
@@ -635,44 +666,46 @@ For our purposes, we’ll simplify, and say that the Kotlin compiler will rewrit
 <li>add some “fake” Perf traces</li>
 <li>“decompile” everything into Kotlin source code, because nobody wants to read Kotlin JVM bytecode!</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFun</span>(cont : Continuation){
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> perf = FirebasePerformance.getInstance()
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> trace = perf.newTrace(<span style="color:#e6db74">&#34;some-other-trace-name&#34;</span>)
-</span></span><span style="display:flex;"><span>    trace.start()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//begin: coroutine state machine
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">when</span>(cont.label){
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">0</span> <span style="color:#f92672">-&gt;</span> {
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//will call myAsyncFun with cont.label=1
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            DelayKt.delay(<span style="color:#ae81ff">100</span>, cont) 
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">1</span> <span style="color:#f92672">-&gt;</span> {
-</span></span><span style="display:flex;"><span>            println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//hands control+result back to caller
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            cont.resume(result, <span style="color:#f92672">..</span>.) 
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//end: coroutine state machine
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
-</span></span><span style="display:flex;"><span>    trace.end()
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The coroutine’s state machine is muddying the waters — it’s no wonder Firebase’s automated instrumentation can’t figure out where to put the <code>trace.end()</code>! What’s a performance-minded developer to do?</p>
+<pre><code class="language-kotlin">fun myAsyncFun(cont : Continuation){
+    val perf = FirebasePerformance.getInstance()
+    val trace = perf.newTrace(&quot;some-other-trace-name&quot;)
+    trace.start()
+
+    val result = 1 + 1
+    
+    //begin: coroutine state machine
+    when(cont.label){
+        0 -&gt; {
+            //will call myAsyncFun with cont.label=1
+            DelayKt.delay(100, cont) 
+        }
+        1 -&gt; {
+            println(&quot;something to see here: $result&quot;)
+            //hands control+result back to caller
+            cont.resume(result, ...) 
+        }
+    }
+    //end: coroutine state machine
+    
+    trace.end()
+}
+</code></pre>
+<p>The coroutine’s state machine is muddying the waters — it’s no wonder Firebase’s automated instrumentation can’t figure out where to put the <code>trace.end()</code>! What’s a performance-minded developer to do?</p>
 <h2 id="attempt-2-if-you-try-finally-youll-succeed">Attempt #2: If you Try, Finally you’ll succeed</h2>
 <p>The heart of the issue is that the Firebase performance instrumentation can’t query suspending Kotlin bytecode for the method entry and exit.
 But, as developers, <em>we</em> know when a suspending function will enter and exit; in fact, there’s even a Java/Kotlin paradigm to codifies this: <code>try/finally</code></p>
 <p><code>try/finally</code> is exactly what we need: no matter what happens inside a method body, finally will always be executed last (or, finally!) — this is a guarantee from the JVM, and you can see this reflected in any compiled Java/Kotlin bytecode. <a href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally">Read more here</a></p>
 <p>Armed with this knowledge, and a little bit of Kotlin magic✨, we can write a little wrapper that can be used anywhere:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">fun</span> &lt;<span style="color:#a6e22e">E</span>&gt; <span style="color:#a6e22e">trace</span>(name : String, block: (Trace) <span style="color:#f92672">-&gt;</span> E): E {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> trace = startTrace(name) <span style="color:#75715e">//creates &amp; starts a new Trace
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">try</span> {
-</span></span><span style="display:flex;"><span>        block(trace)
-</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">finally</span> {
-</span></span><span style="display:flex;"><span>        trace.stop()
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>Breaking it down:</p>
+<pre><code class="language-kotlin">inline fun &lt;E&gt; trace(name : String, block: (Trace) -&gt; E): E {
+    val trace = startTrace(name) //creates &amp; starts a new Trace
+    return try {
+        block(trace)
+    } finally {
+        trace.stop()
+    }
+}
+</code></pre>
+<p>Breaking it down:</p>
 <ul>
 <li>the <code>inline</code> keyword means we won’t interfere with any coroutine state machine; the entire suspending invocation will occur in the <code>try {}</code> block</li>
 <li><code>startTrace</code> just invokes FirebasePerformance, names the trace, and starts it.</li>
@@ -682,33 +715,36 @@ But, as developers, <em>we</em> know when a suspending function will enter and e
 </ul>
 <p>Sweet; simple; and, most importantly, it works!</p>
 <p>Let’s rewrite our first suspending function using our new toy:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100L</span>)   
-</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>becomes:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() : Int {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> trace(<span style="color:#e6db74">&#34;some-other-trace&#34;</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>        delay(<span style="color:#ae81ff">100L</span>)   
-</span></span><span style="display:flex;"><span>        println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span><span style="color:#a6e22e">@trace</span> result
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>This is our solution! If you want to achieve this same result without nesting your method into a lambda, you can push it into a private function:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">myAsyncFunction</span>() {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> trace(<span style="color:#e6db74">&#34;some-other-trace&#34;</span>) { _myAsyncFunction() }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">suspend</span> <span style="color:#66d9ef">fun</span> <span style="color:#a6e22e">_myAsyncFunction</span>() : Int {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">val</span> result = <span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>
-</span></span><span style="display:flex;"><span>    delay(<span style="color:#ae81ff">100L</span>)   
-</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;something to see here: </span><span style="color:#e6db74">$result</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>The Firebase Performance Monitoring Console will now show the total time <code>myAsyncFunction</code> runs, including the time that any actual suspension takes 🎉</p>
+<pre><code class="language-kotlin">suspend fun myAsyncFunction() : Int {
+    val result = 1 + 1
+    delay(100L)   
+    println(&quot;something to see here: $result&quot;)
+    return result
+}
+</code></pre>
+<p>becomes:</p>
+<pre><code class="language-kotlin">suspend fun myAsyncFunction() : Int {
+    return trace(&quot;some-other-trace&quot;) {
+        val result = 1 + 1
+        delay(100L)   
+        println(&quot;something to see here: $result&quot;)
+        return@trace result
+    }
+}
+</code></pre>
+<p>This is our solution! If you want to achieve this same result without nesting your method into a lambda, you can push it into a private function:</p>
+<pre><code class="language-kotlin">suspend fun myAsyncFunction() {
+    return trace(&quot;some-other-trace&quot;) { _myAsyncFunction() }
+}
+
+private suspend fun _myAsyncFunction() : Int {
+    val result = 1 + 1
+    delay(100L)   
+    println(&quot;something to see here: $result&quot;)
+    return result
+}
+</code></pre>
+<p>The Firebase Performance Monitoring Console will now show the total time <code>myAsyncFunction</code> runs, including the time that any actual suspension takes 🎉</p>
 <p>Happy coding!</p>
 <h2 id="next-steps">Next Steps</h2>
 <p>I’ve filed a feature request with Firebase to augment <code>@AddTrace</code> to support suspending functions. Let’s see what happens, maybe this blog post will be obsolete in 6 months 👀</p>
