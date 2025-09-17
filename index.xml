@@ -2,60 +2,60 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>@JvmName(&#34;Parth&#34;)</title>
-    <link>https://jvmname.dev/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on @JvmName(&#34;Parth&#34;)</description>
     <generator>Hugo</generator>
     <language>en</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Thu, 24 Jun 2021 16:09:41 -0400</lastBuildDate>
-    <atom:link href="https://jvmname.dev/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Your YAML could be DRYer</title>
-      <link>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</link>
+      <link>http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/</link>
       <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
-      <guid>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</guid>
+      <guid>http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/</guid>
       <description>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.&#xA;However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to DRY up the YAML config files.&#xA;However, with a cool new 1 feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</description>
     </item>
     <item>
       <title>Don&#39;t Worry, Just Launch</title>
-      <link>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</link>
+      <link>http://localhost:1313/posts/2021/01/dont-worry-just-launch/</link>
       <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
-      <guid>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</guid>
+      <guid>http://localhost:1313/posts/2021/01/dont-worry-just-launch/</guid>
       <description>I&amp;rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&amp;rsquo;ve been on the Kotlin train 100%.&#xA;Despite all that Kotlin experience, the new Hatch Credit Android app (launching Q1-2021✨) is the first time I&amp;rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</description>
     </item>
     <item>
       <title>Static in Kotlin</title>
-      <link>https://jvmname.dev/posts/2020/06/static-in-kotlin/</link>
+      <link>http://localhost:1313/posts/2020/06/static-in-kotlin/</link>
       <pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate>
-      <guid>https://jvmname.dev/posts/2020/06/static-in-kotlin/</guid>
+      <guid>http://localhost:1313/posts/2020/06/static-in-kotlin/</guid>
       <description>ed. note: This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!&#xA;My current company uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: SLF4J + Logback.&#xA;From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:</description>
     </item>
     <item>
       <title>I Go, Hugo, They Go</title>
-      <link>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</link>
+      <link>http://localhost:1313/posts/2020/05/i-go-hugo-they-go/</link>
       <pubDate>Mon, 18 May 2020 08:39:55 -0700</pubDate>
-      <guid>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</guid>
+      <guid>http://localhost:1313/posts/2020/05/i-go-hugo-they-go/</guid>
       <description>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.&#xA;Ed. note: I have no idea how Hugo is intended to be pronounced; it could be oo-go (á la Hugo Chavez), or hyoo-go, as the name is pronounced in American English. For the punning purposes of the title, I&amp;rsquo;m assuming it&amp;rsquo;s the latter pronunciation.&#xA;This shouldn&amp;rsquo;t be so complicated. Somehow, with all the resources online of how to get Hugo + GitHub Pages + Custom Domain set up, I still ran into strange, arcane hurdles.</description>
     </item>
     <item>
       <title>Speaking @ Conferences</title>
-      <link>https://jvmname.dev/speaking/</link>
+      <link>http://localhost:1313/speaking/</link>
       <pubDate>Sun, 17 May 2020 17:57:32 -0700</pubDate>
-      <guid>https://jvmname.dev/speaking/</guid>
+      <guid>http://localhost:1313/speaking/</guid>
       <description>2023 Hot Take: Engineering Managers Aren&amp;rsquo;t Useless! Droidcon London - Oct. 2023 Link to slides&#xA;2020 - 2022 Remember when we went outside and did things? 😷😭 2019 Your Strengths Include: Work/Life Balance Droidcon San Francisco &amp;lsquo;19 - Nov. 2019 Droidcon Berlin &amp;lsquo;19 - July 2019 (earlier version of DCSF &amp;lsquo;19 talk) Fantastic Async and Where to Find Them Velos Tech Talk Series - Jan. 2019 (no video) DevFest St. Louis - Feb.</description>
     </item>
     <item>
       <title>@JvmName(&#34;Parth&#34;)</title>
-      <link>https://jvmname.dev/about/</link>
+      <link>http://localhost:1313/about/</link>
       <pubDate>Sun, 17 May 2020 17:12:57 -0700</pubDate>
-      <guid>https://jvmname.dev/about/</guid>
+      <guid>http://localhost:1313/about/</guid>
       <description>Hi! I&amp;rsquo;m Parth, an Android developer raised in Arizona☀️ and living in San Francisco🌉&#xA;Work Now Mobile Engineering Manager @ Mercury, making the mobile apps that thousands of startups and other small businesses use to power their banking needs Occasional OSS contributor, one-time AndroidX contributor Previously Mobile Engineering Manager and Android engineer @ Nearside - making better, more accessible financial services for micro-small businesses. (I also dabble in backend services, but don&amp;rsquo;t quote me on that) Sr.</description>
     </item>
     <item>
       <title>Tracking Performance in Kotlin Suspending Functions</title>
-      <link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
+      <link>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
       <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
-      <guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
+      <guid>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
       <description>Suspended CupsChris Scott&#xA;Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }&#xA;Wait a few moments, and you’ll see some-trace-name in the Firebase Console!&#xA;But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.&#xA;Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
     </item>
   </channel>

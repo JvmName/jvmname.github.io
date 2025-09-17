@@ -2,63 +2,63 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jvmname.dev/</loc>
-    <lastmod>2022-11-27T22:04:18-05:00</lastmod>
-  </url><url>
-    <loc>https://jvmname.dev/posts/</loc>
-    <lastmod>2022-11-27T22:04:18-05:00</lastmod>
-  </url><url>
-    <loc>https://jvmname.dev/tags/code-reuse/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2021-06-24T16:09:41-04:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/github-actions/</loc>
+    <loc>http://localhost:1313/tags/code-reuse/</loc>
     <lastmod>2021-06-24T16:09:41-04:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/</loc>
+    <loc>http://localhost:1313/tags/github-actions/</loc>
     <lastmod>2021-06-24T16:09:41-04:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/yaml/</loc>
+    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2021-06-24T16:09:41-04:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</loc>
+    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2021-06-24T16:09:41-04:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/bugs/</loc>
+    <loc>http://localhost:1313/tags/yaml/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/</loc>
+    <lastmod>2021-06-24T16:09:41-04:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/bugs/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/coroutines/</loc>
+    <loc>http://localhost:1313/tags/coroutines/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</loc>
+    <loc>http://localhost:1313/posts/2021/01/dont-worry-just-launch/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/tags/kotlin/</loc>
+    <loc>http://localhost:1313/tags/kotlin/</loc>
     <lastmod>2021-01-11T00:01:19-05:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/posts/2020/06/static-in-kotlin/</loc>
+    <loc>http://localhost:1313/posts/2020/06/static-in-kotlin/</loc>
     <lastmod>2020-06-23T16:42:26-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</loc>
+    <loc>http://localhost:1313/posts/2020/05/i-go-hugo-they-go/</loc>
     <lastmod>2020-05-18T08:39:55-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/speaking/</loc>
+    <loc>http://localhost:1313/speaking/</loc>
     <lastmod>2020-05-17T17:57:32-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/about/</loc>
+    <loc>http://localhost:1313/about/</loc>
     <lastmod>2020-05-17T17:12:57-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/categories/firebase/</loc>
+    <loc>http://localhost:1313/categories/firebase/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/categories/kotlin/</loc>
+    <loc>http://localhost:1313/categories/kotlin/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</loc>
+    <loc>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</loc>
     <lastmod>2020-03-29T23:14:00-07:00</lastmod>
   </url><url>
-    <loc>https://jvmname.dev/series/</loc>
+    <loc>http://localhost:1313/series/</loc>
   </url>
 </urlset>
