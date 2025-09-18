@@ -1,77 +1,491 @@
-<!doctype html><html lang=en><head><meta charset=UTF-8><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content><meta name=description content='Not exactly "How to get Hugo+Github set up"...'><meta name=keywords content="kotlin,android"><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/><title>I Go, Hugo, They Go :: @JvmName("Parth")</title><link rel=stylesheet href=https://jvmname.dev/main.min.522ac355475c3ace8381b077c8865b531630177e7b14b13e239c6a23f767c2a9.css integrity="sha256-UirDVUdcOs6DgbB3yIZbUxYwF357FLE+I5xqI/dnwqk=" crossorigin=anonymous><link rel=apple-touch-icon sizes=180x180 href=https://jvmname.dev/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://jvmname.dev/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://jvmname.dev/favicon-16x16.png><link rel=manifest href=https://jvmname.dev/site.webmanifest><link rel=mask-icon href=https://jvmname.dev/safari-pinned-tab.svg color><link rel="shortcut icon" href=https://jvmname.dev/favicon.ico><meta name=msapplication-TileColor content><meta itemprop=name content="I Go, Hugo, They Go"><meta itemprop=description content='Not exactly "How to get Hugo+Github set up"...'><meta itemprop=datePublished content="2020-05-18T08:39:55-07:00"><meta itemprop=dateModified content="2020-05-18T08:39:55-07:00"><meta itemprop=wordCount content="2064"><meta itemprop=image content="https://jvmname.dev/img/books.jpg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://jvmname.dev/img/books.jpg"><meta name=twitter:title content="I Go, Hugo, They Go"><meta name=twitter:description content='Not exactly "How to get Hugo+Github set up"...'><meta property="og:url" content="https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/"><meta property="og:site_name" content='@JvmName("Parth")'><meta property="og:title" content="I Go, Hugo, They Go"><meta property="og:description" content='Not exactly "How to get Hugo+Github set up"...'><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-05-18T08:39:55-07:00"><meta property="article:modified_time" content="2020-05-18T08:39:55-07:00"><meta property="og:image" content="https://jvmname.dev/img/books.jpg"><meta property="article:published_time" content="2020-05-18 08:39:55 -0700 PDT"><script data-goatcounter=https://jvmname.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body><div class=container><header class=header><span class=header__inner><a href=https://jvmname.dev/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>@JvmName</span>
-<span class=logo__cursor style=background-color:#67a2c9;animation-duration:3.5s></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://jvmname.dev/about/>About Me</a></li><li><a href=https://jvmname.dev/posts/>Posts</a></li><li><a href=https://jvmname.dev/speaking/>Speaking</a></li></ul></nav><span class=menu-trigger><svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-</span><span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-10 minutes</p></div><article><h1 class=post-title><a href=https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/>I Go, Hugo, They Go</a></h1><div class=post-excerpt>Not exactly "How to get Hugo+Github set up"...</div><figure class=post-cover><img src=https://jvmname.dev/img/books.jpg alt="I Go, Hugo, They Go"></figure><div class=post-content><p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p><hr><p><strong>Ed. note:</strong> I have no idea how <code>Hugo</code> is intended to be pronounced; it could be <em><code>oo-go</code></em> (á la <em>Hugo Chavez</em>), or <em><code>hyoo-go</code></em>, as the name is pronounced in American English. For the punning purposes of the title, I&rsquo;m assuming it&rsquo;s the latter pronunciation.</p><hr><h3 id=this-shouldnt-be-so-complicated>This shouldn&rsquo;t be so complicated.</h3><p>Somehow, with all the resources online of how to get Hugo + GitHub Pages + Custom Domain set up, I still ran into strange, arcane hurdles.</p><p>Maybe this is because while I <em>technically</em> understand things like static site generators and DNS and CNAME, it&rsquo;s a far cry from actually understanding how to set something up <em>correctly</em>.</p><p><em>Plot twist:</em> I finally got everything configured correctly - proof: you&rsquo;re reading it now! 🧐</p><p>Here was my eventual setup:</p><ul><li>a <a href=https://domains.google/>Google Domains</a> listing for <code>jvmname.dev</code></li><li>a <code>CNAME</code> record in Google Domains pointing from <code>www.jvmname.dev</code> to <code>jvmname.github.io</code></li><li>an <code>A/ANAME</code> record in Google Domains pointing to the <a href=https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain>Github CDNs</a></li><li>a GitHub repo for the <strong>source</strong> files - e.g. <code>parth-blog-source</code></li><li>a GitHub Pages repo for the <strong>generated</strong> content.<ul><li>This one should adhere to the GitHub Pages format: <code>&lt;ghuser>.github.io</code>; for me, that&rsquo;s <code>jvmname.github.io</code></li></ul></li><li>a local Hugo installation</li></ul><p>Here&rsquo;s what you should do to achieve the same setup:</p><h1 id=step-1-get-your-domain>Step 1: Get your domain!</h1><p><a href=https://domains.google>domains.google</a> has lots of fun options, and since you&rsquo;re a developer, definitely consider a <code>*.dev</code> domain 👨🏽‍💻👩🏻‍💻</p><p>All <code>.dev</code> domains are <a href=https://domains.google/tld/security/>USD 12/year</a> (as of 05/2020). I suspect, for most people, that&rsquo;s relatively affordable. If that&rsquo;s the case for you, it might make sense to buy your domain ahead of time, just to stake your claim.</p><hr><h1 id=step-2-install-hugo>Step 2: Install Hugo</h1><p>Follow the well-written <a href=https://gohugo.io/getting-started/quick-start/>Hugo Quickstart Guide</a> with the following caveats:</p><h4 id=caveat-1-name-your-folder-better>Caveat 1: Name your folder better</h4><p><a href=https://gohugo.io/getting-started/quick-start/#step-2-create-a-new-site>Hugo Quickstart Step 2</a> suggests running <code>hugo new site quickstart</code>, but that will make a folder named <code>quickstart</code>, and that&rsquo;s not actually a useful name 🤦🏽‍♂️</p><p>You should use a name that makes sense to you!</p><ul><li><code>website-source</code></li><li><code>hugo-content</code></li><li><code>blog-source</code></li></ul><p>Literally anything! For the purposes of this guide, we&rsquo;re going to pretend you chose the name <code>blog-source</code>.</p><h4 id=caveat-2-customize-your-output-dir>Caveat 2: Customize your output dir</h4><p>By default, the <code>hugo</code> command will emit generated HTML in <code>blog-source/public</code>. Since we&rsquo;re planning on pushing the generated output to <code>&lt;ghuser>.github.io</code>, let&rsquo;s define the output directory as that!</p><p>In your <code>config.toml</code> (or <code>yaml</code>/<code>json</code>), find the key <code>publishDir</code> and update it to:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>publishDir   = <span style=color:#5af78e>&#34;&lt;ghuser&gt;.github.io&#34;</span>
-</span></span></code></pre></div><p><em>Note:</em> if it exists, you should <code>rm -r public</code>, since it&rsquo;s useless now. Don&rsquo;t worry, that whole folder is generated code, so you can blow it away with reckless abandon 💥</p><h4 id=caveat-3-choose-your-theme>Caveat 3: Choose your theme</h4><p>In general, I&rsquo;d recommend a theme that has an <code>exampleSite</code> directory in the theme&rsquo;s Github repo (e.g. <a href=https://github.com/rhazdon/hugo-theme-hello-friend-ng/tree/master/exampleSite><code>hello-friend-ng/exampleSite/</code></a>).</p><p>This makes it drop-dead-simple to copy the config from <code>exampleSite/config.toml</code> to your top-level <code>config.toml</code>, as opposed to having to comb through documentation to find the necessary configuration parameters - ain&rsquo;t nobody got time for that!</p><hr><h1 id=step-3-set-up-your-source-repo>Step 3: Set up your source repo</h1><p>Ordinarily, you&rsquo;d want to set this up before anything else, but I&rsquo;ve seen reports online of Hugo complaining if the target directory already exists. So we create the <code>blog-source/</code> dir first, and then create the repo!</p><ol><li>in your local <code>blog-source/</code> directory, run <code>git init</code> to create a new local Git repo</li><li>go through your standard <em>&ldquo;create a new repository&rdquo;</em> flow on GitHub</li><li>finally, add the remote origin to your local repo:<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span> git remote add origin git@github.com:&lt;ghuser&gt;/blog-source.git </span></span></code></pre></div></li></ol><p>If you like, you can do a quick test to make sure everything works as expected:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>git commit -am <span style=color:#5af78e>&#34;initial commit&#34;</span>
-</span></span><span style=display:flex><span>git push origin master</span></span></code></pre></div><hr><h1 id=step-4-write-revise-repeat>Step 4: Write, Revise, Repeat</h1><p>Time to flex your literary muscles! Write a blog post or two - something you learned at work or on a side project. Maybe you just took a vacation and you&rsquo;ve got some cool photos to turn into a photo essay? Doesn&rsquo;t matter, just be creative ⚡️</p><p>Some useful learnings distilled from my experience creating content through Hugo:</p><h4 id=images-and-hugo-shortcodes>Images and Hugo Shortcodes</h4><p>Hugo defines some <a href=https://gohugo.io/content-management/shortcodes/>markdown-friendly shortcodes</a>. which, oestensibly, is easier than hand-coding HTML.</p><p>I&rsquo;ve found the <code>figure</code> shortcode to be useful for just chucking images into your markdown files:</p><pre tabindex=0><code>{{&lt; figure src=&#34;/img/spf13.jpg&#34; title=&#34;Steve Francia&#34; &gt;}}
-</code></pre><p>It works for content placed into the <code>/static/*</code> dir, as well as any web content:</p><pre tabindex=0><code>{{&lt; figure src=&#34;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9&#34; 
+<!DOCTYPE html>
+<html lang="en">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+      content="">
+<meta name="description"
+      content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;..."/>
+<meta name="keywords"
+      content="kotlin, android"/>
+<meta name="robots" content="noodp"/>
+<meta name="theme-color" content="#252627"/>
+<link rel="canonical" href="http://localhost:1313/posts/2020/05/i-go-hugo-they-go/"/>
+
+
+<title>
+    
+    I Go, Hugo, They Go :: @JvmName(&#34;Parth&#34;) 
+    
+</title>
+
+
+
+
+
+<link rel="stylesheet" href="http://localhost:1313/main.min.522ac355475c3ace8381b077c8865b531630177e7b14b13e239c6a23f767c2a9.css" integrity="sha256-UirDVUdcOs6DgbB3yIZbUxYwF357FLE&#43;I5xqI/dnwqk=" crossorigin="anonymous">
+
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+    <link rel="manifest" href="http://localhost:1313/site.webmanifest">
+    <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="http://localhost:1313/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+
+
+
+  <meta itemprop="name" content="I Go, Hugo, They Go">
+  <meta itemprop="description" content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;...">
+  <meta itemprop="datePublished" content="2020-05-18T08:39:55-07:00">
+  <meta itemprop="dateModified" content="2020-05-18T08:39:55-07:00">
+  <meta itemprop="wordCount" content="2064">
+  <meta itemprop="image" content="http://localhost:1313/img/books.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/img/books.jpg">
+  <meta name="twitter:title" content="I Go, Hugo, They Go">
+  <meta name="twitter:description" content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;...">
+
+
+
+<meta property="og:url" content="http://localhost:1313/posts/2020/05/i-go-hugo-they-go/">
+  <meta property="og:site_name" content="@JvmName(&#34;Parth&#34;)">
+  <meta property="og:title" content="I Go, Hugo, They Go">
+  <meta property="og:description" content="Not exactly &#34;How to get Hugo&#43;Github set up&#34;...">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2020-05-18T08:39:55-07:00">
+    <meta property="article:modified_time" content="2020-05-18T08:39:55-07:00">
+    <meta property="og:image" content="http://localhost:1313/img/books.jpg">
+
+
+
+
+
+
+<meta property="article:published_time" content="2020-05-18 08:39:55 -0700 PDT"/>
+
+
+
+
+
+
+<script data-goatcounter="https://jvmname.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://localhost:1313/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text ">
+                @JvmName</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#67a2c9;
+                   animation-duration:3.5s;">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://localhost:1313/about/">About Me</a></li><li><a href="http://localhost:1313/posts/">Posts</a></li><li><a href="http://localhost:1313/speaking/">Speaking</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+                <span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+   13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+ </svg></span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        10 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="http://localhost:1313/posts/2020/05/i-go-hugo-they-go/">I Go, Hugo, They Go</a>
+      </h1>
+
+      
+        <div class="post-excerpt">Not exactly &#34;How to get Hugo&#43;Github set up&#34;...</div>
+      
+
+      
+        <figure class="post-cover">
+          <img src="http://localhost:1313/img/books.jpg" alt="I Go, Hugo, They Go" />
+          
+          
+        </figure>
+      
+
+      
+
+      <div class="post-content">
+        <p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p>
+<hr>
+<p><strong>Ed. note:</strong> I have no idea how <code>Hugo</code> is intended to be pronounced; it could be <em><code>oo-go</code></em> (á la <em>Hugo Chavez</em>), or <em><code>hyoo-go</code></em>, as the name is pronounced in American English. For the punning purposes of the title, I&rsquo;m assuming it&rsquo;s the latter pronunciation.</p>
+<hr>
+<h3 id="this-shouldnt-be-so-complicated">This shouldn&rsquo;t be so complicated.</h3>
+<p>Somehow, with all the resources online of how to get Hugo + GitHub Pages + Custom Domain set up, I still ran into strange, arcane hurdles.</p>
+<p>Maybe this is because while I <em>technically</em> understand things like static site generators and DNS and CNAME, it&rsquo;s a far cry from actually understanding how to set something up <em>correctly</em>.</p>
+<p><em>Plot twist:</em> I finally got everything configured correctly - proof: you&rsquo;re reading it now! 🧐</p>
+<p>Here was my eventual setup:</p>
+<ul>
+<li>a <a href="https://domains.google/">Google Domains</a> listing for <code>jvmname.dev</code></li>
+<li>a <code>CNAME</code> record in Google Domains pointing from <code>www.jvmname.dev</code> to <code>jvmname.github.io</code></li>
+<li>an <code>A/ANAME</code> record in Google Domains pointing to the <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">Github CDNs</a></li>
+<li>a GitHub repo for the <strong>source</strong> files - e.g. <code>parth-blog-source</code></li>
+<li>a GitHub Pages repo for the <strong>generated</strong> content.
+<ul>
+<li>This one should adhere to the GitHub Pages format: <code>&lt;ghuser&gt;.github.io</code>; for me, that&rsquo;s <code>jvmname.github.io</code></li>
+</ul>
+</li>
+<li>a local Hugo installation</li>
+</ul>
+<p>Here&rsquo;s what you should do to achieve the same setup:</p>
+<h1 id="step-1-get-your-domain">Step 1: Get your domain!</h1>
+<p><a href="https://domains.google">domains.google</a> has lots of fun options, and since you&rsquo;re a developer, definitely consider a <code>*.dev</code> domain 👨🏽‍💻👩🏻‍💻</p>
+<p>All <code>.dev</code> domains are <a href="https://domains.google/tld/security/">USD 12/year</a> (as of 05/2020). I suspect, for most people, that&rsquo;s relatively affordable. If that&rsquo;s the case for you, it might make sense to buy your domain ahead of time, just to stake your claim.</p>
+<hr>
+<h1 id="step-2-install-hugo">Step 2: Install Hugo</h1>
+<p>Follow the well-written <a href="https://gohugo.io/getting-started/quick-start/">Hugo Quickstart Guide</a> with the following caveats:</p>
+<h4 id="caveat-1-name-your-folder-better">Caveat 1: Name your folder better</h4>
+<p><a href="https://gohugo.io/getting-started/quick-start/#step-2-create-a-new-site">Hugo Quickstart Step 2</a> suggests running <code>hugo new site quickstart</code>, but that will make a folder named <code>quickstart</code>, and that&rsquo;s not actually a useful name 🤦🏽‍♂️</p>
+<p>You should use a name that makes sense to you!</p>
+<ul>
+<li><code>website-source</code></li>
+<li><code>hugo-content</code></li>
+<li><code>blog-source</code></li>
+</ul>
+<p>Literally anything! For the purposes of this guide, we&rsquo;re going to pretend you chose the name <code>blog-source</code>.</p>
+<h4 id="caveat-2-customize-your-output-dir">Caveat 2: Customize your output dir</h4>
+<p>By default, the <code>hugo</code> command will emit generated HTML in <code>blog-source/public</code>. Since we&rsquo;re planning on pushing the generated output to <code>&lt;ghuser&gt;.github.io</code>, let&rsquo;s define the output directory as that!</p>
+<p>In your <code>config.toml</code> (or <code>yaml</code>/<code>json</code>), find the key <code>publishDir</code> and update it to:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>publishDir   = <span style="color:#5af78e">&#34;&lt;ghuser&gt;.github.io&#34;</span>
+</span></span></code></pre></div><p><em>Note:</em> if it exists, you should <code>rm -r public</code>, since it&rsquo;s useless now. Don&rsquo;t worry, that whole folder is generated code, so you can blow it away with reckless abandon 💥</p>
+<h4 id="caveat-3-choose-your-theme">Caveat 3: Choose your theme</h4>
+<p>In general, I&rsquo;d recommend a theme that has an <code>exampleSite</code> directory in the theme&rsquo;s Github repo (e.g. <a href="https://github.com/rhazdon/hugo-theme-hello-friend-ng/tree/master/exampleSite"><code>hello-friend-ng/exampleSite/</code></a>).</p>
+<p>This makes it drop-dead-simple to copy the config from <code>exampleSite/config.toml</code> to your top-level <code>config.toml</code>, as opposed to having to comb through documentation to find the necessary configuration parameters - ain&rsquo;t nobody got time for that!</p>
+<hr>
+<h1 id="step-3-set-up-your-source-repo">Step 3: Set up your source repo</h1>
+<p>Ordinarily, you&rsquo;d want to set this up before anything else, but I&rsquo;ve seen reports online of Hugo complaining if the target directory already exists. So we create the <code>blog-source/</code> dir first, and then create the repo!</p>
+<ol>
+<li>in your local <code>blog-source/</code> directory, run <code>git init</code> to create a new local Git repo</li>
+<li>go through your standard <em>&ldquo;create a new repository&rdquo;</em> flow on GitHub</li>
+<li>finally, add the remote origin to your local repo: <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span> git remote add origin git@github.com:&lt;ghuser&gt;/blog-source.git </span></span></code></pre></div></li>
+</ol>
+<p>If you like, you can do a quick test to make sure everything works as expected:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;initial commit&#34;</span>
+</span></span><span style="display:flex;"><span>git push origin master</span></span></code></pre></div>
+<hr>
+<h1 id="step-4-write-revise-repeat">Step 4: Write, Revise, Repeat</h1>
+<p>Time to flex your literary muscles! Write a blog post or two - something you learned at work or on a side project. Maybe you just took a vacation and you&rsquo;ve got some cool photos to turn into a photo essay? Doesn&rsquo;t matter, just be creative ⚡️</p>
+<p>Some useful learnings distilled from my experience creating content through Hugo:</p>
+<h4 id="images-and-hugo-shortcodes">Images and Hugo Shortcodes</h4>
+<p>Hugo defines some <a href="https://gohugo.io/content-management/shortcodes/">markdown-friendly shortcodes</a>. which, oestensibly, is easier than hand-coding HTML.</p>
+<p>I&rsquo;ve found the <code>figure</code> shortcode to be useful for just chucking images into your markdown files:</p>
+<pre tabindex="0"><code>{{&lt; figure src=&#34;/img/spf13.jpg&#34; title=&#34;Steve Francia&#34; &gt;}}
+</code></pre><p>It works for content placed into the <code>/static/*</code> dir, as well as any web content:</p>
+<pre tabindex="0"><code>{{&lt; figure src=&#34;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9&#34; 
 title=&#34;Suspended Cups&#34; 
 attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
-</code></pre><p>I don&rsquo;t write HTML for a living, so, to me, this feels easier than having to read the W3C spec to learn how the <code>&lt;figure></code> tag works.</p><p><em>Note:</em> if you want to do more heavy-weight processing at &ldquo;compile-time&rdquo;, <a href=https://laurakalbag.com/processing-responsive-images-with-hugo/>Laura Kalbag has a great blog post</a> on image processing.</p><h4 id=content-directories>Content Directories</h4><p>AKA <a href=https://gohugo.io/content-management/page-bundles/><em>page bundles</em> </a>in Hugo parlance. They&rsquo;re all arbitrary names, and most themes will have some pre-defined top-level pages in the <code>config.toml</code>. For the theme I use, <code>hello-friend-ng</code>, the defaults were:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[menu]
-</span></span><span style=display:flex><span>  [[menu.main]]
-</span></span><span style=display:flex><span>    identifier = <span style=color:#5af78e>&#34;about&#34;</span>
-</span></span><span style=display:flex><span>    name       = <span style=color:#5af78e>&#34;About&#34;</span>
-</span></span><span style=display:flex><span>    url        = <span style=color:#5af78e>&#34;about/&#34;</span>
-</span></span><span style=display:flex><span>  [[menu.main]]
-</span></span><span style=display:flex><span>    identifier = <span style=color:#5af78e>&#34;posts&#34;</span>
-</span></span><span style=display:flex><span>    name       = <span style=color:#5af78e>&#34;Posts&#34;</span>
-</span></span><span style=display:flex><span>    url        = <span style=color:#5af78e>&#34;posts/&#34;</span>
-</span></span></code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[menu]
-</span></span><span style=display:flex><span> [[menu.main]]
-</span></span><span style=display:flex><span>    identifier = <span style=color:#5af78e>&#34;posts&#34;</span>
-</span></span><span style=display:flex><span>    name       = <span style=color:#5af78e>&#34;Posts&#34;</span>
-</span></span><span style=display:flex><span>    url        = <span style=color:#5af78e>&#34;posts/&#34;</span>
-</span></span><span style=display:flex><span>  [[menu.main]]
-</span></span><span style=display:flex><span>    identifier  = <span style=color:#5af78e>&#34;speaking&#34;</span>
-</span></span><span style=display:flex><span>    name        = <span style=color:#5af78e>&#34;Speaking&#34;</span>
-</span></span><span style=display:flex><span>    url         = <span style=color:#5af78e>&#34;speaking/&#34;</span>
-</span></span><span style=display:flex><span>  [[menu.main]]
-</span></span><span style=display:flex><span>    identifier = <span style=color:#5af78e>&#34;about&#34;</span>
-</span></span><span style=display:flex><span>    name       = <span style=color:#5af78e>&#34;Me&#34;</span>
-</span></span><span style=display:flex><span>    url        = <span style=color:#5af78e>&#34;about/&#34;</span>
-</span></span></code></pre></div><p>⚠️⚠️ If you change the <code>url</code>s for any menu items, just make sure you rename the directory in <code>content/</code> as well - e.g. <code>mv content/posts content/blog</code>.</p><hr><h2 id=step-5-create-github-pages-repo--submodule>Step 5: Create GitHub Pages Repo + Submodule</h2><ol><li><strong>Double-check your Hugo config</strong> - At this point, we haven&rsquo;t set up the DNS infra to support any custom domains, so let&rsquo;s double-check that our main <code>config.toml</code> is using the &ldquo;boring&rdquo; Github-pages base URL:<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span> baseURL     = <span style=color:#5af78e>&#34;&lt;ghuser&gt;.github.io&#34;</span>    </span></span></code></pre></div></li><li><strong>Create the GH Page repo</strong> - follow the steps on <a href=https://help.github.com/en/github/working-with-github-pages/creating-a-github-pages-site>Creating a GitHub Pages site article</a>.</li><li><strong>Clone the repo locally</strong> - <code>git clone git@github.com:&lt;ghuser>/&lt;ghuser>.github.io.git</code></li><li><strong>Link repo as submodule</strong> - In your <strong>blog-sources/</strong> repo, create a submodule link to your GH-page repo:<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span> git submodule add git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git </span></span></code></pre></div></li><li><strong>Kick the tires</strong> - Now that you have a submodule link inside <code>blog-sources/</code>, let&rsquo;s make some commits to make sure everything got hooked up properly on your machine:<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#78787e># in blog-sources</span>
-</span></span><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>git commit -am <span style=color:#5af78e>&#34;committing Hugo content sources&#34;</span> <span style=color:#78787e>#&#34;outer&#34; commit</span>
-</span></span><span style=display:flex><span>git push origin master <span style=color:#78787e># push the sources to `blog-sources`</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>hugo <span style=color:#78787e>#generate the HTML from our sources</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> &lt;ghuser&gt;.github.io <span style=color:#78787e># now we&#39;re inside the submodule</span>
-</span></span><span style=display:flex><span>git add .
-</span></span><span style=display:flex><span>git commit -am <span style=color:#5af78e>&#34;committing Hugo generated HTML&#34;</span> <span style=color:#78787e>#&#34;inner&#34; commit</span>
-</span></span><span style=display:flex><span>git push origin master <span style=color:#78787e># push the generated content to &lt;ghuser&gt;.github.io</span></span></span></code></pre></div></li><li>If all is right with the world, if you go to the GitHub page for <code>blog-sources</code>, you should see your &ldquo;outer&rdquo; commit; ditto for your <code>&lt;ghuser>.github.io</code> repo.</li></ol><p>In fact, wait about 5 minutes for GitHub to build+deploy&mldr;and then if you navigate to <code>www.&lt;ghuser>.github.io</code>, you should see your website! 🎉🎉</p><p>But we&rsquo;re not done yet.</p><hr><h2 id=step-6-deployment>Step 6: Deployment</h2><p>I stole this script in totality from <a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/>Hugo: Host on GitHub</a>. It&rsquo;s useful, if only because it allows us to build+commit+push to GitHub in one line.</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#78787e>#!/bin/sh
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>set</span> -e <span style=color:#78787e># If a command fails then the deploy stops</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>printf</span> <span style=color:#5af78e>&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>hugo <span style=color:#78787e># Build the project.</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>cd</span> &lt;ghuser&gt;.github.io <span style=color:#78787e># Go to generated output folder</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>git add . <span style=color:#78787e># Add changes to git.</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#ff5c57>msg</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;rebuilding site </span><span style=color:#ff6ac1>$(</span>date<span style=color:#ff6ac1>)</span><span style=color:#5af78e>&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>if</span> <span style=color:#ff6ac1>[</span> -n <span style=color:#5af78e>&#34;</span><span style=color:#ff5c57>$*</span><span style=color:#5af78e>&#34;</span> <span style=color:#ff6ac1>]</span>; <span style=color:#ff6ac1>then</span>
-</span></span><span style=display:flex><span>	<span style=color:#ff5c57>msg</span><span style=color:#ff6ac1>=</span><span style=color:#5af78e>&#34;</span><span style=color:#ff5c57>$*</span><span style=color:#5af78e>&#34;</span>
-</span></span><span style=display:flex><span><span style=color:#ff6ac1>fi</span>
-</span></span><span style=display:flex><span>git commit -m <span style=color:#5af78e>&#34;</span><span style=color:#ff5c57>$msg</span><span style=color:#5af78e>&#34;</span> <span style=color:#78787e># Commit changes.</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>git push origin master <span style=color:#78787e># Push source and build repos.</span>
-</span></span></code></pre></div><p>Assuming you put it in a file <code>deploy.sh</code>, you&rsquo;d use it from <code>blog-sources/</code> as:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>./deploy.sh <span style=color:#5af78e>&#34;my optional commit message&#34;</span>
-</span></span></code></pre></div><p>A few notes:</p><ul><li>this script &ldquo;fails fast&rdquo;: e.g., it will not push to <code>master</code> if there&rsquo;s no staged changes to commit, even if there are other commits that could be pushed</li><li>this script leaves you in the <code>&lt;ghuser>.github.io</code> submodule</li><li>⚠️ this script <strong>does not</strong> stage/commit changes in the main <code>blog-sources</code> repository</li></ul><hr><h2 id=step-7-configure-custom-domain--setup-dns>Step 7: Configure Custom Domain + Setup DNS</h2><p>So close to the end! For this section, I&rsquo;m assuming your custom domain is <code>example.dev</code>.</p><h4 id=71-google-domains-config>7.1: Google Domains Config</h4><p>Here&rsquo;s what you&rsquo;ll need to do:</p><ol><li><p>create a <a href=https://dnsmadeeasy.com/services/anamerecords/><code>CNAME</code> entry</a> to alias <code>www.example.dev</code> &ndash;> <code>&lt;ghuser>.github.io</code></p><p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users&rsquo; browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p></li><li><p>create an <a href=https://dnsmadeeasy.com/services/anamerecords/><code>A/ANAME</code> record</a> to alias <code>example.dev</code> &ndash;> <a href=https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain>GitHub Pages CDN</a> (~equivalent to <code>&lt;ghuser>.github.io</code>).</p><p>At the time of this writing (05/2020), the four IP addresses you&rsquo;ll need to alias are:</p><pre tabindex=0><code>185.199.108.153
+</code></pre><p>I don&rsquo;t write HTML for a living, so, to me, this feels easier than having to read the W3C spec to learn how the <code>&lt;figure&gt;</code> tag works.</p>
+<p><em>Note:</em> if you want to do more heavy-weight processing at &ldquo;compile-time&rdquo;, <a href="https://laurakalbag.com/processing-responsive-images-with-hugo/">Laura Kalbag has a great blog post</a> on image processing.</p>
+<h4 id="content-directories">Content Directories</h4>
+<p>AKA <a href="https://gohugo.io/content-management/page-bundles/"><em>page bundles</em> </a> in Hugo parlance. They&rsquo;re all arbitrary names, and most themes will have some pre-defined top-level pages in the <code>config.toml</code>. For the theme I use, <code>hello-friend-ng</code>, the defaults were:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[menu]
+</span></span><span style="display:flex;"><span>  [[menu.main]]
+</span></span><span style="display:flex;"><span>    identifier = <span style="color:#5af78e">&#34;about&#34;</span>
+</span></span><span style="display:flex;"><span>    name       = <span style="color:#5af78e">&#34;About&#34;</span>
+</span></span><span style="display:flex;"><span>    url        = <span style="color:#5af78e">&#34;about/&#34;</span>
+</span></span><span style="display:flex;"><span>  [[menu.main]]
+</span></span><span style="display:flex;"><span>    identifier = <span style="color:#5af78e">&#34;posts&#34;</span>
+</span></span><span style="display:flex;"><span>    name       = <span style="color:#5af78e">&#34;Posts&#34;</span>
+</span></span><span style="display:flex;"><span>    url        = <span style="color:#5af78e">&#34;posts/&#34;</span>
+</span></span></code></pre></div><p>Feel free to change these names or URLs to match your preferences. For example, this is my <code>config.toml</code>&rsquo;s menu settings (as of 05/2020):</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span>[menu]
+</span></span><span style="display:flex;"><span> [[menu.main]]
+</span></span><span style="display:flex;"><span>    identifier = <span style="color:#5af78e">&#34;posts&#34;</span>
+</span></span><span style="display:flex;"><span>    name       = <span style="color:#5af78e">&#34;Posts&#34;</span>
+</span></span><span style="display:flex;"><span>    url        = <span style="color:#5af78e">&#34;posts/&#34;</span>
+</span></span><span style="display:flex;"><span>  [[menu.main]]
+</span></span><span style="display:flex;"><span>    identifier  = <span style="color:#5af78e">&#34;speaking&#34;</span>
+</span></span><span style="display:flex;"><span>    name        = <span style="color:#5af78e">&#34;Speaking&#34;</span>
+</span></span><span style="display:flex;"><span>    url         = <span style="color:#5af78e">&#34;speaking/&#34;</span>
+</span></span><span style="display:flex;"><span>  [[menu.main]]
+</span></span><span style="display:flex;"><span>    identifier = <span style="color:#5af78e">&#34;about&#34;</span>
+</span></span><span style="display:flex;"><span>    name       = <span style="color:#5af78e">&#34;Me&#34;</span>
+</span></span><span style="display:flex;"><span>    url        = <span style="color:#5af78e">&#34;about/&#34;</span>
+</span></span></code></pre></div><p>⚠️⚠️ If you change the <code>url</code>s for any menu items, just make sure you rename the directory in <code>content/</code> as well - e.g. <code>mv content/posts content/blog</code>.</p>
+<hr>
+<h2 id="step-5-create-github-pages-repo--submodule">Step 5: Create GitHub Pages Repo + Submodule</h2>
+<ol>
+<li><strong>Double-check your Hugo config</strong> - At this point, we haven&rsquo;t set up the DNS infra to support any custom domains, so let&rsquo;s double-check that our main <code>config.toml</code> is using the &ldquo;boring&rdquo; Github-pages base URL:
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> baseURL     = <span style="color:#5af78e">&#34;&lt;ghuser&gt;.github.io&#34;</span>    </span></span></code></pre></div></li>
+<li><strong>Create the GH Page repo</strong> - follow the steps on <a href="https://help.github.com/en/github/working-with-github-pages/creating-a-github-pages-site">Creating a GitHub Pages site article</a>.</li>
+<li><strong>Clone the repo locally</strong> - <code>git clone git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git</code></li>
+<li><strong>Link repo as submodule</strong> - In your <strong>blog-sources/</strong> repo, create a submodule link to your GH-page repo:
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> git submodule add git@github.com:&lt;ghuser&gt;/&lt;ghuser&gt;.github.io.git </span></span></code></pre></div></li>
+<li><strong>Kick the tires</strong> - Now that you have a submodule link inside <code>blog-sources/</code>, let&rsquo;s make some commits to make sure everything got hooked up properly on your machine:
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#78787e"># in blog-sources</span>
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;committing Hugo content sources&#34;</span> <span style="color:#78787e">#&#34;outer&#34; commit</span>
+</span></span><span style="display:flex;"><span>git push origin master <span style="color:#78787e"># push the sources to `blog-sources`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hugo <span style="color:#78787e">#generate the HTML from our sources</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> &lt;ghuser&gt;.github.io <span style="color:#78787e"># now we&#39;re inside the submodule</span>
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git commit -am <span style="color:#5af78e">&#34;committing Hugo generated HTML&#34;</span> <span style="color:#78787e">#&#34;inner&#34; commit</span>
+</span></span><span style="display:flex;"><span>git push origin master <span style="color:#78787e"># push the generated content to &lt;ghuser&gt;.github.io</span></span></span></code></pre></div></li>
+<li>If all is right with the world, if you go to the GitHub page for <code>blog-sources</code>, you should see your &ldquo;outer&rdquo; commit; ditto for your <code>&lt;ghuser&gt;.github.io</code> repo.</li>
+</ol>
+<p>In fact, wait about 5 minutes for GitHub to build+deploy&hellip;and then if you navigate to <code>www.&lt;ghuser&gt;.github.io</code>, you should see your website! 🎉🎉</p>
+<p>But we&rsquo;re not done yet.</p>
+<hr>
+<h2 id="step-6-deployment">Step 6: Deployment</h2>
+<p>I stole this script in totality from <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/">Hugo: Host on GitHub</a>. It&rsquo;s useful, if only because it allows us to build+commit+push to GitHub in one line.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#78787e">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">set</span> -e <span style="color:#78787e"># If a command fails then the deploy stops</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">printf</span> <span style="color:#5af78e">&#34;\033[0;32mDeploying updates to GitHub...\033[0m\n&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>hugo <span style="color:#78787e"># Build the project.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> &lt;ghuser&gt;.github.io <span style="color:#78787e"># Go to generated output folder</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git add . <span style="color:#78787e"># Add changes to git.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">msg</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;rebuilding site </span><span style="color:#ff6ac1">$(</span>date<span style="color:#ff6ac1">)</span><span style="color:#5af78e">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">if</span> <span style="color:#ff6ac1">[</span> -n <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$*</span><span style="color:#5af78e">&#34;</span> <span style="color:#ff6ac1">]</span>; <span style="color:#ff6ac1">then</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#ff5c57">msg</span><span style="color:#ff6ac1">=</span><span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$*</span><span style="color:#5af78e">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">fi</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#5af78e">&#34;</span><span style="color:#ff5c57">$msg</span><span style="color:#5af78e">&#34;</span> <span style="color:#78787e"># Commit changes.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git push origin master <span style="color:#78787e"># Push source and build repos.</span>
+</span></span></code></pre></div><p>Assuming you put it in a file <code>deploy.sh</code>, you&rsquo;d use it from <code>blog-sources/</code> as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>./deploy.sh <span style="color:#5af78e">&#34;my optional commit message&#34;</span>
+</span></span></code></pre></div><p>A few notes:</p>
+<ul>
+<li>this script &ldquo;fails fast&rdquo;: e.g., it will not push to <code>master</code> if there&rsquo;s no staged changes to commit, even if there are other commits that could be pushed</li>
+<li>this script leaves you in the <code>&lt;ghuser&gt;.github.io</code> submodule</li>
+<li>⚠️ this script <strong>does not</strong> stage/commit changes in the main <code>blog-sources</code> repository</li>
+</ul>
+<hr>
+<h2 id="step-7-configure-custom-domain--setup-dns">Step 7: Configure Custom Domain + Setup DNS</h2>
+<p>So close to the end! For this section, I&rsquo;m assuming your custom domain is <code>example.dev</code>.</p>
+<h4 id="71-google-domains-config">7.1: Google Domains Config</h4>
+<p>Here&rsquo;s what you&rsquo;ll need to do:</p>
+<ol>
+<li>
+<p>create a <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>CNAME</code> entry</a> to alias <code>www.example.dev</code> &ndash;&gt; <code>&lt;ghuser&gt;.github.io</code></p>
+<p>⚠️ <strong>the <code>www.</code> is crucial</strong>; without it, your users&rsquo; browsers won&rsquo;t be redirected from <code>www.example.dev</code> to <code>example.dev</code></p>
+</li>
+<li>
+<p>create an <a href="https://dnsmadeeasy.com/services/anamerecords/"><code>A/ANAME</code> record</a> to alias <code>example.dev</code> &ndash;&gt; <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub Pages CDN</a> (~equivalent to <code>&lt;ghuser&gt;.github.io</code>).</p>
+<p>At the time of this writing (05/2020), the four IP addresses you&rsquo;ll need to alias are:</p>
+<pre tabindex="0"><code>185.199.108.153
 185.199.109.153
 185.199.110.153
 185.199.111.153
-</code></pre></li></ol><p>This post is long enough, and I&rsquo;ll be honest, I don&rsquo;t <em>fully</em> understand the difference between <code>example.dev</code> and <code>www.example.dev</code>, so I&rsquo;ll leave that to someobody else to explain. All I know is that I ended up needing both 🤷🏾‍♂️</p><p>There&rsquo;s 2 things that weren&rsquo;t apparent to me when configuring this in Google Domains:</p><ol><li>the <code>CNAME</code> record setup accepts <code>www.example.dev</code> and then converts it to <code>www</code>.
-<strong>This is okay, and is expected.</strong></li><li>the <code>ANAME</code> (just <code>A</code> in the config page) will not accept <code>example.dev</code>, you&rsquo;ll have to put <code>@</code>.
-<strong>This is okay, and is expected.</strong></li></ol><p>Besides that convolution (I&rsquo;m sure that decision made sense to <em>someone</em>) the Google Domains page is pretty straightforward, but just to check your work, this is what my config looks like (as of 05/2020):<figure><img src=https://jvmname.dev/img/google-domain-setup.png></figure></p><p>⚠️ Note: I did this while I was based in Arizona (US west coast), and so probably experienced very fast propagation times from Google&rsquo;s DNS servers ⚡️. Google claims that propagating these changes can take up to 48 hours; if things aren&rsquo;t working, but you&rsquo;re 115% sure that you typed everything in correctly, come back in a day and try again.</p><h4 id=72-hugogithub-config>7.2: Hugo/GitHub Config</h4><p>Here, we&rsquo;ll be telling Hugo and GitHub what URL to use.</p><p>You&rsquo;ll need to update the <code>baseURL</code> in the <code>config.toml</code> file to point to your fancy new domain:<div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span> baseURL = <span style=color:#5af78e>&#34;https://example.dev&#34;</span>    </span></span></code></pre></div></p><p>Additionally, GitHub requires a little config file to be at the top-level of the <code>*.github.io</code> repo so its CDN knows how to generate the redirects. Instead of checking this file into the repo directly, let&rsquo;s put it in the <strong>sources</strong> repo, so we can be assured it&rsquo;ll always be copied over when we generate a new website:</p><p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#ff5c57>cd</span> static  <span style=color:#78787e>#in blog-sources/</span>
-</span></span><span style=display:flex><span>touch CNAME
-</span></span><span style=display:flex><span><span style=color:#ff5c57>echo</span> example.dev &gt; CNAME</span></span></code></pre></div>(from the <a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain>Hugo Docs</a>)</p><p>Fun fact, this is the same file that&rsquo;s generated if you go to your Github repo settings -> <strong>Github Pages</strong> -> <strong>Custom domain</strong> -> and enter <code>example.dev</code></p><p>At this point, run <code>./deploy.sh</code>, then go to your repo settings for <code>&lt;ghuser>.github.io</code>, find the section called <strong>GitHub Pages</strong>, and enable <code>✅ Enforce HTTPS</code>.</p><hr><h2 id=step-8-the-waiting-game>Step 8: The waiting game</h2><p>That&rsquo;s all the &ldquo;work&rdquo; you have to do! Clicking the HTTPS box in your settings will kick off a bunch of automated processes on GitHub&rsquo;s side to set up the correct certificate chains using Let&rsquo;s Encrypt.</p><p>This is necessary because <a href=https://domains.google/tld/security/>Google Domains <em>requires</em> all traffic</a> to your <code>(www.)example.dev</code> domain(s) to be encrypted by way of <a href=https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security#HSTS_mechanism_overview><strong>H</strong>TTP <strong>S</strong>trict <strong>T</strong>ransport <strong>S</strong>ecurity (HSTS)</a>. If you tried to navigate to <code>http://example.dev</code> <em>without</em> GitHub&rsquo;s cert chain set up, you would get an error like this:</p><figure><a href=https://i.stack.imgur.com/83l43.png><img src=https://i.stack.imgur.com/83l43.png width=450></a></figure><p>In my experience, I had to play the waiting game for ~2 hours; depending on your location and whatever service worker load GitHub is experiencing at the moment, it might take more or less time to get your HTTPS cert set up. <a href=https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain>GitHub claims</a> it can take up for 24 hours for the HTTPS option to even be <em>available</em> ⏳</p><h2 id=step-9-success->Step 9: Success 🎉</h2><p>At some point, the HTTPS certificate gods will smile upon you, and your GitHub Page will have an HTTPS certificate. You&rsquo;ll know that the gods have accepted your blood-offering because you&rsquo;ll see a little green banner in your GitHub repo <code>&lt;ghuser>.github.io</code> settings like this:</p><figure><img src=https://jvmname.dev/img/gh-page-published.png></figure><p>That&rsquo;s the ballgame! Everything should look and work exactly as when you run <code>hugo server</code>!</p><p>Feel free to test out all the various combinations to get to your website:</p><ul><li><a href=https://www.example.dev>www.example.dev</a></li><li><a href=http://example.dev>http://example.dev</a></li><li><a href=http://www.example.dev>http://www.example.dev</a></li><li><a href=http://example.dev>example.dev</a></li><li><a href=https://example.dev>https://example.dev</a></li></ul><p>All of these should resolve to <code>https://example.dev</code>. If not, Check your DNS settings in Google Domains, and also maybe your CNAME file in your <code>blog-sources</code> project.</p><hr><p>Thanks for reading along! Hopefully this guide helps someone, or it makes you realize that you could pay <a href=https://ghost.org>Ghost</a> $30/mo to avoid this hassle 😅</p><hr><h2 id=references--sources--extra-reading>References | Sources | Extra Reading</h2><ol><li>Hugo - Hosting on GitHub: <a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain>https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain</a></li><li>GitHub - Managing a custom domain for your GitHub Pages site: <a href=https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain>https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain</a></li><li>Creating and deploying your first Hugo site to Github pages: <a href=https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d>https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d</a></li></ol></div></article><hr><div class=post-info><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-2064 Words</p><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-2020-05-18 08:39 -0700</p></div><div class=pagination><div class=pagination__buttons><span class="button previous"><a href=https://jvmname.dev/posts/2020/06/static-in-kotlin/><span class=button__icon>←</span>
-<span class=button__text>Static in Kotlin</span>
-</a></span><span class="button next"><a href=https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/><span class=button__text>Tracking Performance in Kotlin Suspending Functions</span>
-<span class=button__icon>→</span></a></span></div></div></main></div><footer class=footer></footer></div><script type=text/javascript src=https://jvmname.dev/bundle.min.ff8546a88648331ab9d3884ad6a8cfbf5f5a9ee63e25453fb0e756210368c791330b8aafc6dc6a4f17fbfdea282bab38804079c4575a97a90af148a8f2791856.js integrity="sha512-/4VGqIZIMxq504hK1qjPv19anuY+JUU/sOdWIQNox5EzC4qvxtxqTxf7/eooK6s4gEB5xFdal6kK8Uio8nkYVg=="></script></body></html>
+</code></pre></li>
+</ol>
+<p>This post is long enough, and I&rsquo;ll be honest, I don&rsquo;t <em>fully</em> understand the difference between <code>example.dev</code> and <code>www.example.dev</code>, so I&rsquo;ll leave that to someobody else to explain. All I know is that I ended up needing both 🤷🏾‍♂️</p>
+<p>There&rsquo;s 2 things that weren&rsquo;t apparent to me when configuring this in Google Domains:</p>
+<ol>
+<li>the <code>CNAME</code> record setup accepts <code>www.example.dev</code> and then converts it to <code>www</code>.
+<strong>This is okay, and is expected.</strong></li>
+<li>the <code>ANAME</code> (just <code>A</code> in the config page) will not accept <code>example.dev</code>, you&rsquo;ll have to put <code>@</code>.
+<strong>This is okay, and is expected.</strong></li>
+</ol>
+<p>Besides that convolution (I&rsquo;m sure that decision made sense to <em>someone</em>) the Google Domains page is pretty straightforward, but just to check your work, this is what my config looks like (as of 05/2020):
+<figure><img src="http://localhost:1313/img/google-domain-setup.png">
+</figure>
+</p>
+<p>⚠️ Note: I did this while I was based in Arizona (US west coast), and so probably experienced very fast propagation times from Google&rsquo;s DNS servers ⚡️. Google claims that propagating these changes can take up to 48 hours; if things aren&rsquo;t working, but you&rsquo;re 115% sure that you typed everything in correctly, come back in a day and try again.</p>
+<h4 id="72-hugogithub-config">7.2: Hugo/GitHub Config</h4>
+<p>Here, we&rsquo;ll be telling Hugo and GitHub what URL to use.</p>
+<p>You&rsquo;ll need to update the <code>baseURL</code> in the <code>config.toml</code> file to point to your fancy new domain:
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-toml" data-lang="toml"><span style="display:flex;"><span> baseURL = <span style="color:#5af78e">&#34;https://example.dev&#34;</span>    </span></span></code></pre></div></p>
+<p>Additionally, GitHub requires a little config file to be at the top-level of the <code>*.github.io</code> repo so its CDN knows how to generate the redirects. Instead of checking this file into the repo directly, let&rsquo;s put it in the <strong>sources</strong> repo, so we can be assured it&rsquo;ll always be copied over when we generate a new website:</p>
+<p><div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">cd</span> static  <span style="color:#78787e">#in blog-sources/</span>
+</span></span><span style="display:flex;"><span>touch CNAME
+</span></span><span style="display:flex;"><span><span style="color:#ff5c57">echo</span> example.dev &gt; CNAME</span></span></code></pre></div>
+(from the <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain">Hugo Docs</a>)</p>
+<p>Fun fact, this is the same file that&rsquo;s generated if you go to your Github repo settings -&gt; <strong>Github Pages</strong> -&gt; <strong>Custom domain</strong> -&gt; and enter <code>example.dev</code></p>
+<p>At this point, run <code>./deploy.sh</code>, then go to your repo settings for <code>&lt;ghuser&gt;.github.io</code>, find the section called <strong>GitHub Pages</strong>, and enable <code>✅ Enforce HTTPS</code>.</p>
+<hr>
+<h2 id="step-8-the-waiting-game">Step 8: The waiting game</h2>
+<p>That&rsquo;s all the &ldquo;work&rdquo; you have to do! Clicking the HTTPS box in your settings will kick off a bunch of automated processes on GitHub&rsquo;s side to set up the correct certificate chains using Let&rsquo;s Encrypt.</p>
+<p>This is necessary because <a href="https://domains.google/tld/security/">Google Domains <em>requires</em> all traffic</a> to your <code>(www.)example.dev</code> domain(s) to be encrypted by way of <a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security#HSTS_mechanism_overview"><strong>H</strong>TTP <strong>S</strong>trict <strong>T</strong>ransport <strong>S</strong>ecurity (HSTS)</a>. If you tried to navigate to <code>http://example.dev</code> <em>without</em> GitHub&rsquo;s cert chain set up, you would get an error like this:</p>
+<figure><a href="https://i.stack.imgur.com/83l43.png"><img src="https://i.stack.imgur.com/83l43.png" width="450"></a>
+</figure>
+
+<p>In my experience, I had to play the waiting game for ~2 hours; depending on your location and whatever service worker load GitHub is experiencing at the moment, it might take more or less time to get your HTTPS cert set up. <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub claims</a> it can take up for 24 hours for the HTTPS option to even be <em>available</em> ⏳</p>
+<h2 id="step-9-success-">Step 9: Success 🎉</h2>
+<p>At some point, the HTTPS certificate gods will smile upon you, and your GitHub Page will have an HTTPS certificate. You&rsquo;ll know that the gods have accepted your blood-offering because you&rsquo;ll see a little green banner in your GitHub repo <code>&lt;ghuser&gt;.github.io</code> settings like this:</p>
+<figure><img src="http://localhost:1313/img/gh-page-published.png">
+</figure>
+
+<p>That&rsquo;s the ballgame! Everything should look and work exactly as when you run <code>hugo server</code>!</p>
+<p>Feel free to test out all the various combinations to get to your website:</p>
+<ul>
+<li><a href="https://www.example.dev">www.example.dev</a></li>
+<li><a href="http://example.dev">http://example.dev</a></li>
+<li><a href="http://www.example.dev">http://www.example.dev</a></li>
+<li><a href="http://example.dev">example.dev</a></li>
+<li><a href="https://example.dev">https://example.dev</a></li>
+</ul>
+<p>All of these should resolve to <code>https://example.dev</code>. If not, Check your DNS settings in Google Domains, and also maybe your CNAME file in your <code>blog-sources</code> project.</p>
+<hr>
+<p>Thanks for reading along! Hopefully this guide helps someone, or it makes you realize that you could pay <a href="https://ghost.org">Ghost</a> $30/mo to avoid this hassle 😅</p>
+<hr>
+<h2 id="references--sources--extra-reading">References | Sources | Extra Reading</h2>
+<ol>
+<li>Hugo - Hosting on GitHub: <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain">https://gohugo.io/hosting-and-deployment/hosting-on-github/#use-a-custom-domain</a></li>
+<li>GitHub - Managing a custom domain for your GitHub Pages site: <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain</a></li>
+<li>Creating and deploying your first Hugo site to Github pages: <a href="https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d">https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d</a></li>
+</ol>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        2064 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2020-05-18 08:39 -0700
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="http://localhost:1313/posts/2020/06/static-in-kotlin/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">Static in Kotlin</span>
+                </a>
+            </span>
+            
+
+            
+            <span class="button next">
+                <a href="http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/">
+                    <span class="button__text">Tracking Performance in Kotlin Suspending Functions</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="http://localhost:1313/bundle.min.ff8546a88648331ab9d3884ad6a8cfbf5f5a9ee63e25453fb0e756210368c791330b8aafc6dc6a4f17fbfdea282bab38804079c4575a97a90af148a8f2791856.js" integrity="sha512-/4VGqIZIMxq504hK1qjPv19anuY&#43;JUU/sOdWIQNox5EzC4qvxtxqTxf7/eooK6s4gEB5xFdal6kK8Uio8nkYVg=="></script>
+
+
+
+
+    </body>
+</html>

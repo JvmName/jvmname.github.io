@@ -1,1 +1,27 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on @JvmName("Parth")</title><link>https://jvmname.dev/categories/</link><description>Recent content in Categories on @JvmName("Parth")</description><generator>Hugo</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 29 Mar 2020 23:14:00 -0700</lastBuildDate><atom:link href="https://jvmname.dev/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Firebase</title><link>https://jvmname.dev/categories/firebase/</link><pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate><guid>https://jvmname.dev/categories/firebase/</guid><description/></item><item><title>Kotlin</title><link>https://jvmname.dev/categories/kotlin/</link><pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate><guid>https://jvmname.dev/categories/kotlin/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on @JvmName(&#34;Parth&#34;)</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on @JvmName(&#34;Parth&#34;)</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 29 Mar 2020 23:14:00 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Firebase</title>
+      <link>http://localhost:1313/categories/firebase/</link>
+      <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
+      <guid>http://localhost:1313/categories/firebase/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kotlin</title>
+      <link>http://localhost:1313/categories/kotlin/</link>
+      <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
+      <guid>http://localhost:1313/categories/kotlin/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

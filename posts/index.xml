@@ -1,9 +1,27 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on @JvmName("Parth")</title><link>https://jvmname.dev/posts/</link><description>Recent content in Posts on @JvmName("Parth")</description><generator>Hugo -- gohugo.io</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 12 Sep 2025 11:13:04 -0700</lastBuildDate><atom:link href="https://jvmname.dev/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude's Flattery and Pessimistic Prompting</title><link>https://jvmname.dev/posts/2025/09/claudes-flattery-and-pessimistic-prompting/</link><pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate><guid>https://jvmname.dev/posts/2025/09/claudes-flattery-and-pessimistic-prompting/</guid><description>&lt;p&gt;I&amp;rsquo;ve been interviewing for a new role recently! Unlike the last time I was on the market, there&amp;rsquo;s fun new AI
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on @JvmName(&#34;Parth&#34;)</title>
+        <link>http://localhost:1313/posts/</link>
+        <description>Recent content in Posts on @JvmName(&#34;Parth&#34;)</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+        <lastBuildDate>Fri, 12 Sep 2025 11:13:04 -0700</lastBuildDate>
+        <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Claude&#39;s Flattery and Pessimistic Prompting</title>
+            <link>http://localhost:1313/posts/2025/09/claudes-flattery-and-pessimistic-prompting/</link>
+            <pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate>
+            
+            <guid>http://localhost:1313/posts/2025/09/claudes-flattery-and-pessimistic-prompting/</guid>
+            <description>&lt;p&gt;I&amp;rsquo;ve been interviewing for a new role recently! Unlike the last time I was on the market, there&amp;rsquo;s fun new AI
 tooling to help me.&lt;/p&gt;
 &lt;p&gt;I&amp;rsquo;ve been pretty impressed with Claude and Claude Codes (CC) – it&amp;rsquo;s been incredibly helpful for banal things like
 debugging a SQL &lt;code&gt;CREATE VIEW&lt;/code&gt; and batch-editing 25+ &lt;code&gt;build.gradle&lt;/code&gt; files. It&amp;rsquo;s also great for code review, but it&amp;rsquo;s also
 dangerous: even when I thought I was being careful, it was easy for a skeptical, vigilant, and strikingly handsome
-(Claude said so!) developer like myself to be lulled into a false sense of security about my code.&lt;/p&gt;</description><content type="html"><![CDATA[<p>I&rsquo;ve been interviewing for a new role recently! Unlike the last time I was on the market, there&rsquo;s fun new AI
+(Claude said so!) developer like myself to be lulled into a false sense of security about my code.&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<p>I&rsquo;ve been interviewing for a new role recently! Unlike the last time I was on the market, there&rsquo;s fun new AI
 tooling to help me.</p>
 <p>I&rsquo;ve been pretty impressed with Claude and Claude Codes (CC) – it&rsquo;s been incredibly helpful for banal things like
 debugging a SQL <code>CREATE VIEW</code> and batch-editing 25+ <code>build.gradle</code> files. It&rsquo;s also great for code review, but it&rsquo;s also
@@ -88,17 +106,17 @@ didn&rsquo;t meet staff engineer expectations:</p>
 in production), and <strong>error handling</strong> (no network failure scenarios). Staff engineers are expected to deliver
 production-ready code with comprehensive testing and operational considerations, not just working features.</p></blockquote>
 <p>Claude&rsquo;s initial review wasn&rsquo;t pure flattery but was equally dangerous - it praised my work without focusing on what
-could get me rejected. But when prompted more pointedly, Claude found the issues immediately! I&rsquo;d missed handling some
-error
-cases, and I&rsquo;d left some debug logging in without wrapping it. These were 5-minute fixes! The requirements literally
-said <em>&ldquo;production codebase&rdquo;</em> – completely unambiguous.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+could get me rejected. But when prompted more pointedly, Claude found the issues immediately! 🤦🏾‍♂️ I&rsquo;d missed handling
+some error cases, and I&rsquo;d left some debug logging in without wrapping it. These were 5-minute fixes! The requirements
+literally said <em>&ldquo;production codebase&rdquo;</em> – completely unambiguous.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 <h1 id="learning-to-prompt-pessimistically">Learning to prompt, pessimistically</h1>
 <p>There&rsquo;s one top-line takeaway that bears repeating again and again:</p>
 <h2 id="do-not-trust-any-llmai-tool-to-tell-you-the-truth">Do not trust any LLM/AI tool to tell you the truth</h2>
 <p>*without independent verification</p>
 <p>These tools are big <a href="https://en.wikipedia.org/wiki/Confirmation_bias">confirmation bias</a> machines – there is no
-objective truth to be had (does an AI even <em>know</em> what&rsquo;s true?), there is only an unnecessarily-confident answer that sounds oddly like what you wanted to hear anyway.</p>
-<p>Now, instead of taking Claude at face-value<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>, I specifically prompt against the most pessimistic version of
+objective truth to be had<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>, there is only an unnecessarily-confident answer that sounds oddly like what you wanted to
+hear anyway.</p>
+<p>Now, instead of taking Claude at face-value<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>, I specifically prompt against the most pessimistic version of
 what I want. Some examples:</p>
 <table>
   <thead>
@@ -137,18 +155,32 @@ little boy I am.</p>
 </li>
 <li id="fn:2">
 <p>Yes, it should also have been obvious to me, the human. But sometimes, you stare at a project for too long and you
-lose
-all sense of objectivity and reason.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+lose all sense of objectivity and reason.&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:3">
+<p>What is truth to a weights-based AI model anyway? Can AI even <em>know</em> what truth
+is? <a href="https://news.harvard.edu/gazette/story/2025/07/does-ai-understand/">Today, no; eventually maybe</a> if you believe
+people who have a vested interest in saying yes.&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
 <p>Everyone <em>claims</em> to take LLM outputs with a grain of salt…but I also know at least one person who&rsquo;s using ChatGPT
-as their therapist 😬&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+as their therapist 😬&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </div>
-]]></content></item><item><title>Your YAML could be DRYer</title><link>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</link><pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate><guid>https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/</guid><description>&lt;p&gt;Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.&lt;/p&gt;
-&lt;p&gt;However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to &lt;a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself"&gt;DRY&lt;/a&gt; up the YAML config files.&lt;/p&gt;
-&lt;p&gt;However, with a cool new &lt;sup id="fnref:1"&gt;&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref"&gt;1&lt;/a&gt;&lt;/sup&gt; feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!&lt;/p&gt;</description><content type="html"><![CDATA[<p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Your YAML could be DRYer</title>
+            <link>http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/</link>
+            <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+            
+            <guid>http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/</guid>
+            <description>&lt;p&gt;Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.&lt;/p&gt;
+&lt;p&gt;However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to &lt;a href=&#34;https://en.wikipedia.org/wiki/Don%27t_repeat_yourself&#34;&gt;DRY&lt;/a&gt; up the YAML config files.&lt;/p&gt;
+&lt;p&gt;However, with a cool new &lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<p>Github Actions are the go-to continuous integration tool for plenty of reasons - chief among them: first-party support with Github, pretty decent performance, and relatively cheap runner instances.</p>
 <p>However, one place Github Actions has fallen short relative to other YAML-based players in the space (namely CircleCI) has been the inability to <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">DRY</a> up the YAML config files.</p>
 <p>However, with a cool new <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> feature called Composite Run Steps, your repeated shell script invocations can now happily live in a separate YAML file!</p>
 <h2 id="dont-read-the-docs">Don&rsquo;t read the docs</h2>
@@ -229,8 +261,18 @@ as their therapist 😬&#160;<a href="#fnref:3" class="footnote-backref" role="d
 </li>
 </ol>
 </div>
-]]></content></item><item><title>Don't Worry, Just Launch</title><link>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</link><pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate><guid>https://jvmname.dev/posts/2021/01/dont-worry-just-launch/</guid><description>&lt;p&gt;I&amp;rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&amp;rsquo;ve been on the Kotlin train 100%.&lt;br&gt;
-Despite all that Kotlin experience, the new &lt;a href="https://play.google.com/store/apps/details?id=com.hatchcard.android"&gt;Hatch Credit Android app&lt;/a&gt; (launching Q1-2021✨) is the first time I&amp;rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.&lt;/p&gt;</description><content type="html"><![CDATA[<p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
+]]></content>
+        </item>
+        
+        <item>
+            <title>Don&#39;t Worry, Just Launch</title>
+            <link>http://localhost:1313/posts/2021/01/dont-worry-just-launch/</link>
+            <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
+            
+            <guid>http://localhost:1313/posts/2021/01/dont-worry-just-launch/</guid>
+            <description>&lt;p&gt;I&amp;rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&amp;rsquo;ve been on the Kotlin train 100%.&lt;br&gt;
+Despite all that Kotlin experience, the new &lt;a href=&#34;https://play.google.com/store/apps/details?id=com.hatchcard.android&#34;&gt;Hatch Credit Android app&lt;/a&gt; (launching Q1-2021✨) is the first time I&amp;rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
 Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p>
 <p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Analytics</span> {
@@ -333,19 +375,29 @@ Despite all that Kotlin experience, the new <a href="https://play.google.com/sto
 <li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow">https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow</a></li>
 <li>Kotlin Docs - Async: <a href="https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async">https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async</a></li>
 </ul>
-]]></content></item><item><title>Static in Kotlin</title><link>https://jvmname.dev/posts/2020/06/static-in-kotlin/</link><pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate><guid>https://jvmname.dev/posts/2020/06/static-in-kotlin/</guid><description>&lt;hr&gt;
+]]></content>
+        </item>
+        
+        <item>
+            <title>Static in Kotlin</title>
+            <link>http://localhost:1313/posts/2020/06/static-in-kotlin/</link>
+            <pubDate>Tue, 23 Jun 2020 16:42:26 -0700</pubDate>
+            
+            <guid>http://localhost:1313/posts/2020/06/static-in-kotlin/</guid>
+            <description>&lt;hr&gt;
 &lt;p&gt;&lt;em&gt;ed. note:&lt;/em&gt; This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&amp;rsquo;s possible the Kotlin compiler has gotten smarter since then!&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;My &lt;a href="https://www.hatchcard.com/"&gt;current company&lt;/a&gt; uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: &lt;a href="http://www.slf4j.org/"&gt;SLF4J&lt;/a&gt; + &lt;a href="http://logback.qos.ch/"&gt;Logback&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;My &lt;a href=&#34;https://www.hatchcard.com/&#34;&gt;current company&lt;/a&gt; uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: &lt;a href=&#34;http://www.slf4j.org/&#34;&gt;SLF4J&lt;/a&gt; + &lt;a href=&#34;http://logback.qos.ch/&#34;&gt;Logback&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;From my old-timey Java days, I know that the idiomatic way to set up an SLF4J logger is like so:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-java" data-lang="java"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff5c57"&gt;public&lt;/span&gt; &lt;span style="color:#ff5c57"&gt;class&lt;/span&gt; &lt;span style="color:#f3f99d"&gt;Direction&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff5c57"&gt;private&lt;/span&gt; &lt;span style="color:#ff5c57"&gt;static&lt;/span&gt; &lt;span style="color:#ff5c57"&gt;final&lt;/span&gt; Logger logger &lt;span style="color:#ff6ac1"&gt;=&lt;/span&gt; LoggerFactory.&lt;span style="color:#57c7ff"&gt;getLogger&lt;/span&gt;(Direction.&lt;span style="color:#57c7ff"&gt;class&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff5c57"&gt;public&lt;/span&gt; &lt;span style="color:#9aedfe"&gt;void&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;navigate&lt;/span&gt;() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; logger.&lt;span style="color:#57c7ff"&gt;info&lt;/span&gt;(...)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But it&amp;rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:&lt;/p&gt;</description><content type="html"><![CDATA[<hr>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff5c57&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#f3f99d&#34;&gt;Direction&lt;/span&gt; { 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff5c57&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#ff5c57&#34;&gt;final&lt;/span&gt; Logger logger &lt;span style=&#34;color:#ff6ac1&#34;&gt;=&lt;/span&gt; LoggerFactory.&lt;span style=&#34;color:#57c7ff&#34;&gt;getLogger&lt;/span&gt;(Direction.&lt;span style=&#34;color:#57c7ff&#34;&gt;class&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#ff5c57&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#9aedfe&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;navigate&lt;/span&gt;() { 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        logger.&lt;span style=&#34;color:#57c7ff&#34;&gt;info&lt;/span&gt;(...)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But it&amp;rsquo;s 2020, and we write Kotlin now 🎉 A few websites I found helpfully suggest the most basic-but-functional Kotlin version of this:&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<hr>
 <p><em>ed. note:</em> This blog post was written in June 2020, when Kotlin 1.3.72 was in production. It&rsquo;s possible the Kotlin compiler has gotten smarter since then!</p>
 <hr>
 <p>My <a href="https://www.hatchcard.com/">current company</a> uses Kotlin for the backend services, so naturally we use the most standard of JVM logging setups: <a href="http://www.slf4j.org/">SLF4J</a> + <a href="http://logback.qos.ch/">Logback</a>.</p>
@@ -463,12 +515,22 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 <p>If you follow the style of writing the statics at the top of the class in Java, then I suggest to try to consider writing them <em>at the top level</em> (e.g. before class declaration) in Kotlin. For many use-cases it works better than introducing a <code>companion object.</code></p></blockquote>
 </li>
 </ul>
-]]></content></item><item><title>I Go, Hugo, They Go</title><link>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</link><pubDate>Mon, 18 May 2020 08:39:55 -0700</pubDate><guid>https://jvmname.dev/posts/2020/05/i-go-hugo-they-go/</guid><description>&lt;p&gt;A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.&lt;/p&gt;
+]]></content>
+        </item>
+        
+        <item>
+            <title>I Go, Hugo, They Go</title>
+            <link>http://localhost:1313/posts/2020/05/i-go-hugo-they-go/</link>
+            <pubDate>Mon, 18 May 2020 08:39:55 -0700</pubDate>
+            
+            <guid>http://localhost:1313/posts/2020/05/i-go-hugo-they-go/</guid>
+            <description>&lt;p&gt;A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;strong&gt;Ed. note:&lt;/strong&gt; I have no idea how &lt;code&gt;Hugo&lt;/code&gt; is intended to be pronounced; it could be &lt;em&gt;&lt;code&gt;oo-go&lt;/code&gt;&lt;/em&gt; (á la &lt;em&gt;Hugo Chavez&lt;/em&gt;), or &lt;em&gt;&lt;code&gt;hyoo-go&lt;/code&gt;&lt;/em&gt;, as the name is pronounced in American English. For the punning purposes of the title, I&amp;rsquo;m assuming it&amp;rsquo;s the latter pronunciation.&lt;/p&gt;
 &lt;hr&gt;
-&lt;h3 id="this-shouldnt-be-so-complicated"&gt;This shouldn&amp;rsquo;t be so complicated.&lt;/h3&gt;
-&lt;p&gt;Somehow, with all the resources online of how to get Hugo + GitHub Pages + Custom Domain set up, I still ran into strange, arcane hurdles.&lt;/p&gt;</description><content type="html"><![CDATA[<p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p>
+&lt;h3 id=&#34;this-shouldnt-be-so-complicated&#34;&gt;This shouldn&amp;rsquo;t be so complicated.&lt;/h3&gt;
+&lt;p&gt;Somehow, with all the resources online of how to get Hugo + GitHub Pages + Custom Domain set up, I still ran into strange, arcane hurdles.&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<p>A dump of my experiences getting this blog set up - from Hugo, to GitHub deploy, to Google Domain CNAME entries.</p>
 <hr>
 <p><strong>Ed. note:</strong> I have no idea how <code>Hugo</code> is intended to be pronounced; it could be <em><code>oo-go</code></em> (á la <em>Hugo Chavez</em>), or <em><code>hyoo-go</code></em>, as the name is pronounced in American English. For the punning purposes of the title, I&rsquo;m assuming it&rsquo;s the latter pronunciation.</p>
 <hr>
@@ -532,7 +594,7 @@ Have fun tracking down that logging bug! 🙀🐛</p>
 <h4 id="images-and-hugo-shortcodes">Images and Hugo Shortcodes</h4>
 <p>Hugo defines some <a href="https://gohugo.io/content-management/shortcodes/">markdown-friendly shortcodes</a>. which, oestensibly, is easier than hand-coding HTML.</p>
 <p>I&rsquo;ve found the <code>figure</code> shortcode to be useful for just chucking images into your markdown files:</p>
-<pre tabindex="0"><code>{{&lt; figure src=&#34;https://jvmname.dev/img/spf13.jpg&#34; title=&#34;Steve Francia&#34; &gt;}}
+<pre tabindex="0"><code>{{&lt; figure src=&#34;http://localhost:1313/img/spf13.jpg&#34; title=&#34;Steve Francia&#34; &gt;}}
 </code></pre><p>It works for content placed into the <code>/static/*</code> dir, as well as any web content:</p>
 <pre tabindex="0"><code>{{&lt; figure src=&#34;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9&#34; 
 title=&#34;Suspended Cups&#34; 
@@ -695,19 +757,30 @@ attr=&#34;[Chris Scott](https://unsplash.com/photos/NEc3YEN1FFw)&#34; &gt;}}
 <li>GitHub - Managing a custom domain for your GitHub Pages site: <a href="https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">https://help.github.com/en/github/working-with-github-pages/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain</a></li>
 <li>Creating and deploying your first Hugo site to Github pages: <a href="https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d">https://inside.getambassador.com/creating-and-deploying-your-first-hugo-site-to-github-pages-1e1f496cf88d</a></li>
 </ol>
-]]></content></item><item><title>Tracking Performance in Kotlin Suspending Functions</title><link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link><pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate><guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid><description>&lt;figure&gt;&lt;img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=810&amp;amp;q=80"&gt;&lt;figcaption&gt;
-&lt;h4&gt;Suspended Cups&lt;/h4&gt;&lt;p&gt;&lt;a href="https://unsplash.com/photos/NEc3YEN1FFw"&gt;Chris Scott&lt;/a&gt;&lt;/p&gt;
-&lt;/figcaption&gt;
+]]></content>
+        </item>
+        
+        <item>
+            <title>Tracking Performance in Kotlin Suspending Functions</title>
+            <link>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
+            <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
+            
+            <guid>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
+            <description>&lt;figure&gt;&lt;img src=&#34;https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=810&amp;amp;q=80&#34;&gt;&lt;figcaption&gt;
+      &lt;h4&gt;Suspended Cups&lt;/h4&gt;&lt;p&gt;&lt;a href=&#34;https://unsplash.com/photos/NEc3YEN1FFw&#34;&gt;Chris Scott&lt;/a&gt;&lt;/p&gt;
+    &lt;/figcaption&gt;
 &lt;/figure&gt;
-&lt;p&gt;Using &lt;a href="https://firebase.google.com/docs/perf-mon/get-started-android"&gt;Firebase Performance Monitoring&lt;/a&gt; to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the &lt;a href="https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation"&gt;@AddTrace annotation&lt;/a&gt;:
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-kotlin" data-lang="kotlin"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff9f43"&gt;@AddTrace&lt;/span&gt;(&lt;span style="color:#5af78e"&gt;&amp;#34;some-trace-name&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff6ac1"&gt;fun&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;myBoringFunction&lt;/span&gt;() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; println(&lt;span style="color:#5af78e"&gt;&amp;#34;nothing to see here!&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+
+&lt;p&gt;Using &lt;a href=&#34;https://firebase.google.com/docs/perf-mon/get-started-android&#34;&gt;Firebase Performance Monitoring&lt;/a&gt; to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the &lt;a href=&#34;https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation&#34;&gt;@AddTrace annotation&lt;/a&gt;:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-kotlin&#34; data-lang=&#34;kotlin&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff9f43&#34;&gt;@AddTrace&lt;/span&gt;(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;some-trace-name&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#ff6ac1&#34;&gt;fun&lt;/span&gt; &lt;span style=&#34;color:#57c7ff&#34;&gt;myBoringFunction&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println(&lt;span style=&#34;color:#5af78e&#34;&gt;&amp;#34;nothing to see here!&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
 &lt;p&gt;Wait a few moments, and you’ll see &lt;code&gt;some-trace-name&lt;/code&gt; in the Firebase Console!&lt;/p&gt;
 &lt;p&gt;But what if you want to track the performance of a &lt;code&gt;suspend&lt;/code&gt; function? Unfortunately, this is not as straightforward.&lt;/p&gt;
-&lt;h2 id="attempt-1-suspending-disbelief"&gt;Attempt #1: Suspending Disbelief&lt;/h2&gt;
-&lt;p&gt;Let’s say you have some uncomplicated suspending function, like so:&lt;/p&gt;</description><content type="html"><![CDATA[<figure><img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"><figcaption>
+&lt;h2 id=&#34;attempt-1-suspending-disbelief&#34;&gt;Attempt #1: Suspending Disbelief&lt;/h2&gt;
+&lt;p&gt;Let’s say you have some uncomplicated suspending function, like so:&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<figure><img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=810&amp;q=80"><figcaption>
       <h4>Suspended Cups</h4><p><a href="https://unsplash.com/photos/NEc3YEN1FFw">Chris Scott</a></p>
     </figcaption>
 </figure>
@@ -833,4 +906,8 @@ But, as developers, <em>we</em> know when a suspending function will enter and e
 <p>Java Code to Byte Code - Part 2: <a href="https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally">https://blog.jamesdbloom.com/JavaCodeToByteCode_PartTwo.html#try_catch_finally</a></p>
 </li>
 </ol>
-]]></content></item></channel></rss>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

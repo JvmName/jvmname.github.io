@@ -1,1 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tags on @JvmName("Parth")</title><link>https://jvmname.dev/tags/</link><description>Recent content in Tags on @JvmName("Parth")</description><generator>Hugo</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 12 Sep 2025 11:13:04 -0700</lastBuildDate><atom:link href="https://jvmname.dev/tags/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude</title><link>https://jvmname.dev/tags/claude/</link><pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate><guid>https://jvmname.dev/tags/claude/</guid><description/></item><item><title>Code Review</title><link>https://jvmname.dev/tags/code-review/</link><pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate><guid>https://jvmname.dev/tags/code-review/</guid><description/></item><item><title>Code Reuse</title><link>https://jvmname.dev/tags/code-reuse/</link><pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate><guid>https://jvmname.dev/tags/code-reuse/</guid><description/></item><item><title>Github Actions</title><link>https://jvmname.dev/tags/github-actions/</link><pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate><guid>https://jvmname.dev/tags/github-actions/</guid><description/></item><item><title>Yaml</title><link>https://jvmname.dev/tags/yaml/</link><pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate><guid>https://jvmname.dev/tags/yaml/</guid><description/></item><item><title>Bugs</title><link>https://jvmname.dev/tags/bugs/</link><pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate><guid>https://jvmname.dev/tags/bugs/</guid><description/></item><item><title>Coroutines</title><link>https://jvmname.dev/tags/coroutines/</link><pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate><guid>https://jvmname.dev/tags/coroutines/</guid><description/></item><item><title>Kotlin</title><link>https://jvmname.dev/tags/kotlin/</link><pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate><guid>https://jvmname.dev/tags/kotlin/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on @JvmName(&#34;Parth&#34;)</title>
+    <link>http://localhost:1313/tags/</link>
+    <description>Recent content in Tags on @JvmName(&#34;Parth&#34;)</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 12 Sep 2025 11:13:04 -0700</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude</title>
+      <link>http://localhost:1313/tags/claude/</link>
+      <pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate>
+      <guid>http://localhost:1313/tags/claude/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code Review</title>
+      <link>http://localhost:1313/tags/code-review/</link>
+      <pubDate>Fri, 12 Sep 2025 11:13:04 -0700</pubDate>
+      <guid>http://localhost:1313/tags/code-review/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code Reuse</title>
+      <link>http://localhost:1313/tags/code-reuse/</link>
+      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+      <guid>http://localhost:1313/tags/code-reuse/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Github Actions</title>
+      <link>http://localhost:1313/tags/github-actions/</link>
+      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+      <guid>http://localhost:1313/tags/github-actions/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Yaml</title>
+      <link>http://localhost:1313/tags/yaml/</link>
+      <pubDate>Thu, 24 Jun 2021 16:09:41 -0400</pubDate>
+      <guid>http://localhost:1313/tags/yaml/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Bugs</title>
+      <link>http://localhost:1313/tags/bugs/</link>
+      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
+      <guid>http://localhost:1313/tags/bugs/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coroutines</title>
+      <link>http://localhost:1313/tags/coroutines/</link>
+      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
+      <guid>http://localhost:1313/tags/coroutines/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kotlin</title>
+      <link>http://localhost:1313/tags/kotlin/</link>
+      <pubDate>Mon, 11 Jan 2021 00:01:19 -0500</pubDate>
+      <guid>http://localhost:1313/tags/kotlin/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

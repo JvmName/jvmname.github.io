@@ -1,80 +1,382 @@
-<!doctype html><html lang=en><head><meta charset=UTF-8><meta http-equiv=X-UA-Compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content><meta name=description content="A quick study in CoroutineScope, and why sharing is not always caring."><meta name=keywords content="kotlin,android,kotlin,coroutines,bugs"><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://jvmname.dev/posts/2021/01/dont-worry-just-launch/><title>Don't Worry, Just Launch :: @JvmName("Parth")</title><link rel=stylesheet href=https://jvmname.dev/main.min.522ac355475c3ace8381b077c8865b531630177e7b14b13e239c6a23f767c2a9.css integrity="sha256-UirDVUdcOs6DgbB3yIZbUxYwF357FLE+I5xqI/dnwqk=" crossorigin=anonymous><link rel=apple-touch-icon sizes=180x180 href=https://jvmname.dev/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://jvmname.dev/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://jvmname.dev/favicon-16x16.png><link rel=manifest href=https://jvmname.dev/site.webmanifest><link rel=mask-icon href=https://jvmname.dev/safari-pinned-tab.svg color><link rel="shortcut icon" href=https://jvmname.dev/favicon.ico><meta name=msapplication-TileColor content><meta itemprop=name content="Don't Worry, Just Launch"><meta itemprop=description content="A quick study in CoroutineScope, and why sharing is not always caring."><meta itemprop=datePublished content="2021-01-11T00:01:19-05:00"><meta itemprop=dateModified content="2021-01-11T00:01:19-05:00"><meta itemprop=wordCount content="822"><meta itemprop=image content="https://jvmname.dev/img/launch.jpg"><meta itemprop=keywords content="Kotlin,Coroutines,Bugs"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://jvmname.dev/img/launch.jpg"><meta name=twitter:title content="Don't Worry, Just Launch"><meta name=twitter:description content="A quick study in CoroutineScope, and why sharing is not always caring."><meta property="og:url" content="https://jvmname.dev/posts/2021/01/dont-worry-just-launch/"><meta property="og:site_name" content='@JvmName("Parth")'><meta property="og:title" content="Don't Worry, Just Launch"><meta property="og:description" content="A quick study in CoroutineScope, and why sharing is not always caring."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-01-11T00:01:19-05:00"><meta property="article:modified_time" content="2021-01-11T00:01:19-05:00"><meta property="article:tag" content="Kotlin"><meta property="article:tag" content="Coroutines"><meta property="article:tag" content="Bugs"><meta property="og:image" content="https://jvmname.dev/img/launch.jpg"><meta property="article:published_time" content="2021-01-11 00:01:19 -0500 -0500"><script data-goatcounter=https://jvmname.goatcounter.com/count async src=//gc.zgo.at/count.js></script></head><body><div class=container><header class=header><span class=header__inner><a href=https://jvmname.dev/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>@JvmName</span>
-<span class=logo__cursor style=background-color:#67a2c9;animation-duration:3.5s></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://jvmname.dev/about/>About Me</a></li><li><a href=https://jvmname.dev/posts/>Posts</a></li><li><a href=https://jvmname.dev/speaking/>Speaking</a></li></ul></nav><span class=menu-trigger><svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-</span><span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-4 minutes</p></div><article><h1 class=post-title><a href=https://jvmname.dev/posts/2021/01/dont-worry-just-launch/>Don&rsquo;t Worry, Just Launch</a></h1><div class=post-excerpt>A quick study in CoroutineScope, and why sharing is not always caring.</div><figure class=post-cover><img src=https://jvmname.dev/img/launch.jpg alt="Don't Worry, Just Launch"><figcaption class=center>Photo by <a href=https://unsplash.com/@gezerbatu>Batu Gezer</a></figcaption></figure><div class=post-content><p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p><p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>class</span> <span style=color:#f3f99d>Analytics</span> {
-</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>init</span> { <span style=color:#78787e>// ⚠️ DO NOT USE THIS CODE ⚠️
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>        scope.launch() { 
-</span></span><span style=display:flex><span>            <span style=color:#ff6ac1>val</span> userFlow = userRepo.observeUser(refresh = <span style=color:#ff6ac1>false</span>)
-</span></span><span style=display:flex><span>                .map { <span style=color:#78787e>/** filter+transform the User */</span> }
-</span></span><span style=display:flex><span>                .shareIn(<span style=color:#ff6ac1>this</span>, <span style=color:#f3f99d>SharingStarted</span>.WhileSubscribed(), <span style=color:#ff9f43>1</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>            userFlow
-</span></span><span style=display:flex><span>                .collect { <span style=color:#78787e>/* consume User for Sentry setup */</span> }
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>            userFlow
-</span></span><span style=display:flex><span>                .collect { <span style=color:#78787e>/** consume for LaunchDarkly setup */</span> }
-</span></span><span style=display:flex><span>        }
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p><p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p><p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you that: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>class</span> <span style=color:#f3f99d>Analytics</span> {
-</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>init</span> {
-</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>val</span> userFlow = userRepo.observeUser(refresh = <span style=color:#ff6ac1>false</span>)
-</span></span><span style=display:flex><span>             .map { <span style=color:#78787e>/** filter+transform the User */</span> }  
-</span></span><span style=display:flex><span>             .shareIn(scope, <span style=color:#f3f99d>SharingStarted</span>.Eagerly, <span style=color:#ff9f43>1</span>)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        userFlow
-</span></span><span style=display:flex><span>            .onEach { <span style=color:#78787e>/* setup sentry */</span> }
-</span></span><span style=display:flex><span>            .launchIn(scope)
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        userFlow
-</span></span><span style=display:flex><span>            .onEach { <span style=color:#78787e>/* setup LaunchDarkly */</span> }
-</span></span><span style=display:flex><span>            .launchIn(scope)
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>(note: there&rsquo;s another solution involving <code>CoroutineScope.async</code>, see below for that code)</p><h2 id=whats-the-difference>What&rsquo;s the difference?</h2><p>Here&rsquo;s what went wrong at first, and why this code works:</p><p>In case you&rsquo;re not familiar, <code>Flow&lt;T>.launchIn(CoroutineScope)</code> turns your <code>launch</code> into a kind of postfix operator instead of having to nesting a <code>collect</code> inside a <code>launch</code> block.</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span>scope.launch { 
-</span></span><span style=display:flex><span>    flowOf(<span style=color:#ff9f43>1</span>, <span style=color:#ff9f43>2</span>, <span style=color:#ff9f43>3</span>).collect()
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span><span style=color:#78787e>// ⬆️ these are equivalent ⬇️
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>flowOf(<span style=color:#ff9f43>1</span>, <span style=color:#ff9f43>2</span>, <span style=color:#ff9f43>3</span>).launchIn(scope)
-</span></span></code></pre></div><p>In writing my original bit of code, I made a few mistakes:</p><ol><li>I assumed that <code>launch+collect</code> and <code>launchIn</code> were exactly equivalent – not true when your <code>launch</code> has multiple <code>collect</code> statements! This leads to (2):</li><li>I forgot that <code>Flow.collect</code> is a suspending terminal operator, so for a never-ending stream (e.g. a Flow from your Repository), <code>collect</code> will never complete!</li></ol><p><code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only one Flow will start</strong>; the other Flow will patiently wait (forever!):</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>init</span> {
-</span></span><span style=display:flex><span>    scope.launch { <span style=color:#78787e>// ⚠️ BAD CODE DON&#39;T DO THIS
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>        <span style=color:#78787e>// ✅ doesn&#39;t emit, but runs fine
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>        <span style=color:#ff6ac1>val</span> neverEnding = flow&lt;Unit&gt; { <span style=color:#ff6ac1>while</span>(<span style=color:#ff6ac1>true</span>) delay(<span style=color:#ff9f43>100</span>) }.collect { println(<span style=color:#5af78e>&#34;neverending!&#34;</span>) } 
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>        <span style=color:#78787e>// ❌ never runs because `neverEnding`
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>        <span style=color:#ff6ac1>val</span> neverStarting = flowOf(<span style=color:#ff9f43>1</span>, <span style=color:#ff9f43>2</span>, <span style=color:#ff9f43>3</span>).collect { println(<span style=color:#5af78e>&#34;</span><span style=color:#5af78e>$it</span><span style=color:#5af78e>&#34;</span>) }
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>init</span> {
-</span></span><span style=display:flex><span>    flow { <span style=color:#ff6ac1>while</span>(<span style=color:#ff6ac1>true</span>) delay(<span style=color:#ff9f43>100</span>) }.launchIn(scope)  <span style=color:#78787e>// ✅ runs fine
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>    flowOf(<span style=color:#ff9f43>1</span>, <span style=color:#ff9f43>2</span>, <span style=color:#ff9f43>3</span>).launchIn(scope) <span style=color:#78787e>// ✅ also runs fine
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>}
-</span></span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p><h2 id=bonus>Bonus</h2><h3 id=extensions>Extensions!</h3><p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>fun</span> &lt;<span style=color:#f3f99d>T</span>&gt; <span style=color:#57c7ff>Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style=color:#ff6ac1>suspend</span> (T) <span style=color:#ff6ac1>-&gt;</span> Unit): Job {
-</span></span><span style=display:flex><span>    <span style=color:#ff6ac1>return</span> scope.launch { collect(collector) }
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#78787e>//Sample Usage:
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span><span style=color:#ff6ac1>val</span> scope = <span style=color:#ff6ac1>..</span>. <span style=color:#78787e>//e.g. viewModelScope
-</span></span></span><span style=display:flex><span><span style=color:#78787e></span>flowOf(<span style=color:#ff9f43>1</span>, <span style=color:#ff9f43>2</span>, <span style=color:#ff9f43>3</span>)
-</span></span><span style=display:flex><span>    .launchIn(scope) { int <span style=color:#ff6ac1>-&gt;</span> println(<span style=color:#5af78e>&#34;</span><span style=color:#5af78e>$int</span><span style=color:#5af78e>&#34;</span>) }
-</span></span></code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p><h3 id=async-instead-of-launch>Async instead of Launch</h3><p>There&rsquo;s another way to solve the original problem, which <a href=https://blog.danlew.net/>Dan Lew</a> pointed out &ndash; <code>CoroutineScope.async</code>!</p><div class=highlight><pre tabindex=0 style=color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-kotlin data-lang=kotlin><span style=display:flex><span><span style=color:#ff6ac1>init</span> { 
-</span></span><span style=display:flex><span>    scope.launch { 
-</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>val</span> userFlow = userRepo.observeUser(refresh = <span style=color:#ff6ac1>false</span>)
-</span></span><span style=display:flex><span>            .map { <span style=color:#78787e>/** filter+transform the User */</span> }
-</span></span><span style=display:flex><span>            .shareIn(<span style=color:#ff6ac1>this</span>, <span style=color:#f3f99d>SharingStarted</span>.WhileSubscribed(), <span style=color:#ff9f43>1</span>)
-</span></span><span style=display:flex><span>        
-</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>val</span> sentry = async { userFlow.collect { <span style=color:#78787e>/* consume User for Sentry setup */</span> } }         
-</span></span><span style=display:flex><span>        <span style=color:#ff6ac1>val</span> launchDarkly = async { userFlow.collect { <span style=color:#78787e>/* consume User for LaunchDarkly setup */</span> } }         
-</span></span><span style=display:flex><span>        sentry.await() + launchDarkly.await()
-</span></span><span style=display:flex><span>    }
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h2 id=references--extra-reading--sources>References | Extra Reading | Sources</h2><p>My deep appreciation goes out to:</p><ul><li><a href=https://twitter.com/ianhlake>Ian Lake</a> and <a href=https://twitter.com/friendlyMikhail>Mike Nakhimovich</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</li><li><a href=https://twitter.com/DSeweryn>Dariusz Seweryn</a>, <a href=https://blog.danlew.net/>Dan Lew</a>, and <a href=https://twitter.com/geoffreymetais>Geoffrey Metais</a> for pointing out that <code>collect</code> is a suspending operator and providing feedback on the code snippets 🙏🏾</li><li><a href=https://twitter.com/ki_run>Kiran Rao</a> and <a href=https://twitter.com/Akshay_Chordiya>Akshay Chordiya</a> for some copy-editing ✍🏽</li></ul><p>Also:</p><ul><li>Kotlin Docs - Launching Flow: <a href=https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow>https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow</a></li><li>Kotlin Docs - Async: <a href=https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async>https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async</a></li></ul></div></article><hr><div class=post-info><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg>
-<span class=tag><a href=https://jvmname.dev/tags/kotlin/>kotlin</a></span>
-<span class=tag><a href=https://jvmname.dev/tags/coroutines/>coroutines</a></span>
-<span class=tag><a href=https://jvmname.dev/tags/bugs/>bugs</a></span></p><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-822 Words</p><p><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-2021-01-10 21:01 -0800</p></div><div class=pagination><div class=pagination__buttons><span class="button previous"><a href=https://jvmname.dev/posts/2021/06/your-yaml-could-be-dryer/><span class=button__icon>←</span>
-<span class=button__text>Your YAML could be DRYer</span>
-</a></span><span class="button next"><a href=https://jvmname.dev/posts/2020/06/static-in-kotlin/><span class=button__text>Static in Kotlin</span>
-<span class=button__icon>→</span></a></span></div></div></main></div><footer class=footer></footer></div><script type=text/javascript src=https://jvmname.dev/bundle.min.ff8546a88648331ab9d3884ad6a8cfbf5f5a9ee63e25453fb0e756210368c791330b8aafc6dc6a4f17fbfdea282bab38804079c4575a97a90af148a8f2791856.js integrity="sha512-/4VGqIZIMxq504hK1qjPv19anuY+JUU/sOdWIQNox5EzC4qvxtxqTxf7/eooK6s4gEB5xFdal6kK8Uio8nkYVg=="></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author"
+      content="">
+<meta name="description"
+      content="A quick study in CoroutineScope, and why sharing is not always caring."/>
+<meta name="keywords"
+      content="kotlin, android, kotlin, coroutines, bugs"/>
+<meta name="robots" content="noodp"/>
+<meta name="theme-color" content="#252627"/>
+<link rel="canonical" href="http://localhost:1313/posts/2021/01/dont-worry-just-launch/"/>
+
+
+<title>
+    
+    Don&#39;t Worry, Just Launch :: @JvmName(&#34;Parth&#34;) 
+    
+</title>
+
+
+
+
+
+<link rel="stylesheet" href="http://localhost:1313/main.min.522ac355475c3ace8381b077c8865b531630177e7b14b13e239c6a23f767c2a9.css" integrity="sha256-UirDVUdcOs6DgbB3yIZbUxYwF357FLE&#43;I5xqI/dnwqk=" crossorigin="anonymous">
+
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+    <link rel="manifest" href="http://localhost:1313/site.webmanifest">
+    <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg" color="">
+    <link rel="shortcut icon" href="http://localhost:1313/favicon.ico">
+    <meta name="msapplication-TileColor" content="">
+
+
+
+  <meta itemprop="name" content="Don&#39;t Worry, Just Launch">
+  <meta itemprop="description" content="A quick study in CoroutineScope, and why sharing is not always caring.">
+  <meta itemprop="datePublished" content="2021-01-11T00:01:19-05:00">
+  <meta itemprop="dateModified" content="2021-01-11T00:01:19-05:00">
+  <meta itemprop="wordCount" content="822">
+  <meta itemprop="image" content="http://localhost:1313/img/launch.jpg">
+  <meta itemprop="keywords" content="Kotlin,Coroutines,Bugs">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/img/launch.jpg">
+  <meta name="twitter:title" content="Don&#39;t Worry, Just Launch">
+  <meta name="twitter:description" content="A quick study in CoroutineScope, and why sharing is not always caring.">
+
+
+
+<meta property="og:url" content="http://localhost:1313/posts/2021/01/dont-worry-just-launch/">
+  <meta property="og:site_name" content="@JvmName(&#34;Parth&#34;)">
+  <meta property="og:title" content="Don&#39;t Worry, Just Launch">
+  <meta property="og:description" content="A quick study in CoroutineScope, and why sharing is not always caring.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2021-01-11T00:01:19-05:00">
+    <meta property="article:modified_time" content="2021-01-11T00:01:19-05:00">
+    <meta property="article:tag" content="Kotlin">
+    <meta property="article:tag" content="Coroutines">
+    <meta property="article:tag" content="Bugs">
+    <meta property="og:image" content="http://localhost:1313/img/launch.jpg">
+
+
+
+
+
+
+<meta property="article:published_time" content="2021-01-11 00:01:19 -0500 -0500"/>
+
+
+
+
+
+
+<script data-goatcounter="https://jvmname.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+
+
+
+    </head>
+
+    
+        <body>
+    
+    
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://localhost:1313/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text ">
+                @JvmName</span>
+            <span class="logo__cursor" style=
+                  "
+                   background-color:#67a2c9;
+                   animation-duration:3.5s;">
+            </span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://localhost:1313/about/">About Me</a></li><li><a href="http://localhost:1313/posts/">Posts</a></li><li><a href="http://localhost:1313/speaking/">Speaking</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+                <span class="theme-toggle not-selectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+   3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+   13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+ </svg></span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+  <main class="post">
+
+    <div class="post-info">
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        4 minutes
+
+        
+      </p>
+    </div>
+
+    <article>
+      <h1 class="post-title">
+        <a href="http://localhost:1313/posts/2021/01/dont-worry-just-launch/">Don&rsquo;t Worry, Just Launch</a>
+      </h1>
+
+      
+        <div class="post-excerpt">A quick study in CoroutineScope, and why sharing is not always caring.</div>
+      
+
+      
+        <figure class="post-cover">
+          <img src="http://localhost:1313/img/launch.jpg" alt="Don&#39;t Worry, Just Launch" />
+          
+          
+            <figcaption class="center">Photo by <a href="https://unsplash.com/@gezerbatu">Batu Gezer</a></figcaption>
+          
+        </figure>
+      
+
+      
+
+      <div class="post-content">
+        <p>I&rsquo;ve been writing Kotlin code for nearly 20% of my professional programming life! I wrote my first scrap of Kotlin in roughly mid-2018, and transitioned to writing full-time production Kotlin in mid-2019. Ever since then, I&rsquo;ve been on the Kotlin train 100%.<br>
+Despite all that Kotlin experience, the new <a href="https://play.google.com/store/apps/details?id=com.hatchcard.android">Hatch Credit Android app</a> (launching Q1-2021✨) is the first time I&rsquo;ve used 100% coroutines in production code, so I still write some dumb code sometimes.</p>
+<p>A great example: this week, I was adding some basic feature flagging and crash reporting to the app, using LaunchDarkly and Sentry. Given that I already had a User coming from my repository, I used a <code>SharedFlow</code> to multiplex so that Sentry and LaunchDarkly could each handle things in their own time:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Analytics</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">init</span> { <span style="color:#78787e">// ⚠️ DO NOT USE THIS CODE ⚠️
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        scope.launch() { 
+</span></span><span style="display:flex;"><span>            <span style="color:#ff6ac1">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#ff6ac1">false</span>)
+</span></span><span style="display:flex;"><span>                .map { <span style="color:#78787e">/** filter+transform the User */</span> }
+</span></span><span style="display:flex;"><span>                .shareIn(<span style="color:#ff6ac1">this</span>, <span style="color:#f3f99d">SharingStarted</span>.WhileSubscribed(), <span style="color:#ff9f43">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            userFlow
+</span></span><span style="display:flex;"><span>                .collect { <span style="color:#78787e">/* consume User for Sentry setup */</span> }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            userFlow
+</span></span><span style="display:flex;"><span>                .collect { <span style="color:#78787e">/** consume for LaunchDarkly setup */</span> }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Simple enough, right? I wrote this code, proceeded to <del>write comprehensive tests</del> eyeball it, and then committed the code to GitHub without a second thought. The next day, I start testing the app to cut a release, and I realize – <em>hey, LaunchDarkly never gets set up!</em></p>
+<p>I do all the standard debugging things – <code>println</code>, breakpoints (Android Studio + Coroutines is a nightmare, even on <code>7.0.0 Arctic Fox</code>), to no avail. Sentry handles the <code>Flow</code> just fine, LaunchDarkly sees nothing.</p>
+<p>I&rsquo;ll spare y&rsquo;all the hours of debugging I lost to my own stupid mistake. I <em>will</em> tell you that: coroutine scopes don&rsquo;t like to be shared! Here&rsquo;s how I fixed my issue:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">class</span> <span style="color:#f3f99d">Analytics</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">init</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#ff6ac1">false</span>)
+</span></span><span style="display:flex;"><span>             .map { <span style="color:#78787e">/** filter+transform the User */</span> }  
+</span></span><span style="display:flex;"><span>             .shareIn(scope, <span style="color:#f3f99d">SharingStarted</span>.Eagerly, <span style="color:#ff9f43">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        userFlow
+</span></span><span style="display:flex;"><span>            .onEach { <span style="color:#78787e">/* setup sentry */</span> }
+</span></span><span style="display:flex;"><span>            .launchIn(scope)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        userFlow
+</span></span><span style="display:flex;"><span>            .onEach { <span style="color:#78787e">/* setup LaunchDarkly */</span> }
+</span></span><span style="display:flex;"><span>            .launchIn(scope)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>(note: there&rsquo;s another solution involving <code>CoroutineScope.async</code>, see below for that code)</p>
+<h2 id="whats-the-difference">What&rsquo;s the difference?</h2>
+<p>Here&rsquo;s what went wrong at first, and why this code works:</p>
+<p>In case you&rsquo;re not familiar, <code>Flow&lt;T&gt;.launchIn(CoroutineScope)</code> turns your <code>launch</code> into a kind of postfix operator instead of having to nesting a <code>collect</code> inside a <code>launch</code> block.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span>scope.launch { 
+</span></span><span style="display:flex;"><span>    flowOf(<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">3</span>).collect()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#78787e">// ⬆️ these are equivalent ⬇️
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>flowOf(<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">3</span>).launchIn(scope)
+</span></span></code></pre></div><p>In writing my original bit of code, I made a few mistakes:</p>
+<ol>
+<li>I assumed that <code>launch+collect</code> and <code>launchIn</code> were exactly equivalent – not true when your <code>launch</code> has multiple <code>collect</code> statements! This leads to (2):</li>
+<li>I forgot that <code>Flow.collect</code> is a suspending terminal operator, so for a never-ending stream (e.g. a Flow from your Repository), <code>collect</code> will never complete!</li>
+</ol>
+<p><code>CoroutineScope.launch</code> only starts <em>one</em> new coroutine, so in the following situation, <strong>only one Flow will start</strong>; the other Flow will patiently wait (forever!):</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">init</span> {
+</span></span><span style="display:flex;"><span>    scope.launch { <span style="color:#78787e">// ⚠️ BAD CODE DON&#39;T DO THIS
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        <span style="color:#78787e">// ✅ doesn&#39;t emit, but runs fine
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        <span style="color:#ff6ac1">val</span> neverEnding = flow&lt;Unit&gt; { <span style="color:#ff6ac1">while</span>(<span style="color:#ff6ac1">true</span>) delay(<span style="color:#ff9f43">100</span>) }.collect { println(<span style="color:#5af78e">&#34;neverending!&#34;</span>) } 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#78787e">// ❌ never runs because `neverEnding`
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>        <span style="color:#ff6ac1">val</span> neverStarting = flowOf(<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">3</span>).collect { println(<span style="color:#5af78e">&#34;</span><span style="color:#5af78e">$it</span><span style="color:#5af78e">&#34;</span>) }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Instead, since coroutines are cheap, don&rsquo;t worry and <code>launch</code> as many of them as you need:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">init</span> {
+</span></span><span style="display:flex;"><span>    flow { <span style="color:#ff6ac1">while</span>(<span style="color:#ff6ac1">true</span>) delay(<span style="color:#ff9f43">100</span>) }.launchIn(scope)  <span style="color:#78787e">// ✅ runs fine
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>    flowOf(<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">3</span>).launchIn(scope) <span style="color:#78787e">// ✅ also runs fine
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>}
+</span></span></code></pre></div><p>This construction has the added benefit of making your code read nicer too – less indentation! 🎉</p>
+<h2 id="bonus">Bonus</h2>
+<h3 id="extensions">Extensions!</h3>
+<p>In search of a less verbose Flow collection mechanism, I&rsquo;ve built a small extension to help process Flow emissions in a given <code>CoroutineScope</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">fun</span> &lt;<span style="color:#f3f99d">T</span>&gt; <span style="color:#57c7ff">Flow</span>&lt;T&gt;.launchIn(scope: CoroutineScope, collector: <span style="color:#ff6ac1">suspend</span> (T) <span style="color:#ff6ac1">-&gt;</span> Unit): Job {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff6ac1">return</span> scope.launch { collect(collector) }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#78787e">//Sample Usage:
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span><span style="color:#ff6ac1">val</span> scope = <span style="color:#ff6ac1">..</span>. <span style="color:#78787e">//e.g. viewModelScope
+</span></span></span><span style="display:flex;"><span><span style="color:#78787e"></span>flowOf(<span style="color:#ff9f43">1</span>, <span style="color:#ff9f43">2</span>, <span style="color:#ff9f43">3</span>)
+</span></span><span style="display:flex;"><span>    .launchIn(scope) { int <span style="color:#ff6ac1">-&gt;</span> println(<span style="color:#5af78e">&#34;</span><span style="color:#5af78e">$int</span><span style="color:#5af78e">&#34;</span>) }
+</span></span></code></pre></div><p>This combines the concision of <code>launchIn</code> with the standard collection handles you&rsquo;d use in <code>onEach</code> or <code>collect</code>. Best of both worlds!</p>
+<h3 id="async-instead-of-launch">Async instead of Launch</h3>
+<p>There&rsquo;s another way to solve the original problem, which <a href="https://blog.danlew.net/">Dan Lew</a> pointed out &ndash; <code>CoroutineScope.async</code>!</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-kotlin" data-lang="kotlin"><span style="display:flex;"><span><span style="color:#ff6ac1">init</span> { 
+</span></span><span style="display:flex;"><span>    scope.launch { 
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">val</span> userFlow = userRepo.observeUser(refresh = <span style="color:#ff6ac1">false</span>)
+</span></span><span style="display:flex;"><span>            .map { <span style="color:#78787e">/** filter+transform the User */</span> }
+</span></span><span style="display:flex;"><span>            .shareIn(<span style="color:#ff6ac1">this</span>, <span style="color:#f3f99d">SharingStarted</span>.WhileSubscribed(), <span style="color:#ff9f43">1</span>)
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">val</span> sentry = async { userFlow.collect { <span style="color:#78787e">/* consume User for Sentry setup */</span> } }         
+</span></span><span style="display:flex;"><span>        <span style="color:#ff6ac1">val</span> launchDarkly = async { userFlow.collect { <span style="color:#78787e">/* consume User for LaunchDarkly setup */</span> } }         
+</span></span><span style="display:flex;"><span>        sentry.await() + launchDarkly.await()
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="references--extra-reading--sources">References | Extra Reading | Sources</h2>
+<p>My deep appreciation goes out to:</p>
+<ul>
+<li><a href="https://twitter.com/ianhlake">Ian Lake</a> and <a href="https://twitter.com/friendlyMikhail">Mike Nakhimovich</a> for very patiently helping me debug issues that didn&rsquo;t pertain to them or their libraries in the slightest 😁</li>
+<li><a href="https://twitter.com/DSeweryn">Dariusz Seweryn</a>, <a href="https://blog.danlew.net/">Dan Lew</a>, and <a href="https://twitter.com/geoffreymetais">Geoffrey Metais</a> for pointing out that <code>collect</code> is a suspending operator and providing feedback on the code snippets 🙏🏾</li>
+<li><a href="https://twitter.com/ki_run">Kiran Rao</a> and <a href="https://twitter.com/Akshay_Chordiya">Akshay Chordiya</a> for some copy-editing ✍🏽</li>
+</ul>
+<p>Also:</p>
+<ul>
+<li>Kotlin Docs - Launching Flow: <a href="https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow">https://kotlinlang.org/docs/reference/coroutines/flow.html#launching-flow</a></li>
+<li>Kotlin Docs - Async: <a href="https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async">https://kotlinlang.org/docs/reference/coroutines/composing-suspending-functions.html#structured-concurrency-with-async</a></li>
+</ul>
+
+      </div>
+    </article>
+
+    <hr />
+
+    <div class="post-info">
+      
+    <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg>
+
+        <span class="tag"><a href="http://localhost:1313/tags/kotlin/">kotlin</a></span>
+        <span class="tag"><a href="http://localhost:1313/tags/coroutines/">coroutines</a></span>
+        <span class="tag"><a href="http://localhost:1313/tags/bugs/">bugs</a></span>
+        
+    </p>
+
+      
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        822 Words
+      </p>
+
+      <p>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        
+          2021-01-10 21:01 -0800
+        
+
+         
+          
+        
+      </p>
+    </div>
+
+    
+    <div class="pagination">
+        
+
+        <div class="pagination__buttons">
+            
+            <span class="button previous">
+                <a href="http://localhost:1313/posts/2021/06/your-yaml-could-be-dryer/">
+                    <span class="button__icon">←</span>
+                    <span class="button__text">Your YAML could be DRYer</span>
+                </a>
+            </span>
+            
+
+            
+            <span class="button next">
+                <a href="http://localhost:1313/posts/2020/06/static-in-kotlin/">
+                    <span class="button__text">Static in Kotlin</span>
+                    <span class="button__icon">→</span>
+                </a>
+            </span>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+
+    
+
+  </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    
+    
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+<script type="text/javascript" src="http://localhost:1313/bundle.min.ff8546a88648331ab9d3884ad6a8cfbf5f5a9ee63e25453fb0e756210368c791330b8aafc6dc6a4f17fbfdea282bab38804079c4575a97a90af148a8f2791856.js" integrity="sha512-/4VGqIZIMxq504hK1qjPv19anuY&#43;JUU/sOdWIQNox5EzC4qvxtxqTxf7/eooK6s4gEB5xFdal6kK8Uio8nkYVg=="></script>
+
+
+
+
+    </body>
+</html>
