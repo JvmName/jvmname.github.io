@@ -1,20 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Kotlin on @JvmName(&#34;Parth&#34;)</title>
-    <link>http://localhost:1313/categories/kotlin/</link>
-    <description>Recent content in Kotlin on @JvmName(&#34;Parth&#34;)</description>
-    <generator>Hugo</generator>
-    <language>en</language>
-    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 29 Mar 2020 23:14:00 -0700</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/kotlin/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Tracking Performance in Kotlin Suspending Functions</title>
-      <link>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link>
-      <pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate>
-      <guid>http://localhost:1313/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid>
-      <description>Suspended CupsChris Scott&#xA;Using Firebase Performance Monitoring to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the @AddTrace annotation: @AddTrace(&amp;#34;some-trace-name&amp;#34;) fun myBoringFunction() { println(&amp;#34;nothing to see here!&amp;#34;) }&#xA;Wait a few moments, and you’ll see some-trace-name in the Firebase Console!&#xA;But what if you want to track the performance of a suspend function? Unfortunately, this is not as straightforward.&#xA;Attempt #1: Suspending Disbelief Let’s say you have some uncomplicated suspending function, like so:</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kotlin on @JvmName("Parth")</title><link>https://jvmname.dev/categories/kotlin/</link><description>Recent content in Kotlin on @JvmName("Parth")</description><generator>Hugo</generator><language>en</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 29 Mar 2020 23:14:00 -0700</lastBuildDate><atom:link href="https://jvmname.dev/categories/kotlin/index.xml" rel="self" type="application/rss+xml"/><item><title>Tracking Performance in Kotlin Suspending Functions</title><link>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</link><pubDate>Sun, 29 Mar 2020 23:14:00 -0700</pubDate><guid>https://jvmname.dev/posts/2020/03/tracking-performance-in-kotlin-suspending-functions/</guid><description>&lt;figure&gt;&lt;img src="https://images.unsplash.com/photo-1474667689933-0ff72b3d16e9?ixlib=rb-1.2.1&amp;amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;amp;auto=format&amp;amp;fit=crop&amp;amp;w=810&amp;amp;q=80"&gt;&lt;figcaption&gt;
+ &lt;h4&gt;Suspended Cups&lt;/h4&gt;&lt;p&gt;&lt;a href="https://unsplash.com/photos/NEc3YEN1FFw"&gt;Chris Scott&lt;/a&gt;&lt;/p&gt;
+ &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Using &lt;a href="https://firebase.google.com/docs/perf-mon/get-started-android"&gt;Firebase Performance Monitoring&lt;/a&gt; to track the performance of a plain-ol’ function (Java or Kotlin) is drop-dead simple using the &lt;a href="https://firebase.google.com/docs/perf-mon/custom_traces-metrics?platform=android#add-trace-annotation"&gt;@AddTrace annotation&lt;/a&gt;:
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"&gt;&lt;code class="language-kotlin" data-lang="kotlin"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff9f43"&gt;@AddTrace&lt;/span&gt;(&lt;span style="color:#5af78e"&gt;&amp;#34;some-trace-name&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#ff6ac1"&gt;fun&lt;/span&gt; &lt;span style="color:#57c7ff"&gt;myBoringFunction&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; println(&lt;span style="color:#5af78e"&gt;&amp;#34;nothing to see here!&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;Wait a few moments, and you’ll see &lt;code&gt;some-trace-name&lt;/code&gt; in the Firebase Console!&lt;/p&gt;
+&lt;p&gt;But what if you want to track the performance of a &lt;code&gt;suspend&lt;/code&gt; function? Unfortunately, this is not as straightforward.&lt;/p&gt;
+&lt;h2 id="attempt-1-suspending-disbelief"&gt;Attempt #1: Suspending Disbelief&lt;/h2&gt;
+&lt;p&gt;Let’s say you have some uncomplicated suspending function, like so:&lt;/p&gt;</description></item></channel></rss>
